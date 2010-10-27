@@ -89,8 +89,8 @@ void CMFCMailClientDlg::CreateListMailColumn()
 	// TODO: Add extra initialization here
 	LV_COLUMN	lvColumn;
 
-	/*m_ListMail.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVS_EX_FLATSB );*/
-	m_ListMail.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES);
+	m_ListMail.ModifyStyle(m_ListMail.GetStyle(),WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER|LVS_REPORT|LVS_AUTOARRANGE);
+	m_ListMail.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES|LVS_EX_CHECKBOXES);
 
 	lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM | LVCF_IMAGE;
 	lvColumn.cx = 20;
@@ -154,7 +154,7 @@ BOOL CMFCMailClientDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	CreateGroupTree();
-	//CreateListMailColumn();
+	CreateListMailColumn();
 
 	ShowWindow(SW_MINIMIZE);
 
@@ -228,6 +228,11 @@ void CMFCMailClientDlg::OnAcountAccount()
 
 void CMFCMailClientDlg::CreateGroupTree()
 {
+
+	m_GroupTree.ModifyStyle(m_GroupTree.GetStyle(),WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER
+		| TVS_HASBUTTONS | TVS_LINESATROOT | TVS_HASLINES
+		| TVS_DISABLEDRAGDROP);
+
 	HTREEITEM item;
 	HTREEITEM childitem;
 
@@ -238,13 +243,11 @@ void CMFCMailClientDlg::CreateGroupTree()
 	childitem = m_GroupTree.InsertItem("Trash",item);
 }
 
-CArray<MailHeader,MailHeader> _mailArray;
-
 void CMFCMailClientDlg::OnMessageCheckmail()
 {
-	CPop3::GetInstance()->GetAllMail(_mailArray);
+	globalPop3.GetAllMail(globalMailList);
 	
-	if (_mailArray.GetCount() == 0)
+	if (globalMailList.GetCount() == 0)
 	{
 		m_ListMail.DeleteAllItems();
 		return;
@@ -254,7 +257,7 @@ void CMFCMailClientDlg::OnMessageCheckmail()
 	m_ListMail.DeleteAllItems();
 	
 
-	for (int i=0;i<_mailArray.GetCount();i++)
+	for (int i=0;i<globalMailList.GetCount();i++)
 	{
 		/*LVITEM _listMailItem;
 		_listMailItem.mask = LVIF_TEXT;
@@ -264,8 +267,8 @@ void CMFCMailClientDlg::OnMessageCheckmail()
 
 		m_ListMail.InsertItem(&_listMailItem);*/
 		CString subject;
-		subject.Format("%s",_mailArray.GetAt(i).Subject);
-		m_AddList.InsertString(i,subject);
+		subject.Format("%s",globalMailList.GetAt(i).Subject);
+		m_ListMail.InsertItem(i,globalMailList[i].Subject);
 	}
 	UpdateData(FALSE);
 }
@@ -279,7 +282,7 @@ void CMFCMailClientDlg::OnLvnItemchangedList3(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 
 	UINT _selectedItem = m_ListMail.GetSelectedCount();
-	MailHeader _mailHeader = _mailArray.GetAt(_selectedItem);
+	MailHeader _mailHeader = globalMailList.GetAt(_selectedItem-1);
 
 	CString _view;
 	_view.Format("From: %s\r\nTo: %s\r\nCC: %s\r\nDate: %s\r\nSubject: %s\r\n\r\n%s",

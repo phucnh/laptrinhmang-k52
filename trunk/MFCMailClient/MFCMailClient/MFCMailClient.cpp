@@ -33,6 +33,12 @@ CMFCMailClientApp::CMFCMailClientApp()
 
 CMFCMailClientApp theApp;
 
+CPop3 globalPop3;
+CSMTP globalSmtp;
+CArray<MailHeader,MailHeader> globalMailList;
+CString globalUsername;
+CString globalPassword;
+
 
 // CMFCMailClientApp initialization
 

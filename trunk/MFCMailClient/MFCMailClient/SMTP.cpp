@@ -19,6 +19,13 @@ CSMTP::CSMTP( LPCTSTR szSMTPServerName, UINT nPort )
 	m_Error = _T( "OK" );
 }
 
+//phuc add 20101028
+CSMTP::CSMTP()
+{
+	AfxSocketInit();
+}
+//end phuc add 20101028
+
 BOOL CSMTP::Connect()
 {
 	CString sHello;

@@ -19,6 +19,10 @@ CPop3::CPop3( LPCTSTR _serverIp,UINT _serverPort, CString _username, CString _pa
 	isConnected = FALSE;
 }
 
+CPop3::CPop3()
+{
+	AfxSocketInit();
+}
 CPop3::~CPop3()
 {
 	if (_instance != NULL)

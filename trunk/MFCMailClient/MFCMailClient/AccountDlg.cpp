@@ -74,8 +74,15 @@ void CAccountDlg::OnBnClickedOk()
 	_serverIP.Format("%d",m_ServerIP);
 	CString _username = m_UserName;
 	CString _password = m_Password;
+	
+	globalUsername = m_UserName;
+	globalPassword = m_Password;
 
-	CPop3::GetInstance(_serverIP,110,_username,_password)->Connect();
+	globalPop3.ServerIP(_serverIP);
+	globalPop3.ServerPort(110);
+	globalPop3.Username(_username);
+	globalPop3.Password(_password);
+	globalPop3.Connect();
 	OnCancel();
 	UpdateData(FALSE);
 }

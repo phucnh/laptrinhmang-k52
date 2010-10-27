@@ -20,8 +20,6 @@ private:
 	CString errorString;
 	static CPop3* _instance;
 
-	CPop3(LPCTSTR _serverIp,UINT _serverPort, CString _username, CString _password);
-
 	//************************************
 	// Method:    Check Receive Message Is OK or Not
 	// FullName:  CPop3::ReciveMessageIsOK
@@ -33,7 +31,8 @@ private:
 	BOOLEAN ReceiveMessageIsOK(char *result);
 
 public:
-	
+	CPop3(LPCTSTR _serverIp,UINT _serverPort, CString _username, CString _password);
+	CPop3();
 
 	static CPop3* GetInstance(LPCTSTR _serverIp,UINT _serverPort, CString _username, CString _password);
 	static CPop3* GetInstance();
