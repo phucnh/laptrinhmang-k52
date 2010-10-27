@@ -39,6 +39,10 @@ class CSMTP
 {
 public:
 	CSMTP( LPCTSTR szSMTPServerName, UINT nPort = SMTP_PORT );
+
+	//phuc add 20101028
+	CSMTP( );
+	// end phuc add 20101028
 	virtual ~CSMTP();
 
 	void SetServerProperties( LPCTSTR sServerHostName, UINT nPort = SMTP_PORT );
