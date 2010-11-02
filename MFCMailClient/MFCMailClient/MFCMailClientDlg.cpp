@@ -68,6 +68,8 @@ void CMFCMailClientDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST3, m_ListMail);
 	DDX_Text(pDX, IDC_EDIT1, m_MailMessage);
 	DDX_Control(pDX, IDC_LIST2, m_AddList);
+	DDX_Control(pDX, IDC_BUTTON1, m_buttonNewMail);
+	DDX_Control(pDX, IDC_BUTTON2, m_btnDeleteMail);
 }
 
 BEGIN_MESSAGE_MAP(CMFCMailClientDlg, CDialog)
@@ -148,12 +150,34 @@ BOOL CMFCMailClientDlg::OnInitDialog()
 
 	CreateGroupTree();
 	CreateListMailColumn();
+	SetIconToMenuButton();
 
 	ShowWindow(SW_MINIMIZE);
 
 	// TODO: Add extra initialization here
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
+}
+
+void CMFCMailClientDlg::SetIconToMenuButton()
+{
+	HICON hIcn= (HICON)LoadImage(
+		AfxGetApp()->m_hInstance,
+		MAKEINTRESOURCE(IDI_ICON_NEWMAIL),
+		IMAGE_ICON,
+		32,32, // use actual size
+		LR_DEFAULTCOLOR
+		);
+	m_buttonNewMail.SetIcon(hIcn);
+
+	hIcn = (HICON)LoadImage(
+		AfxGetApp()->m_hInstance,
+		MAKEINTRESOURCE(IDI_ICON_DELETE),
+		IMAGE_ICON,
+		32,32, // use actual size
+		LR_DEFAULTCOLOR
+		);
+	m_btnDeleteMail.SetIcon(hIcn);
 }
 
 void CMFCMailClientDlg::OnSysCommand(UINT nID, LPARAM lParam)

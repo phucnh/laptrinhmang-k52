@@ -120,6 +120,8 @@ BEGIN
     CONTROL         "",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,64,131,141
     LISTBOX         IDC_LIST2,7,218,131,168,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     CONTROL         "",IDC_LIST3,"SysListView32",LVS_LIST | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_GROUP | WS_TABSTOP,150,64,329,141,WS_EX_RIGHT
+    PUSHBUTTON      "New Mail",IDC_BUTTON1,7,7,35,31,BS_ICON,WS_EX_TRANSPARENT
+    PUSHBUTTON      "DeleteMail",IDC_BUTTON2,55,7,35,31,BS_ICON,WS_EX_TRANSPARENT
 END
 
 IDD_NEW_MAIL_DIALOG DIALOGEX 0, 0, 280, 309
@@ -295,7 +297,15 @@ IDR_HTML_ACCOUNTDLG     HTML                    "AccountDlg.htm"
 IDR_MAIN_TOOLBAR        BITMAP                  "res\\toolbar1.bmp"
 IDS_ABOUTBOX            BITMAP                  "res\\bmp00001.bmp"
 IDR_TOOLBAR2            BITMAP                  "res\\toolbar2.bmp"
-IDB_BITMAP_EMAIL        BITMAP                  "IMAGES\\email.bmp"
+IDB_BITMAP_EMAIL        BITMAP                  "B:\\Tai Lieu\\Hoctap\\20101\\Course Project\\Network Programming\\Source\\MFCMailClient\\MFCMailClient\\IMAGES\\email.bmp"
+IDR_TOOLBAR_MAIN        BITMAP                  "IMAGES\\email.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

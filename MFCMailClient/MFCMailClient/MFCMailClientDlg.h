@@ -13,6 +13,7 @@ class CMFCMailClientDlg : public CDialog
 // Construction
 public:
 	CMFCMailClientDlg(CWnd* pParent = NULL);	// standard constructor
+	void SetIconToMenuButton();
 
 // Dialog Data
 	enum { IDD = IDD_MFCMAILCLIENT_DIALOG };
@@ -43,4 +44,6 @@ public:
 	CString m_MailMessage;
 	afx_msg void OnLvnItemchangedList3(NMHDR *pNMHDR, LRESULT *pResult);
 	CListBox m_AddList;
+	CButton m_buttonNewMail;
+	CButton m_btnDeleteMail;
 };
