@@ -46,4 +46,5 @@ public:
 	CListBox m_AddList;
 	CButton m_buttonNewMail;
 	CButton m_btnDeleteMail;
+	afx_msg void OnBnClickedButton2();
 };

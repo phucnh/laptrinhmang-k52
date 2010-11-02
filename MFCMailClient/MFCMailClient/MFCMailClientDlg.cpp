@@ -81,6 +81,7 @@ BEGIN_MESSAGE_MAP(CMFCMailClientDlg, CDialog)
 	ON_COMMAND(ID_ACOUNT_ACCOUNT, &CMFCMailClientDlg::OnAcountAccount)
 	ON_COMMAND(ID_MESSAGE_CHECKMAIL, &CMFCMailClientDlg::OnMessageCheckmail)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST3, &CMFCMailClientDlg::OnLvnItemchangedList3)
+	ON_BN_CLICKED(IDC_BUTTON2, &CMFCMailClientDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -327,4 +328,9 @@ void CMFCMailClientDlg::OnLvnItemchangedList3(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 
 	UpdateData(FALSE);
+}
+
+void CMFCMailClientDlg::OnBnClickedButton2()
+{
+	// TODO: Add your control notification handler code here
 }
