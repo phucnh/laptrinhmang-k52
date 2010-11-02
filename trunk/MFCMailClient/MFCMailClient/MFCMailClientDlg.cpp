@@ -93,34 +93,26 @@ void CMFCMailClientDlg::CreateListMailColumn()
 	m_ListMail.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES|LVS_EX_CHECKBOXES);
 
 	lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM | LVCF_IMAGE;
-	lvColumn.cx = 20;
+	lvColumn.cx = 30;
 	lvColumn.pszText = "From";
 	lvColumn.cchTextMax = strlen(lvColumn.pszText);
 	lvColumn.iImage = 1;
-	m_ListMail.InsertColumn(1, &lvColumn);
+	//m_ListMail.InsertColumn(1, &lvColumn);
+	m_ListMail.InsertColumn(0,"From",200);
+	m_ListMail.InsertColumn(1,"Subject",450);
+	m_ListMail.InsertColumn(2,"Date",100);
 
 	lvColumn.cx = 200;
 	lvColumn.pszText = "Subject";
 	lvColumn.cchTextMax = strlen(lvColumn.pszText);
 	lvColumn.iImage = 2;
-	m_ListMail.InsertColumn(2, &lvColumn);
+	//m_ListMail.InsertColumn(2, &lvColumn);
 
 	lvColumn.cx = 90;
 	lvColumn.pszText = "Date";
 	lvColumn.cchTextMax = strlen(lvColumn.pszText);
 	lvColumn.iImage = 3;
-	m_ListMail.InsertColumn(3, &lvColumn);
-
-	lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
-	lvColumn.cx = 0;
-	lvColumn.pszText = "";
-	lvColumn.cchTextMax = 0;
-	m_ListMail.InsertColumn(4, &lvColumn);
-
-	lvColumn.cx = 0;
-	lvColumn.pszText = "";
-	lvColumn.cchTextMax = 0;
-	m_ListMail.InsertColumn(5, &lvColumn);
+	//m_ListMail.InsertColumn(3, &lvColumn);
 
 }
 
@@ -245,6 +237,7 @@ void CMFCMailClientDlg::CreateGroupTree()
 
 void CMFCMailClientDlg::OnMessageCheckmail()
 {
+	globalMailList.RemoveAll();
 	globalPop3.GetAllMail(globalMailList);
 	
 	if (globalMailList.GetCount() == 0)
@@ -275,25 +268,32 @@ void CMFCMailClientDlg::OnMessageCheckmail()
 
 void CMFCMailClientDlg::OnLvnItemchangedList3(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	Sleep(1000);
 	UpdateData(TRUE);
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	// TODO: Add your control notification handler code here
 	*pResult = 0;
 
-	UINT _selectedItem = m_ListMail.GetSelectedCount();
-	MailHeader _mailHeader = globalMailList.GetAt(_selectedItem-1);
 
-	CString _view;
-	_view.Format("From: %s\r\nTo: %s\r\nCC: %s\r\nDate: %s\r\nSubject: %s\r\n\r\n%s",
-		_mailHeader.From,
-		_mailHeader.To,
-		_mailHeader.CC,
-		_mailHeader.Date,
-		_mailHeader.Subject,
-		_mailHeader.TextBody);
+	POSITION pos = m_ListMail.GetFirstSelectedItemPosition();
+	if (pos != NULL)
+	{
+		while (pos)
+		{
+			UINT _selectedItem = m_ListMail.GetNextSelectedItem(pos);
+			MailHeader _mailHeader = globalMailList.GetAt(_selectedItem);
 
-	m_MailMessage = _view.GetString();
+			CString _view;
+			_view.Format("From: %s\r\nTo: %s\r\nCC: %s\r\nDate: %s\r\nSubject: %s\r\n\r\n%s",
+				_mailHeader.From,
+				_mailHeader.To,
+				_mailHeader.CC,
+				_mailHeader.Date,
+				_mailHeader.Subject,
+				_mailHeader.TextBody);
+
+			m_MailMessage = _view.GetString();
+		}
+	}
 
 	UpdateData(FALSE);
 }
