@@ -115,10 +115,10 @@ CAPTION "Mail Client"
 MENU IDR_MENU1
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    GROUPBOX        "Mail Message",IDC_STATIC,156,210,330,180
-    EDITTEXT        IDC_EDIT1,150,223,318,161,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY
-    CONTROL         "",IDC_TREE1,"SysTreeView32",WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,64,131,141
-    LISTBOX         IDC_LIST2,7,223,131,137,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Mail Message",IDC_STATIC,150,206,330,180
+    EDITTEXT        IDC_EDIT1,156,218,318,161,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY
+    CONTROL         "",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,64,131,141
+    LISTBOX         IDC_LIST2,7,218,131,168,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     CONTROL         "",IDC_LIST3,"SysListView32",LVS_LIST | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_GROUP | WS_TABSTOP,150,64,329,141,WS_EX_RIGHT
 END
 
@@ -225,7 +225,7 @@ BEGIN
         BOTTOMMARGIN, 386
         HORZGUIDE, 64
         HORZGUIDE, 205
-        HORZGUIDE, 223
+        HORZGUIDE, 218
     END
 
     IDD_NEW_MAIL_DIALOG, DIALOG
@@ -295,14 +295,7 @@ IDR_HTML_ACCOUNTDLG     HTML                    "AccountDlg.htm"
 IDR_MAIN_TOOLBAR        BITMAP                  "res\\toolbar1.bmp"
 IDS_ABOUTBOX            BITMAP                  "res\\bmp00001.bmp"
 IDR_TOOLBAR2            BITMAP                  "res\\toolbar2.bmp"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Toolbar
-//
-
-
-
+IDB_BITMAP_EMAIL        BITMAP                  "IMAGES\\email.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

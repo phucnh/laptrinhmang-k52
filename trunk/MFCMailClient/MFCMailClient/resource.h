@@ -35,6 +35,8 @@
 #define IDI_ICON19                      153
 #define IDI_ICON_NEWMAIL                154
 #define IDR_TOOLBAR2                    157
+#define IDB_BITMAP1                     160
+#define IDB_BITMAP_EMAIL                160
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
 #define IDC_TREE1                       1002
@@ -59,7 +61,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        160
+#define _APS_NEXT_RESOURCE_VALUE        161
 #define _APS_NEXT_COMMAND_VALUE         32782
 #define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           106
