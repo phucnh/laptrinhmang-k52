@@ -288,6 +288,94 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
+				RelativePath=".\IMAGES\1286462524_mail_forward.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286462530_Forward.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286462565_mail_reply.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286462569_mail_reply.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286462597_mail_check_new.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286462636_mail_inbox.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286462642_stock_mail-import.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286462662_mail_post_to.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286462702_mail_find.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286462999_Setting.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286463007_Settings.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286463015_Settings.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286463047_address_book.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286463089_button_cancel.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286463095_DeleteRed.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286463148_mail_send.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\1286463158_mail_send.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\bmp00001.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\email.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\icon1.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\mail_check_new.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\mail_new.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\res\MFCMailClient.ico"
 				>
 			</File>
@@ -297,6 +385,14 @@
 			</File>
 			<File
 				RelativePath=".\res\MFCMailClient.rc2"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar1.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar2.bmp"
 				>
 			</File>
 		</Filter>

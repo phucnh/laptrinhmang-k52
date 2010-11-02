@@ -71,6 +71,26 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\MFCMailClient.ico"
+IDI_ICON_MAILFORWARD    ICON                    "IMAGES\\1286462524_mail_forward.ico"
+IDI_ICON2               ICON                    "IMAGES\\1286462530_Forward.ico"
+IDI_ICON_REPLY          ICON                    "IMAGES\\1286462565_mail_reply.ico"
+IDI_ICON4               ICON                    "IMAGES\\1286462569_mail_reply.ico"
+IDI_ICON_CHECKNEW       ICON                    "IMAGES\\1286462597_mail_check_new.ico"
+IDI_ICON_INBOX          ICON                    "IMAGES\\1286462636_mail_inbox.ico"
+IDI_ICON7               ICON                    "IMAGES\\1286462642_stock_mail-import.ico"
+IDI_ICON8               ICON                    "IMAGES\\1286462662_mail_post_to.ico"
+IDI_ICON9               ICON                    "IMAGES\\1286462702_mail_find.ico"
+IDI_ICON10              ICON                    "IMAGES\\1286462999_Setting.ico"
+IDI_ICON11              ICON                    "IMAGES\\1286463007_Settings.ico"
+IDI_ICON12              ICON                    "IMAGES\\1286463015_Settings.ico"
+IDI_ICON13              ICON                    "IMAGES\\1286463047_address_book.ico"
+IDI_ICON14              ICON                    "IMAGES\\1286463089_button_cancel.ico"
+IDI_ICON_DELETE         ICON                    "IMAGES\\1286463095_DeleteRed.ico"
+IDI_ICON_SEND           ICON                    "IMAGES\\1286463148_mail_send.ico"
+IDI_ICON17              ICON                    "IMAGES\\1286463158_mail_send.ico"
+IDI_ICON18              ICON                    "IMAGES\\email.ico"
+IDI_ICON19              ICON                    "IMAGES\\mail_check_new.ico"
+IDI_ICON_NEWMAIL        ICON                    "B:\\Tai Lieu\\Hoctap\\20101\\Course Project\\Network Programming\\Source\\MFCMailClient\\MFCMailClient\\IMAGES\\mail_new.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -96,10 +116,10 @@ MENU IDR_MENU1
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Mail Message",IDC_STATIC,156,210,330,180
-    EDITTEXT        IDC_EDIT1,162,223,318,161,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY
-    CONTROL         "",IDC_TREE1,"SysTreeView32",WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,64,102,138
-    LISTBOX         IDC_LIST2,27,220,84,87,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "",IDC_LIST3,"SysListView32",LVS_LIST | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_GROUP | WS_TABSTOP,162,64,317,138,WS_EX_RIGHT
+    EDITTEXT        IDC_EDIT1,150,223,318,161,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY
+    CONTROL         "",IDC_TREE1,"SysTreeView32",WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,64,131,141
+    LISTBOX         IDC_LIST2,7,223,131,137,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_LIST3,"SysListView32",LVS_LIST | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_GROUP | WS_TABSTOP,150,64,329,141,WS_EX_RIGHT
 END
 
 IDD_NEW_MAIL_DIALOG DIALOGEX 0, 0, 280, 309
@@ -198,12 +218,14 @@ BEGIN
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 482
-        VERTGUIDE, 162
+        VERTGUIDE, 138
+        VERTGUIDE, 150
         VERTGUIDE, 479
         TOPMARGIN, 7
         BOTTOMMARGIN, 386
         HORZGUIDE, 64
-        HORZGUIDE, 202
+        HORZGUIDE, 205
+        HORZGUIDE, 223
     END
 
     IDD_NEW_MAIL_DIALOG, DIALOG
@@ -264,6 +286,23 @@ END
 
 IDR_HTML_NEWMAILDLG     HTML                    "NewMailDlg.htm"
 IDR_HTML_ACCOUNTDLG     HTML                    "AccountDlg.htm"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAIN_TOOLBAR        BITMAP                  "res\\toolbar1.bmp"
+IDS_ABOUTBOX            BITMAP                  "res\\bmp00001.bmp"
+IDR_TOOLBAR2            BITMAP                  "res\\toolbar2.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

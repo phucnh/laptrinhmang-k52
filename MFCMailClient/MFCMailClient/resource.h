@@ -13,6 +13,28 @@
 #define IDR_MENU1                       129
 #define IDD_NEW_MAIL_DIALOG             130
 #define IDD_ACCOUNT_DIALOG              131
+#define IDR_MAIN_TOOLBAR                132
+#define IDI_ICON_MAILFORWARD            135
+#define IDI_ICON2                       136
+#define IDI_ICON_REPLY                  137
+#define IDI_ICON4                       138
+#define IDI_ICON_CHECKNEW               139
+#define IDI_ICON_INBOX                  140
+#define IDI_ICON7                       141
+#define IDI_ICON8                       142
+#define IDI_ICON9                       143
+#define IDI_ICON10                      144
+#define IDI_ICON11                      145
+#define IDI_ICON12                      146
+#define IDI_ICON13                      147
+#define IDI_ICON14                      148
+#define IDI_ICON_DELETE                 149
+#define IDI_ICON_SEND                   150
+#define IDI_ICON17                      151
+#define IDI_ICON18                      152
+#define IDI_ICON19                      153
+#define IDI_ICON_NEWMAIL                154
+#define IDR_TOOLBAR2                    157
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
 #define IDC_TREE1                       1002
@@ -31,14 +53,15 @@
 #define ID_MESSAGE_REPLAYALL            32778
 #define ID_MESSAGE_CHECKMAIL            32779
 #define ID_ABOUT                        32780
+#define IDI_ICON_CHECKMAIL              32781
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        132
-#define _APS_NEXT_COMMAND_VALUE         32781
-#define _APS_NEXT_CONTROL_VALUE         1006
+#define _APS_NEXT_RESOURCE_VALUE        160
+#define _APS_NEXT_COMMAND_VALUE         32782
+#define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           106
 #endif
 #endif
