@@ -86,33 +86,34 @@ END_MESSAGE_MAP()
 
 void CMFCMailClientDlg::CreateListMailColumn()
 {
-	// TODO: Add extra initialization here
-	LV_COLUMN	lvColumn;
-
-	m_ListMail.ModifyStyle(m_ListMail.GetStyle(),WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER|LVS_REPORT|LVS_AUTOARRANGE);
+	m_ListMail.ModifyStyle(m_ListMail.GetStyle(),WS_CHILD|WS_VISIBLE|WS_BORDER|LVS_REPORT|LVS_AUTOARRANGE);
 	m_ListMail.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES|LVS_EX_CHECKBOXES);
 
-	lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM | LVCF_IMAGE;
-	lvColumn.cx = 30;
-	lvColumn.pszText = "From";
-	lvColumn.cchTextMax = strlen(lvColumn.pszText);
-	lvColumn.iImage = 1;
-	//m_ListMail.InsertColumn(1, &lvColumn);
-	m_ListMail.InsertColumn(0,"From",200);
-	m_ListMail.InsertColumn(1,"Subject",450);
-	m_ListMail.InsertColumn(2,"Date",100);
+	m_ListMail.InsertColumn(0, "From",LVCFMT_LEFT, 130);
+	m_ListMail.InsertColumn(1, "Subject",LVCFMT_LEFT, 270);
+	m_ListMail.InsertColumn(2, "Date",LVCFMT_LEFT, 90);
 
-	lvColumn.cx = 200;
-	lvColumn.pszText = "Subject";
-	lvColumn.cchTextMax = strlen(lvColumn.pszText);
-	lvColumn.iImage = 2;
-	//m_ListMail.InsertColumn(2, &lvColumn);
+	//lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM | LVCF_IMAGE;
+	//lvColumn.cx = 30;
+	//lvColumn.pszText = "From";
+	//lvColumn.cchTextMax = strlen(lvColumn.pszText);
+	//lvColumn.iImage = 1;
+	////m_ListMail.InsertColumn(1, &lvColumn);
+	//m_ListMail.InsertColumn(0,"From",200);
+	//m_ListMail.InsertColumn(1,"Subject",450);
+	//m_ListMail.InsertColumn(2,"Date",100);
 
-	lvColumn.cx = 90;
-	lvColumn.pszText = "Date";
-	lvColumn.cchTextMax = strlen(lvColumn.pszText);
-	lvColumn.iImage = 3;
-	//m_ListMail.InsertColumn(3, &lvColumn);
+	//lvColumn.cx = 200;
+	//lvColumn.pszText = "Subject";
+	//lvColumn.cchTextMax = strlen(lvColumn.pszText);
+	//lvColumn.iImage = 2;
+	////m_ListMail.InsertColumn(2, &lvColumn);
+
+	//lvColumn.cx = 90;
+	//lvColumn.pszText = "Date";
+	//lvColumn.cchTextMax = strlen(lvColumn.pszText);
+	//lvColumn.iImage = 3;
+	////m_ListMail.InsertColumn(3, &lvColumn);
 
 }
 
@@ -221,18 +222,22 @@ void CMFCMailClientDlg::OnAcountAccount()
 void CMFCMailClientDlg::CreateGroupTree()
 {
 
-	m_GroupTree.ModifyStyle(m_GroupTree.GetStyle(),WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER
+	/*m_GroupTree.ModifyStyle(m_GroupTree.GetStyle(),WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER
 		| TVS_HASBUTTONS | TVS_LINESATROOT | TVS_HASLINES
-		| TVS_DISABLEDRAGDROP);
+		| TVS_DISABLEDRAGDROP);*/
+
+	CImageList m_ImageList;
+	m_ImageList.Create(IDB_BITMAP_EMAIL,16,0,RGB(0,128,128));
+	m_GroupTree.SetImageList(&m_ImageList, TVSIL_NORMAL);
 
 	HTREEITEM item;
 	HTREEITEM childitem;
 
 	CString rootText;
 	//rootText.Format("%s Mail Box",CMFCMailClientApp::m_Username);
-	item = m_GroupTree.InsertItem("Mail",TVI_ROOT);
-	childitem = m_GroupTree.InsertItem("Inbox",item);
-	childitem = m_GroupTree.InsertItem("Trash",item);
+	item = m_GroupTree.InsertItem("Mail",0,0);
+	childitem = m_GroupTree.InsertItem("Inbox",1,1,item);
+	childitem = m_GroupTree.InsertItem("Trash",3,3,item);
 }
 
 void CMFCMailClientDlg::OnMessageCheckmail()
@@ -261,7 +266,9 @@ void CMFCMailClientDlg::OnMessageCheckmail()
 		m_ListMail.InsertItem(&_listMailItem);*/
 		CString subject;
 		subject.Format("%s",globalMailList.GetAt(i).Subject);
-		m_ListMail.InsertItem(i,globalMailList[i].Subject);
+		int nIndex = m_ListMail.InsertItem(i,globalMailList[i].From);
+		m_ListMail.SetItemText(nIndex,1,globalMailList[i].Subject);
+		m_ListMail.SetItemText(nIndex,2,globalMailList[i].Date);
 	}
 	UpdateData(FALSE);
 }
