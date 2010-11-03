@@ -47,7 +47,7 @@
 #define IDC_LIST3                       1005
 #define IDC_BUTTON1                     1007
 #define IDC_BUTTON2                     1008
-#define IDC_OLKOPTIONBUTTON1            1010
+#define IDC_BUTTON3                     1009
 #define ID_ACOUNT_ACCOUNT               32771
 #define ID_ACCOUNT_QUIT                 32772
 #define ID_GROUPS_INBOX                 32773

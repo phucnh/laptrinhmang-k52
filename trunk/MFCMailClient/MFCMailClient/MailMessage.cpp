@@ -48,7 +48,7 @@ MailHeader::MailHeader(
 	this->To = _to;
 	this->Date = _date;
 	this->Subject = _subject;
-	this->CC = _cc;
+	this->Cc = _cc;
 	this->ReplyTo = _replyTo;
 	this->TextBody = _textBody;
 	this->RealAttach = _realAttach;
@@ -60,7 +60,7 @@ MailHeader::MailHeader( void )
 	this->To = "";
 	this->Date = "";
 	this->Subject = "";
-	this->CC = "";
+	this->Cc = "";
 	this->ReplyTo = "";
 	this->TextBody = "";
 	this->RealAttach = FALSE;

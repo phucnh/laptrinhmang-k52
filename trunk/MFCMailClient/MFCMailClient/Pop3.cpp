@@ -194,7 +194,7 @@ MailHeader CPop3::AnalysisHeader( CString _headerMessage )
 	_mailHeader.From = GetHeaderItem(_headerMessage,"From");
 	_mailHeader.Subject = GetHeaderItem(_headerMessage,"Subject");
 	_mailHeader.Date = GetHeaderItem(_headerMessage,"Date");
-	_mailHeader.CC = GetHeaderItem(_headerMessage,"CC");
+	_mailHeader.Cc = GetHeaderItem(_headerMessage,"CC");
 	_mailHeader.ReplyTo = GetHeaderItem(_headerMessage,"Reply-To");
 	_mailHeader.RealAttach = FALSE;
 	//_mailHeader.TextBody= ReadMessageBody(_headerMessage);
@@ -344,7 +344,7 @@ MailHeader CPop3::ReadMail( INT _mailNumber )
 	mailHeader.From = GetHeaderItem(_messageHeader,"From");
 	mailHeader.Subject = GetHeaderItem(_messageHeader,"Subject");
 	mailHeader.Date = GetHeaderItem(_messageHeader,"Date");
-	mailHeader.CC = GetHeaderItem(_messageHeader,"CC");
+	mailHeader.Cc = GetHeaderItem(_messageHeader,"CC");
 	mailHeader.ReplyTo = GetHeaderItem(_messageHeader,"Reply-To");
 	mailHeader.TextBody = ReadMessageBody(_messageHeader);
 

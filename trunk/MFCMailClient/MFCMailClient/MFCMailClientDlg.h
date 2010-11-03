@@ -47,4 +47,5 @@ public:
 	CButton m_buttonNewMail;
 	CButton m_btnDeleteMail;
 	afx_msg void OnBnClickedButton2();
+	CButton m_btnReply;
 };
