@@ -259,11 +259,14 @@ BOOL CSMTP::transmit_message(MailHeader * msg)
 	// Send the header
 	Sleep(300);
 	CString _headerFormat;
-	_headerFormat.Format("Date: %s\r\nFrom: %s\r\nTo: %s\r\nSubject: %s\r\n",
-		msg->Date,
+	_headerFormat.Format("From: %s\r\nTo: %s\r\nCc: %s\r\nSubject: %s\r\nMime-Version: %s\r\nContent-Type: %s\r\nMessage-ID: %s\r\n",
 		msg->From,
 		msg->To,
-		msg->Subject);
+		msg->Cc,
+		msg->Subject,
+		msg->MimeVersion,
+		msg->ContentType,
+		msg->MessageID);
 	m_Server.Send(_headerFormat,_headerFormat.GetLength());
 	Sleep(300);
 	/*m_Server.Send( (LPCTSTR)msg->Subject, msg->Subject.GetLength() );*/
@@ -282,3 +285,4 @@ BOOL CSMTP::transmit_message(MailHeader * msg)
 	}
 	return TRUE;
 }
+
