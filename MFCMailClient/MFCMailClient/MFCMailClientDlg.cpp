@@ -71,6 +71,9 @@ void CMFCMailClientDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON1, m_buttonNewMail);
 	DDX_Control(pDX, IDC_BUTTON2, m_btnDeleteMail);
 	DDX_Control(pDX, IDC_BUTTON3, m_btnReply);
+	DDX_Control(pDX, IDC_BUTTON4, m_btnForward);
+	DDX_Control(pDX, IDC_BUTTON5, m_btnInbox);
+	DDX_Control(pDX, IDC_BUTTON6, m_btnTrash);
 }
 
 BEGIN_MESSAGE_MAP(CMFCMailClientDlg, CDialog)
@@ -189,6 +192,33 @@ void CMFCMailClientDlg::SetIconToMenuButton()
 		LR_DEFAULTCOLOR
 		);
 	m_btnReply.SetIcon(hIcn);
+
+	hIcn = (HICON)LoadImage(
+		AfxGetApp()->m_hInstance,
+		MAKEINTRESOURCE(IDI_ICON_MAILFORWARD),
+		IMAGE_ICON,
+		32,32, // use actual size
+		LR_DEFAULTCOLOR
+		);
+	m_btnForward.SetIcon(hIcn);
+
+	hIcn = (HICON)LoadImage(
+		AfxGetApp()->m_hInstance,
+		MAKEINTRESOURCE(IDI_ICON_INBOX),
+		IMAGE_ICON,
+		32,32, // use actual size
+		LR_DEFAULTCOLOR
+		);
+	m_btnInbox.SetIcon(hIcn);
+
+	hIcn = (HICON)LoadImage(
+		AfxGetApp()->m_hInstance,
+		MAKEINTRESOURCE(IDI_ICON_TRASH),
+		IMAGE_ICON,
+		32,32, // use actual size
+		LR_DEFAULTCOLOR
+		);
+	m_btnTrash.SetIcon(hIcn);
 }
 
 void CMFCMailClientDlg::OnSysCommand(UINT nID, LPARAM lParam)

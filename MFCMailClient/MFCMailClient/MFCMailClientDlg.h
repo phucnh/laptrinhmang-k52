@@ -48,4 +48,7 @@ public:
 	CButton m_btnDeleteMail;
 	afx_msg void OnBnClickedButton2();
 	CButton m_btnReply;
+	CButton m_btnForward;
+	CButton m_btnInbox;
+	CButton m_btnTrash;
 };
