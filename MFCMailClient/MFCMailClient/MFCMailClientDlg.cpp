@@ -325,7 +325,7 @@ void CMFCMailClientDlg::OnLvnItemchangedList3(NMHDR *pNMHDR, LRESULT *pResult)
 			MailHeader _mailHeader = globalMailList.GetAt(_selectedItem);
 
 			CString _view;
-			_view.Format("From: %s\r\nTo: %s\r\nCC: %s\r\nDate: %s\r\nSubject: %s\r\n\r\n%s",
+			_view.Format("From: %s\r\nTo: %s\r\nCc: %s\r\nDate: %s\r\nSubject: %s\r\n\r\n%s",
 				_mailHeader.From,
 				_mailHeader.To,
 				_mailHeader.Cc,

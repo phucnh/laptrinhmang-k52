@@ -90,7 +90,7 @@ IDI_ICON_SEND           ICON                    "IMAGES\\1286463148_mail_send.ic
 IDI_ICON17              ICON                    "IMAGES\\1286463158_mail_send.ico"
 IDI_ICON18              ICON                    "IMAGES\\email.ico"
 IDI_ICON19              ICON                    "IMAGES\\mail_check_new.ico"
-IDI_ICON_NEWMAIL        ICON                    "B:\\Tai Lieu\\Hoctap\\20101\\Course Project\\Network Programming\\Source\\MFCMailClient\\MFCMailClient\\IMAGES\\mail_new.ico"
+IDI_ICON_NEWMAIL        ICON                    "IMAGES\\mail_new.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -298,7 +298,7 @@ IDR_HTML_ACCOUNTDLG     HTML                    "AccountDlg.htm"
 IDR_MAIN_TOOLBAR        BITMAP                  "res\\toolbar1.bmp"
 IDS_ABOUTBOX            BITMAP                  "res\\bmp00001.bmp"
 IDR_TOOLBAR2            BITMAP                  "res\\toolbar2.bmp"
-IDB_BITMAP_EMAIL        BITMAP                  "B:\\Tai Lieu\\Hoctap\\20101\\Course Project\\Network Programming\\Source\\MFCMailClient\\MFCMailClient\\IMAGES\\email.bmp"
+IDB_BITMAP_EMAIL        BITMAP                  "IMAGES\\email.bmp"
 IDR_TOOLBAR_MAIN        BITMAP                  "IMAGES\\email.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
