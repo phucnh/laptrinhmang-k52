@@ -30,13 +30,16 @@ public:
 class MailHeader
 {
 public:
+	CString  MessageID;
 	CString  From;
 	CString  To;
 	CString  Date;
 	CString  Subject;
-	CString  CC;
+	CString  Cc;
 	CString  ReplyTo;
 	CString	 TextBody;
+	CString  MimeVersion;
+	CString  ContentType;
 	BYTE     RealAttach;
 
 	MailHeader(
