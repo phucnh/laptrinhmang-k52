@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="MFCMailClient"
 	ProjectGUID="{FA1606BE-75C0-48E7-8C5A-EF2F5B9F83C7}"
 	RootNamespace="MFCMailClient"
@@ -368,10 +368,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\icon1.ico"
-				>
-			</File>
-			<File
 				RelativePath=".\IMAGES\mail_check_new.ico"
 				>
 			</File>
@@ -392,11 +388,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IMAGES\RecycleBin_Empty-64.png"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar1.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar2.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\IMAGES\Trashcan_full.ico"
 				>
 			</File>
 		</Filter>

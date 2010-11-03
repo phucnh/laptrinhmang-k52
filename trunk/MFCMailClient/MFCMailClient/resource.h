@@ -16,7 +16,6 @@
 #define IDR_MAIN_TOOLBAR                132
 #define IDI_ICON_MAILFORWARD            135
 #define IDI_ICON2                       136
-#define IDI_ICON_REPLY                  137
 #define IDI_ICON4                       138
 #define IDI_ICON_CHECKNEW               139
 #define IDI_ICON_INBOX                  140
@@ -30,6 +29,7 @@
 #define IDI_ICON14                      148
 #define IDI_ICON_DELETE                 149
 #define IDI_ICON_SEND                   150
+#define IDI_ICON_REPLY                  150
 #define IDI_ICON17                      151
 #define IDI_ICON18                      152
 #define IDI_ICON19                      153
@@ -46,8 +46,12 @@
 #define IDC_IPADDRESS1                  1004
 #define IDC_LIST3                       1005
 #define IDC_BUTTON1                     1007
+#define IDI_ICON_TRASH                  1007
 #define IDC_BUTTON2                     1008
 #define IDC_BUTTON3                     1009
+#define IDC_BUTTON4                     1010
+#define IDC_BUTTON5                     1011
+#define IDC_BUTTON6                     1012
 #define ID_ACOUNT_ACCOUNT               32771
 #define ID_ACCOUNT_QUIT                 32772
 #define ID_GROUPS_INBOX                 32773
@@ -64,7 +68,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        164
+#define _APS_NEXT_RESOURCE_VALUE        171
 #define _APS_NEXT_COMMAND_VALUE         32782
 #define _APS_NEXT_CONTROL_VALUE         1011
 #define _APS_NEXT_SYMED_VALUE           106

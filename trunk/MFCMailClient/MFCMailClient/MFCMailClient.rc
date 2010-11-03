@@ -73,7 +73,6 @@ END
 IDR_MAINFRAME           ICON                    "res\\MFCMailClient.ico"
 IDI_ICON_MAILFORWARD    ICON                    "IMAGES\\1286462524_mail_forward.ico"
 IDI_ICON2               ICON                    "IMAGES\\1286462530_Forward.ico"
-IDI_ICON_REPLY          ICON                    "IMAGES\\1286462565_mail_reply.ico"
 IDI_ICON4               ICON                    "IMAGES\\1286462569_mail_reply.ico"
 IDI_ICON_CHECKNEW       ICON                    "IMAGES\\1286462597_mail_check_new.ico"
 IDI_ICON_INBOX          ICON                    "IMAGES\\1286462636_mail_inbox.ico"
@@ -86,7 +85,7 @@ IDI_ICON12              ICON                    "IMAGES\\1286463015_Settings.ico
 IDI_ICON13              ICON                    "IMAGES\\1286463047_address_book.ico"
 IDI_ICON14              ICON                    "IMAGES\\1286463089_button_cancel.ico"
 IDI_ICON_DELETE         ICON                    "IMAGES\\1286463095_DeleteRed.ico"
-IDI_ICON_SEND           ICON                    "IMAGES\\1286463148_mail_send.ico"
+IDI_ICON_REPLY          ICON                    "E:\\IT Documents\\Study [BK]\\20101\\Network Programming\\Project\\Lap Tring Mang 20101\\MFCMailClient\\MFCMailClient\\IMAGES\\1286463148_mail_send.ico"
 IDI_ICON17              ICON                    "IMAGES\\1286463158_mail_send.ico"
 IDI_ICON18              ICON                    "IMAGES\\email.ico"
 IDI_ICON19              ICON                    "IMAGES\\mail_check_new.ico"
@@ -120,9 +119,12 @@ BEGIN
     CONTROL         "",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,64,131,141
     LISTBOX         IDC_LIST2,7,218,131,168,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     CONTROL         "",IDC_LIST3,"SysListView32",LVS_LIST | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_GROUP | WS_TABSTOP,150,64,329,141,WS_EX_RIGHT
-    PUSHBUTTON      "New Mail",IDC_BUTTON1,7,7,35,31,BS_ICON | BS_FLAT,WS_EX_TRANSPARENT
-    PUSHBUTTON      "DeleteMail",IDC_BUTTON2,55,7,35,31,BS_ICON | BS_FLAT,WS_EX_TRANSPARENT
+    PUSHBUTTON      "New Mail",IDC_BUTTON1,54,7,35,31,BS_ICON | BS_FLAT,WS_EX_TRANSPARENT
+    PUSHBUTTON      "DeleteMail",IDC_BUTTON2,197,7,35,31,BS_ICON | BS_FLAT,WS_EX_TRANSPARENT
     PUSHBUTTON      "Reply",IDC_BUTTON3,103,7,35,31,BS_ICON | BS_FLAT,WS_EX_TRANSPARENT
+    PUSHBUTTON      "Forward",IDC_BUTTON4,150,7,35,31,BS_ICON | BS_FLAT,WS_EX_TRANSPARENT
+    DEFPUSHBUTTON   "Inbox",IDC_BUTTON5,7,7,35,31,BS_ICON | BS_FLAT,WS_EX_TRANSPARENT
+    PUSHBUTTON      "Trash",IDC_BUTTON6,245,7,35,31,BS_ICON | BS_FLAT,WS_EX_TRANSPARENT
 END
 
 IDD_NEW_MAIL_DIALOG DIALOGEX 0, 0, 280, 309
@@ -313,6 +315,34 @@ BEGIN
 END
 
 #endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Vietnamese resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_VIT)
+#ifdef _WIN32
+LANGUAGE LANG_VIETNAMESE, SUBLANG_DEFAULT
+#pragma code_page(1258)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_TRASH          ICON                    "IMAGES\\Trashcan_full.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+IDI_ICON_TRASH          PNG                     "IMAGES\\RecycleBin_Empty-64.png"
+#endif    // Vietnamese resources
 /////////////////////////////////////////////////////////////////////////////
 
 
