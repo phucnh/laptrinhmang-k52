@@ -1,4 +1,5 @@
 #pragma once
+#include "afxcmn.h"
 
 #ifdef _WIN32_WCE
 #error "CDHtmlDialog is not supported for Windows CE."
@@ -33,4 +34,6 @@ public:
 	CString m_To;
 	CString m_Subject;
 	CString m_TextBody;
+	CIPAddressCtrl m_serverIP;
+	DWORD m_serverip;
 };
