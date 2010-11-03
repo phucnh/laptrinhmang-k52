@@ -70,6 +70,7 @@ void CMFCMailClientDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST2, m_AddList);
 	DDX_Control(pDX, IDC_BUTTON1, m_buttonNewMail);
 	DDX_Control(pDX, IDC_BUTTON2, m_btnDeleteMail);
+	DDX_Control(pDX, IDC_BUTTON3, m_btnReply);
 }
 
 BEGIN_MESSAGE_MAP(CMFCMailClientDlg, CDialog)
@@ -179,6 +180,15 @@ void CMFCMailClientDlg::SetIconToMenuButton()
 		LR_DEFAULTCOLOR
 		);
 	m_btnDeleteMail.SetIcon(hIcn);
+
+	hIcn = (HICON)LoadImage(
+		AfxGetApp()->m_hInstance,
+		MAKEINTRESOURCE(IDI_ICON_REPLY),
+		IMAGE_ICON,
+		32,32, // use actual size
+		LR_DEFAULTCOLOR
+		);
+	m_btnReply.SetIcon(hIcn);
 }
 
 void CMFCMailClientDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -318,7 +328,7 @@ void CMFCMailClientDlg::OnLvnItemchangedList3(NMHDR *pNMHDR, LRESULT *pResult)
 			_view.Format("From: %s\r\nTo: %s\r\nCC: %s\r\nDate: %s\r\nSubject: %s\r\n\r\n%s",
 				_mailHeader.From,
 				_mailHeader.To,
-				_mailHeader.CC,
+				_mailHeader.Cc,
 				_mailHeader.Date,
 				_mailHeader.Subject,
 				_mailHeader.TextBody);
