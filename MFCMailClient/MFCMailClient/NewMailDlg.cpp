@@ -17,6 +17,7 @@ CNewMailDlg::CNewMailDlg(CWnd* pParent /*=NULL*/)
 	, m_To(_T(""))
 	, m_Subject(_T(""))
 	, m_TextBody(_T(""))
+	, m_serverip(0)
 {
 
 }
@@ -32,6 +33,8 @@ void CNewMailDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT2, m_To);
 	DDX_Text(pDX, IDC_EDIT3, m_Subject);
 	DDX_Text(pDX, IDC_EDIT4, m_TextBody);
+	DDX_Control(pDX, IDC_IPADDRESS1, m_serverIP);
+	DDX_IPAddress(pDX, IDC_IPADDRESS1, m_serverip);
 }
 
 BOOL CNewMailDlg::OnInitDialog()
@@ -70,7 +73,8 @@ void CNewMailDlg::OnBnClickedOk()
 
 	UpdateData(TRUE);
 
-	CString _serverIP("127.0.0.1");
+	CString _serverIP;
+	_serverIP.Format("%d",m_serverip);
 
 		CSMTP _smtp(_serverIP,25);
 		_smtp.Connect();
