@@ -2,18 +2,17 @@
 
 // CPop3 command target
 
-class CPop3
+class CPop3 : CAsyncSocket
 {
 private:
-	CString m_hostName;
-	UINT m_hostPort;
-
-
-	CSocket m_socket;
+	CDialog* parrentDlg;
+	
 public:
+	CDialog* ParrentDlg() const { return parrentDlg; }
+	void ParrentDlg(CDialog* val) { parrentDlg = val; }
+
 	CPop3();
 	virtual ~CPop3();
-	void ListenFromClient();
 };
 
 
