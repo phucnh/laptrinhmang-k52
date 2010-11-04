@@ -3,9 +3,11 @@
 //
 
 #include "stdafx.h"
+#include <stdarg.h>
 #include "MFCMailServer.h"
 #include "MFCMailServerDlg.h"
 #include "Pop3.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -65,6 +67,7 @@ BEGIN_MESSAGE_MAP(CMFCMailServerDlg, CDialog)
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDOK, &CMFCMailServerDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_BUTTON1, &CMFCMailServerDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -155,13 +158,23 @@ HCURSOR CMFCMailServerDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+CPop3* pop3;
+
 void CMFCMailServerDlg::OnBnClickedOk()
 {
 	AfxSocketInit();
-	CPop3 pop3(this);
-	
-	if (!pop3.Create(110))
+	pop3 = new CPop3(this);
+	if (!pop3->Create(110))
 		return;
-	pop3.Listen(100);
+	pop3->Listen(100);
 	//OnOK();
+}
+void CMFCMailServerDlg::OnBnClickedButton1()
+{
+	CSocket testSocket;
+	testSocket.Create();
+	if (!testSocket.Connect(_T("127.0.0.1"),110))
+	{
+		
+	}
 }
