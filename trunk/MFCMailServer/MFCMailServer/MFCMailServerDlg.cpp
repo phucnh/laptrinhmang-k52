@@ -155,21 +155,13 @@ HCURSOR CMFCMailServerDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-CSocket pop3;
-CSocket test;
-
 void CMFCMailServerDlg::OnBnClickedOk()
 {
 	AfxSocketInit();
-	if (!test.Create())
-		return;
+	CPop3 pop3(this);
+	
 	if (!pop3.Create(110))
 		return;
 	pop3.Listen(100);
 	//OnOK();
-}
-
-void CMFCMailServerDlg::OnBnClickedButton1()
-{
-	pop3.Accept(test);
 }
