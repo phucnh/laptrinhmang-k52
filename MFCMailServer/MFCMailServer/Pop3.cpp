@@ -22,6 +22,11 @@ void CPop3::OnAccept(int nErrorCode)
 {
 	CAsyncSocket socketClient;
 	if (Accept(socketClient))
-		AfxMessageBox(_T("OK! Connected"));
+	{
+		CString	sMsg("+OK Mail server ready");
+		sMsg.ReleaseBuffer();
+		sMsg+="\r\n";
+		this->Send(sMsg,sMsg.GetLength());
+	}
 	CAsyncSocket::OnAccept(nErrorCode);
 }
