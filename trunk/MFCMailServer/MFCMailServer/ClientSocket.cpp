@@ -10,11 +10,13 @@
 
 CClientSocket::CClientSocket()
 {
+	this->pop3ProcessId = -1;
 }
 
 CClientSocket::CClientSocket( CDialog* parrentDlg )
 {
 	this->m_parrent = parrentDlg;
+	this->pop3ProcessId = -1;
 
 }
 CClientSocket::~CClientSocket()
@@ -48,7 +50,7 @@ void CClientSocket::OnReceive(int nErrorCode)
 void CClientSocket::OnClose(int nErrorCode)
 {
 	// TODO: Add your specialized code here and/or call the base class
-
+	
 	CAsyncSocket::OnClose(nErrorCode);
 }
 
@@ -56,12 +58,18 @@ void CClientSocket::ProcessCommand( INT _cmdCode )
 {
 	switch(_cmdCode)
 	{
-	case USER_CMD:	ProcessUSERCommand(&m_ClientRequest);	break;
-	case PASS_CMD:	ProcessPASSCommand(&m_ClientRequest);	break;
-	case LIST_CMD:	ProcessLISTCommand(&m_ClientRequest);	break;
-	case RETR_CMD:	ProcessRETRCommand(&m_ClientRequest);	break;
-	case STAT_CMD:	ProcessSTATCommand(&m_ClientRequest);	break;
-	case DELE_CMD:	ProcessDELECommand(&m_ClientRequest);	break;
-	case QUIT_CMD:	ProcessQUITCommand(&m_ClientRequest);	break;
+	case CMDERROR:	ProcessERROR();	break;
+	case USER_CMD:	ProcessUSERCommand();	break;
+	case PASS_CMD:	ProcessPASSCommand();	break;
+	case LIST_CMD:	ProcessLISTCommand();	break;
+	case RETR_CMD:	ProcessRETRCommand();	break;
+	case STAT_CMD:	ProcessSTATCommand();	break;
+	case DELE_CMD:	ProcessDELECommand();	break;
+	case QUIT_CMD:	ProcessQUITCommand();	break;
 	}
+}
+
+INT CClientSocket::GetPop3Command( CString* requestMessage )
+{
+	//TODO : implement in here
 }
