@@ -35,10 +35,10 @@
 #include <afxcmn.h>             // MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
-#include <afxcontrolbars.h>     // MFC support for ribbons and control bars
-
-
 #include <afxsock.h>            // MFC socket extensions
+#include <atltime.h>
+#include <wtypes.h>
+#include "Pop3.h"
 
 
 
@@ -58,4 +58,13 @@
 #endif
 #endif
 
+//Add global variables in here
+extern INT pop3RequestId;
+extern INT smtpRequestId;
+extern CString logMessage;
 
+extern CPop3* serverPop3Socket;
+extern INT nPop3ConnectionsCount;
+
+extern INT settingPop3Port;
+extern INT settingSmtpPort;

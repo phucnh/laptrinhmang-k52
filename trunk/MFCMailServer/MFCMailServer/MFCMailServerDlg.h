@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "afxwin.h"
 
 
 // CMFCMailServerDlg dialog
@@ -30,6 +31,9 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
+	BOOL StartMailServer();
+	void WriteLog(LPSTR sText,...);
 	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedButton1();
+	CString m_log;
+	CListBox m_listBoxCtrl;
 };

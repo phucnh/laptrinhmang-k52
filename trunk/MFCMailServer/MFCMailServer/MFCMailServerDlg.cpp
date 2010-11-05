@@ -52,13 +52,19 @@ END_MESSAGE_MAP()
 
 CMFCMailServerDlg::CMFCMailServerDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CMFCMailServerDlg::IDD, pParent)
+	, m_log(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	AfxSocketInit();
+	StartMailServer();
 }
+
 
 void CMFCMailServerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_LBString(pDX, IDC_LIST1, m_log);
+	DDX_Control(pDX, IDC_LIST1, m_listBoxCtrl);
 }
 
 BEGIN_MESSAGE_MAP(CMFCMailServerDlg, CDialog)
@@ -67,7 +73,6 @@ BEGIN_MESSAGE_MAP(CMFCMailServerDlg, CDialog)
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDOK, &CMFCMailServerDlg::OnBnClickedOk)
-	ON_BN_CLICKED(IDC_BUTTON1, &CMFCMailServerDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -158,23 +163,39 @@ HCURSOR CMFCMailServerDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-CPop3* pop3;
-
 void CMFCMailServerDlg::OnBnClickedOk()
 {
-	AfxSocketInit();
-	pop3 = new CPop3(this);
-	if (!pop3->Create(110))
-		return;
-	pop3->Listen(100);
 	//OnOK();
 }
-void CMFCMailServerDlg::OnBnClickedButton1()
+
+BOOL CMFCMailServerDlg::StartMailServer()
 {
-	CSocket testSocket;
-	testSocket.Create();
-	if (!testSocket.Connect(_T("127.0.0.1"),110))
+	serverPop3Socket = new CPop3(this);
+	if (!serverPop3Socket->Create(settingPop3Port))
 	{
-		
+		AfxMessageBox(_T("Can not create to POP3 server."));
+		return FALSE;
 	}
+	else
+	{
+		if (!serverPop3Socket->Listen(100))
+		{
+			AfxMessageBox(_T("Can not listen from POP3 server."));
+			return FALSE;
+		}
+	}
+
+	pop3RequestId = 0;
+	nPop3ConnectionsCount = 0;
+
+	/*WriteLog("======================================================");
+	WriteLog("%s - SMTP Server started. Listening on port 25");
+	WriteLog("%s - POP3 Server started. Listening on port 110");*/
+}
+
+void CMFCMailServerDlg::WriteLog( LPSTR sText,... )
+{
+	UpdateData(TRUE);
+	//TODO : Implemenet write log in here
+	UpdateData(FALSE);
 }

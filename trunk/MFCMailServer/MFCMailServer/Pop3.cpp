@@ -4,12 +4,12 @@
 #include "stdafx.h"
 #include "MFCMailServer.h"
 #include "Pop3.h"
+#include "ClientSocket.h"
 
 
 // CPop3
-CPop3::CPop3( CDialog* parrentDlg )
+CPop3::CPop3( CDialog* parrentDlg ) : CAsyncSocket()
 {
-	CAsyncSocket::CAsyncSocket();
 	this->parrentDlg = parrentDlg;
 }
 CPop3::~CPop3()
@@ -20,13 +20,13 @@ CPop3::~CPop3()
 
 void CPop3::OnAccept(int nErrorCode)
 {
-	CAsyncSocket socketClient;
+	CClientSocket socketClient;
 	if (Accept(socketClient))
 	{
-		CString	sMsg("+OK Mail server ready");
+		CString	sMsg("+OK Mail server ready"); //TODO: Implement message in here
 		sMsg.ReleaseBuffer();
 		sMsg+="\r\n";
-		this->Send(sMsg,sMsg.GetLength());
+		socketClient.Send(sMsg,sMsg.GetLength(),0);
 	}
 	CAsyncSocket::OnAccept(nErrorCode);
 }
