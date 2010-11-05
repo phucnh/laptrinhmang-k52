@@ -71,5 +71,59 @@ void CClientSocket::ProcessCommand( INT _cmdCode )
 
 INT CClientSocket::GetPop3Command( CString* requestMessage )
 {
-	//TODO : implement in here
+	if (requestMessage->GetLength() < 4) return CMDERROR;	
+	requestMessage->TrimLeft();
+	requestMessage->TrimRight();
+
+	CString sCmd;
+	sCmd = requestMessage->Left(5);	
+	sCmd.TrimRight();
+
+	if ((requestMessage->Left(3)).CompareNoCase("top") == 0) return 10;
+
+	for (int i=1; i<10; i++)
+	{
+		if (sCmd.CompareNoCase(POP3_CMD[i].cmd_name) == 0) return i;
+	}
+	return CMDERROR;
+}
+
+void CClientSocket::ProcessUSERCommand()
+{
+
+}
+
+void CClientSocket::ProcessERROR()
+{
+
+}
+
+void CClientSocket::ProcessPASSCommand()
+{
+
+}
+
+void CClientSocket::ProcessLISTCommand()
+{
+
+}
+
+void CClientSocket::ProcessRETRCommand()
+{
+
+}
+
+void CClientSocket::ProcessSTATCommand()
+{
+
+}
+
+void CClientSocket::ProcessDELECommand()
+{
+
+}
+
+void CClientSocket::ProcessQUITCommand()
+{
+
 }

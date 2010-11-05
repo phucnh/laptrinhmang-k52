@@ -58,6 +58,13 @@
 #endif
 #endif
 
+//Global Struct
+struct COMMAND
+{
+	char *cmd_name;	// Ten lenh
+	UINT cmd_code;	// Ma lenh
+};
+
 //Add global variables in here
 extern INT pop3RequestId;
 extern INT smtpRequestId;
