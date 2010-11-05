@@ -2,6 +2,7 @@
 
 // CClientSocket command target
 #define MAX_POP3_BUFFER_SIZE 1024
+#define CMDERROR 0
 #define USER_CMD 1
 #define PASS_CMD 2
 #define LIST_CMD 3
@@ -9,6 +10,8 @@
 #define STAT_CMD 5
 #define DELE_CMD 6
 #define QUIT_CMD 7
+
+//Lop socket client de giao tiep voi POP 3
 
 class CClientSocket : public CAsyncSocket
 {
@@ -39,13 +42,14 @@ public:
 	INT GetPop3Command(CString* requestMessage);
 	void ProcessCommand(INT );
 
-	void ProcessUSERCommand(CString*);
-	void ProcessPASSCommand(CString*);
-	void ProcessLISTCommand(CString*);
-	void ProcessRETRCommand(CString*);
-	void ProcessSTATCommand(CString*);
-	void ProcessDELECommand(CString*);
-	void ProcessQUITCommand(CString*);
+	void ProcessERROR();
+	void ProcessUSERCommand();
+	void ProcessPASSCommand();
+	void ProcessLISTCommand();
+	void ProcessRETRCommand();
+	void ProcessSTATCommand();
+	void ProcessDELECommand();
+	void ProcessQUITCommand();
 
 
 	virtual void OnReceive(int nErrorCode);
