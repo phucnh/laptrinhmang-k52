@@ -15,7 +15,7 @@
 // See MFCMailServer.cpp for the implementation of this class
 //
 
-class CMFCMailServerApp : public CWinAppEx
+class CMFCMailServerApp : public CWinApp
 {
 public:
 	CMFCMailServerApp();

@@ -13,7 +13,7 @@
 
 // CMFCMailServerApp
 
-BEGIN_MESSAGE_MAP(CMFCMailServerApp, CWinAppEx)
+BEGIN_MESSAGE_MAP(CMFCMailServerApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
@@ -46,7 +46,7 @@ BOOL CMFCMailServerApp::InitInstance()
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&InitCtrls);
 
-	CWinAppEx::InitInstance();
+	CWinApp::InitInstance();
 
 	if (!AfxSocketInit())
 	{
@@ -67,7 +67,7 @@ BOOL CMFCMailServerApp::InitInstance()
 
 	CMFCMailServerDlg dlg;
 	m_pMainWnd = &dlg;
-	INT_PTR nResponse = dlg.DoModal();
+	INT_PTR nResponse;
 	if (nResponse == IDOK)
 	{
 		// TODO: Place code here to handle when the dialog is
