@@ -10,6 +10,24 @@
 #define STAT_CMD 5
 #define DELE_CMD 6
 #define QUIT_CMD 7
+#define NOOP_CMD 8
+#define RSET_CMD 9
+#define TOP_CMD 10
+
+static COMMAND POP3_CMD[] = 
+{
+	{ NULL,	 CMDERROR},
+	{"user", USER_CMD},
+	{"pass", PASS_CMD},
+	{"quit", QUIT_CMD},
+	{"stat", STAT_CMD},
+	{"list", LIST_CMD},
+	{"retr", RETR_CMD},
+	{"dele", DELE_CMD},
+	{"noop", NOOP_CMD},
+	{"rset", RSET_CMD},		
+	{"top",  TOP_CMD}
+};	
 
 //Lop socket client de giao tiep voi POP 3
 
