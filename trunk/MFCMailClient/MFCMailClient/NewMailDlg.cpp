@@ -88,3 +88,17 @@ void CNewMailDlg::OnBnClickedOk()
 		UpdateData(FALSE);
 
 }
+
+INT_PTR CNewMailDlg::DoModal(MailHeader* mailHdr,CString prefixSubject)
+{
+	if (mailHdr != NULL)
+		this->m_Subject = prefixSubject + mailHdr->Subject;
+	return CDHtmlDialog::DoModal();
+}
+
+INT_PTR CNewMailDlg::DoModal()
+{
+	// TODO: Add your specialized code here and/or call the base class
+
+	return CDHtmlDialog::DoModal();
+}

@@ -86,6 +86,8 @@ BEGIN_MESSAGE_MAP(CMFCMailClientDlg, CDialog)
 	ON_COMMAND(ID_MESSAGE_CHECKMAIL, &CMFCMailClientDlg::OnMessageCheckmail)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST3, &CMFCMailClientDlg::OnLvnItemchangedList3)
 	ON_BN_CLICKED(IDC_BUTTON2, &CMFCMailClientDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CMFCMailClientDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON1, &CMFCMailClientDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -272,10 +274,14 @@ HCURSOR CMFCMailClientDlg::OnQueryDragIcon()
 
 void CMFCMailClientDlg::OnMessageNewmessage()
 {
-	CNewMailDlg newMailDlg;
-	newMailDlg.DoModal();
+	OnNewMail();
 }
 
+void CMFCMailClientDlg::OnNewMail()
+{
+	CNewMailDlg dlg;
+	dlg.DoModal();
+}
 
 
 void CMFCMailClientDlg::OnAcountAccount()
@@ -373,4 +379,32 @@ void CMFCMailClientDlg::OnLvnItemchangedList3(NMHDR *pNMHDR, LRESULT *pResult)
 void CMFCMailClientDlg::OnBnClickedButton2()
 {
 	// TODO: Add your control notification handler code here
+}
+
+void CMFCMailClientDlg::OnBnClickedButton3()
+{
+	POSITION pos = m_ListMail.GetFirstSelectedItemPosition();
+	if (pos == NULL)
+	{
+		AfxMessageBox("Choose one mail");
+	}
+	else
+	{
+		UINT _selectedItem = m_ListMail.GetNextSelectedItem(pos);
+		MailHeader _mailHeader = globalMailList.GetAt(_selectedItem);
+		MailHeader _mailHdrTemp;
+		_mailHdrTemp.Subject = _mailHeader.Subject;
+		CNewMailDlg dlg;
+		dlg.DoModal(&_mailHdrTemp,"Re: ");
+		// TODO: Implement here
+	}
+}
+
+void CMFCMailClientDlg::OnBnClickedButton1()
+{
+	OnNewMail();
+	/*MailHeader mailHdr;
+	mailHdr.Subject = "Test";
+	CNewMailDlg newdlg;
+	newdlg.DoModal(&mailHdr,"Re: ");*/
 }
