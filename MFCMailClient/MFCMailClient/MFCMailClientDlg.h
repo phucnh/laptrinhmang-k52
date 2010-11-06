@@ -51,4 +51,7 @@ public:
 	CButton m_btnForward;
 	CButton m_btnInbox;
 	CButton m_btnTrash;
+	afx_msg void OnBnClickedButton3();
+	afx_msg void OnBnClickedButton1();
+	void OnNewMail();
 };
