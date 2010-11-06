@@ -60,6 +60,7 @@ public:
 	void ProcessERRORCommand();
 	void ProcessHELOCommand();
 	void ProcessMAILFROMCommand();
+	void ProcessQUITCommand();
 	//Add them ham de xu ly vao day nhe
 
 	virtual void OnReceive(int nErrorCode);
