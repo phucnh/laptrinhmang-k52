@@ -49,8 +49,6 @@ void CSMTPClient::OnReceive(int nErrorCode)
 
 void CSMTPClient::OnClose(int nErrorCode)
 {
-	// TODO: Add your specialized code here and/or call the base class
-	// Send close message
 	CAsyncSocket::OnClose(nErrorCode);
 }
 
@@ -111,6 +109,7 @@ void CSMTPClient::ProcessCommand( INT cmdCode)
 	case SMTP_HELO_CMD:		ProcessHELOCommand();		break;
 	case SMTP_ERROR_CMD:	ProcessERRORCommand();		break;
 	case SMTP_MAIL_CMD:		ProcessMAILFROMCommand();	break;
+	case SMTP_QUIT_CMD:		ProcessQUITCommand();		break;
 		// TODO: Add them vao day
 	}
 }
@@ -127,10 +126,23 @@ void CSMTPClient::ProcessERRORCommand()
 
 void CSMTPClient::ProcessHELOCommand()
 {
-
+	CString _returnMsg;
+	_returnMsg.Format("250 %s Please to meet you.", m_ClientAddress); // TODO: May co the sua cho no pro hon :D
+	Reply(_returnMsg);
 }
 
 void CSMTPClient::ProcessMAILFROMCommand()
 {
 
+}
+
+void CSMTPClient::ProcessQUITCommand()
+{
+	if (m_ClientRequest.CompareNoCase("quit") != 0)
+	{
+		ProcessERRORCommand();
+		return;
+	}
+	Reply("221 SMTP Mail Server quited."); // TODO: May co the thay tu ngu khac cho no pro hon
+	// TODO: Add cac cau lenh dong socket vao cho nay nhe
 }
