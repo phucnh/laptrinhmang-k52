@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="MFCMailClient"
 	ProjectGUID="{FA1606BE-75C0-48E7-8C5A-EF2F5B9F83C7}"
 	RootNamespace="MFCMailClient"
@@ -204,6 +204,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Mime.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MimeChar.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MimeCode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MimeType.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NewMailDlg.cpp"
 				>
 			</File>
@@ -255,6 +271,18 @@
 			</File>
 			<File
 				RelativePath=".\MFCMailClientDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Mime.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MimeChar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MimeCode.h"
 				>
 			</File>
 			<File
