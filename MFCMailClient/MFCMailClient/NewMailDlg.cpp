@@ -89,7 +89,8 @@ void CNewMailDlg::OnBnClickedOk()
 
 
 		CMimeMessage msgmime;
-		//msgmime.SetMail(m_From,m_To,m_Cc,m_Subject,m_filePath,m_TextBody);
+		//msgmime.SetMailMime(from,to,Cc,subject,filePath,textBody);
+		//su dung ham nay de tao mime
 		
 		CMimeEnvironment::SetAutoFolding(true); 
 		int nSize = msgmime.GetLength();
