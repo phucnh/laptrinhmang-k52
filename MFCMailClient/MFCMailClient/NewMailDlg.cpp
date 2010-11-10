@@ -92,11 +92,11 @@ void CNewMailDlg::OnBnClickedOk()
 		//msgmime.SetMailMime(from,to,Cc,subject,filePath,textBody);
 		//su dung ham nay de tao mime
 		
-		CMimeEnvironment::SetAutoFolding(true); 
+		/*CMimeEnvironment::SetAutoFolding(true); 
 		int nSize = msgmime.GetLength();
 		char* pBuff = new char[nSize];
 		nSize = msgmime.Store(pBuff, nSize);
-		msg.TextBody = pBuff;
+		msg.TextBody = pBuff;*/
 		_smtp.SendMessage(&msg);
 		AfxMessageBox("Success",MB_OK);
 		UpdateData(FALSE);
