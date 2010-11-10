@@ -84,24 +84,13 @@ void CNewMailDlg::OnBnClickedOk()
 		msg.From = m_From;
 		msg.To = m_To;
 		msg.Subject = m_Subject;
-		/*msg.TextBody = m_TextBody;*/
+		msg.TextBody = m_TextBody;
 		//long 20101108
+
+
 		CMimeMessage msgmime;
-		msgmime.SetFrom(m_From);
-		msgmime.SetTo(m_To);
-		//msg.SetCc();
-		msgmime.SetSubject(m_Subject);
-		msgmime.SetDate();
-		msgmime.SetVersion();
-		msgmime.SetFieldValue("X-Priority", "3 (Normal)");
-		msgmime.SetContentType("multipart/mixed");
-		msgmime.SetBoundary(NULL);
-		CMimeBody* msg_body = msgmime.CreatePart();
-		msg_body->SetText(m_TextBody);
-		msg_body = msgmime.CreatePart();
-		//msg_body->SetDescription("attachment");
-		//msg_body->SetTransferEncoding("base64");
-		//msg_body->ReadFromFile(/*file dinh kem*/);
+		//msgmime.SetMail(m_From,m_To,m_Cc,m_Subject,m_filePath,m_TextBody);
+		
 		CMimeEnvironment::SetAutoFolding(true); 
 		int nSize = msgmime.GetLength();
 		char* pBuff = new char[nSize];

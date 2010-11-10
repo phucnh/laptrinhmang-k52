@@ -435,6 +435,7 @@ public:
 	void SetDate(int nYear, int nMonth, int nDay, int nHour, int nMinute, int nSecond);
 	const char* GetDate() const;
 	void SetVersion();
+	void SetMailMime(const char* pszFrom, const char* pszTo, const char* pszCc, const char* pszSubject, const char* filePath, const char* textBody);
 };
 
 inline void CMimeMessage::SetFrom(const char* pszAddr, const char* pszCharset)
@@ -472,6 +473,25 @@ inline const char* CMimeMessage::GetDate() const
 
 inline void CMimeMessage::SetVersion()
 { SetFieldValue(CMimeConst::MimeVersion(), "1.0"); }
+inline void CMimeMessage::SetMailMime(const char *pszFrom, const char *pszTo,  const char* pszCc, const char *pszSubject, const char *filePath, const char* textBody)
+{
+	this->SetFrom(pszFrom);
+	this->SetTo(pszTo);
+	this->SetCc(pszCc);
+	this->SetSubject(pszSubject);
+	this->SetDate();
+	this->SetVersion();
+	this->SetFieldValue("X-Priority", "3 (Normal)");
+	this->SetContentType("multipart/mixed");
+	this->SetBoundary(NULL);
+	CMimeBody* msg_body = this->CreatePart();
+	msg_body->SetText(textBody);
+	msg_body = this->CreatePart();
+	msg_body->SetDescription("attachment");
+	msg_body->SetTransferEncoding("base64");
+	msg_body->ReadFromFile(filePath);
+}
+
 
 const char* FindString(const char* pszStr1, const char* pszStr2, const char* pszEnd);
 const char* FindChar(const char* pszStr, char c, const char* pszEnd );
