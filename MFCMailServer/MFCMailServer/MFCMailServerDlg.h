@@ -30,6 +30,10 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+
+private:
+BOOL m_isIconShow;
+
 public:
 	BOOL StartMailServer();
 	void WriteLog(LPSTR sText,...);

@@ -192,7 +192,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DAL.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MailMessage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MailUser.cpp"
 				>
 			</File>
 			<File
@@ -246,7 +254,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DAL.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MailMessage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MailUser.h"
 				>
 			</File>
 			<File

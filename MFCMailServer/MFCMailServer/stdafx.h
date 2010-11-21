@@ -37,8 +37,12 @@
 
 #include <afxsock.h>            // MFC socket extensions
 #include <atltime.h>
+#include <afxdb.h>
+
 #include <wtypes.h>
 #include "Pop3.h"
+#include "Smtp.h"
+#include "DAL.h"
 
 
 
@@ -73,5 +77,11 @@ extern CString logMessage;
 extern CPop3* serverPop3Socket;
 extern INT nPop3ConnectionsCount;
 
+extern CSmtp* serverSmtpSocket;
+extern INT nSmtpConnectionsCount;
+
 extern INT settingPop3Port;
 extern INT settingSmtpPort;
+
+//Bien cua DAL
+extern DAL* dal;
