@@ -8,7 +8,7 @@
 
 
 // CPop3
-CPop3::CPop3( CDialog* parrentDlg ) : CAsyncSocket()
+CPop3::CPop3( CMFCMailServerDlg* parrentDlg ) : CAsyncSocket()
 {
 	this->parrentDlg = parrentDlg;
 }
@@ -27,6 +27,10 @@ void CPop3::OnAccept(int nErrorCode)
 		sMsg.ReleaseBuffer();
 		sMsg+="\r\n";
 		socketClient.Send(sMsg,sMsg.GetLength(),0);
+
+		//phuc add 20101121
+		this->parrentDlg->WriteLog(sMsg);
+		//end phuc add 20101121
 	}
 	CAsyncSocket::OnAccept(nErrorCode);
 }

@@ -4,6 +4,7 @@
 
 #pragma once
 #include "afxwin.h"
+#include "Resource.h"
 
 
 // CMFCMailServerDlg dialog
@@ -36,7 +37,7 @@ BOOL m_isIconShow;
 
 public:
 	BOOL StartMailServer();
-	void WriteLog(LPSTR sText,...);
+	void WriteLog(CString message);
 	afx_msg void OnBnClickedOk();
 	CString m_log;
 	CListBox m_listBoxCtrl;

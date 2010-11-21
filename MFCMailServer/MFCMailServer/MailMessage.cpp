@@ -130,5 +130,7 @@ bool MailHeader::InsertMail( MailHeader* mailHeader )
 		mailHeader->TextBody,
 		mailHeader->RealAttach
 		);
+
+	return dal->ExecuteSQL(sql);
 }
 #pragma endregion MailHeader

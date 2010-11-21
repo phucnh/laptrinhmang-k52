@@ -13,7 +13,7 @@ CSmtp::CSmtp()
 {
 }
 
-CSmtp::CSmtp( CDialog* parrent )
+CSmtp::CSmtp( CMFCMailServerDlg* parrent )
 {
 	this->parrentDlg = parrent;
 }
@@ -35,6 +35,10 @@ void CSmtp::OnAccept(int nErrorCode)
 		sMsg.ReleaseBuffer();
 		sMsg+="\r\n";
 		socketClient.Send(sMsg,sMsg.GetLength(),0);
+
+		//phuc add 20101121
+		this->parrentDlg->WriteLog(sMsg);
+		//end phuc add 20101121
 	}
 
 	CAsyncSocket::OnAccept(nErrorCode);

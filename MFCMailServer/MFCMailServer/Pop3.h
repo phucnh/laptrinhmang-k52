@@ -1,17 +1,18 @@
 #pragma once
 
+#include "MFCMailServerDlg.h"
 // CPop3 command target
 
 public class CPop3 : public CAsyncSocket
 {
 private:
-	CDialog* parrentDlg;
+	CMFCMailServerDlg* parrentDlg;
 	
 public:
 	CDialog* ParrentDlg() const { return parrentDlg; }
-	void ParrentDlg(CDialog* val) { parrentDlg = val; }
+	void ParrentDlg(CMFCMailServerDlg* val) { parrentDlg = val; }
 
-	CPop3(CDialog* parrentDlg);
+	CPop3(CMFCMailServerDlg* parrentDlg);
 	virtual ~CPop3();
 	virtual void OnAccept(int nErrorCode);
 };

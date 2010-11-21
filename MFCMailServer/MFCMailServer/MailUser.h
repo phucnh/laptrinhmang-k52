@@ -3,9 +3,8 @@
 
 // MailUser
 
-class MailUser : public CWnd
+class MailUser
 {
-	DECLARE_DYNAMIC(MailUser)
 
 public:
 	CString _username;
@@ -22,10 +21,6 @@ public:
 	bool DeleteUserByID(UINT id);
 	bool ChangePassword(CString username,CString password);
 	bool UpdateUserByID(UINT userID,CString name,CString password);
-
-
-protected:
-	DECLARE_MESSAGE_MAP()
 
 };
 
