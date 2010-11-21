@@ -94,7 +94,7 @@ MailHeader* MailHeader::getMail(UINT mailID)
 	return mailh;
 }
 
-bool MailHeader::insertMail(CString from,CString to,CString date,CString subject,CString cc,CString replyto,CString textbody,CString realattach)
+bool MailHeader::InsertMail(CString from,CString to,CString date,CString subject,CString cc,CString replyto,CString textbody,CString realattach)
 {
 	/*CString from,to,date,subject,cc,replyto,textbody,realattach;
 
@@ -118,4 +118,17 @@ bool MailHeader::deleteMail(UINT mailID)
 	return dal->ExecuteSQL(sql);
 }
 
+bool MailHeader::InsertMail( MailHeader* mailHeader )
+{
+	sql.Format(_T("Insert into MailHeader values('%s','%s','%s','%s','%s','%s','%s','%s')"),
+		mailHeader->From,
+		mailHeader->To,
+		mailHeader->Date,
+		mailHeader->Subject,
+		mailHeader->Cc,
+		mailHeader->ReplyTo,
+		mailHeader->TextBody,
+		mailHeader->RealAttach
+		);
+}
 #pragma endregion MailHeader
