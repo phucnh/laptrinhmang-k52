@@ -7,9 +7,6 @@
 #include "DAL.h"
 // MailUser
 
-IMPLEMENT_DYNAMIC(MailUser, CWnd)
-
-
 //DAL *dal=new DAL();
 CString  sqlMailUser;
 CRecordset *datasetMailUser;
@@ -31,11 +28,6 @@ MailUser::~MailUser()
 {
 	dal=new DAL();
 }
-
-
-BEGIN_MESSAGE_MAP(MailUser, CWnd)
-END_MESSAGE_MAP()
-
 
 
 // MailUser message handlers

@@ -56,7 +56,7 @@ CMFCMailServerDlg::CMFCMailServerDlg(CWnd* pParent /*=NULL*/)
 	, m_log(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-	AfxSocketInit();
+	//AfxSocketInit();
 	StartMailServer();
 }
 
@@ -205,14 +205,14 @@ BOOL CMFCMailServerDlg::StartMailServer()
 	pop3RequestId = 0;
 	nPop3ConnectionsCount = 0;
 
-	/*WriteLog("======================================================");
+	WriteLog("======================================================");
 	WriteLog("%s - SMTP Server started. Listening on port 25");
-	WriteLog("%s - POP3 Server started. Listening on port 110");*/
+	WriteLog("%s - POP3 Server started. Listening on port 110");
 }
 
-void CMFCMailServerDlg::WriteLog( LPSTR sText,... )
+void CMFCMailServerDlg::WriteLog( CString message )
 {
 	UpdateData(TRUE);
-	//TODO : Implemenet write log in here
+	m_listBoxCtrl.AddString(message);
 	UpdateData(FALSE);
 }

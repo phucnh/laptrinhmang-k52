@@ -1,17 +1,18 @@
 #pragma once
 
+#include "MFCMailServerDlg.h"
 // CSmtp command target
 
 public class CSmtp : public CAsyncSocket
 {
 private:
-	CDialog* parrentDlg;
+	CMFCMailServerDlg* parrentDlg;
 
 public:
 	CDialog* ParrentDlg() const { return parrentDlg; }
-	void ParrentDlg(CDialog* val) { parrentDlg = val; }
+	void ParrentDlg(CMFCMailServerDlg* val) { parrentDlg = val; }
 
-	CSmtp(CDialog* parrent);
+	CSmtp(CMFCMailServerDlg* parrent);
 	CSmtp();
 	virtual ~CSmtp();
 	virtual void OnAccept(int nErrorCode);
