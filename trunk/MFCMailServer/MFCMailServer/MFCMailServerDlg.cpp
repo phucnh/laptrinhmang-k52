@@ -7,6 +7,7 @@
 #include "MFCMailServer.h"
 #include "MFCMailServerDlg.h"
 #include "Pop3.h"
+#include "Smtp.h"
 
 
 #ifdef _DEBUG
@@ -110,6 +111,7 @@ BOOL CMFCMailServerDlg::OnInitDialog()
 	ShowWindow(SW_MAXIMIZE);
 
 	// TODO: Add extra initialization here
+	m_isIconShow = FALSE;
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -173,7 +175,7 @@ BOOL CMFCMailServerDlg::StartMailServer()
 	serverPop3Socket = new CPop3(this);
 	if (!serverPop3Socket->Create(settingPop3Port))
 	{
-		AfxMessageBox(_T("Can not create to POP3 server."));
+		AfxMessageBox(_T("Can not create POP3 server socket."));
 		return FALSE;
 	}
 	else
@@ -181,6 +183,21 @@ BOOL CMFCMailServerDlg::StartMailServer()
 		if (!serverPop3Socket->Listen(100))
 		{
 			AfxMessageBox(_T("Can not listen from POP3 server."));
+			return FALSE;
+		}
+	}
+
+	serverSmtpSocket = new CSmtp(this);
+	if (!serverSmtpSocket->Create(settingSmtpPort))
+	{
+		AfxMessageBox(_T("Can not create SMTP server socket."));
+		return FALSE;
+	}
+	else
+	{
+		if(!serverSmtpSocket->Listen(100))
+		{
+			AfxMessageBox(_T("Can not listen from SMTP server"));
 			return FALSE;
 		}
 	}

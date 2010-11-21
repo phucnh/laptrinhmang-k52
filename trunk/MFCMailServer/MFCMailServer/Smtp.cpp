@@ -13,6 +13,11 @@ CSmtp::CSmtp()
 {
 }
 
+CSmtp::CSmtp( CDialog* parrent )
+{
+	this->parrentDlg = parrent;
+}
+
 CSmtp::~CSmtp()
 {
 }

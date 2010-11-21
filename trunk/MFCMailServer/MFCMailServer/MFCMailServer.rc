@@ -168,6 +168,31 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// Menu
+//
+
+IDR_MENU_MAIN MENU 
+BEGIN
+    POPUP "Accounts"
+    BEGIN
+        MENUITEM "New Account",                 ID_ACCOUNTS_NEWACCOUNT
+        MENUITEM "Manage Accounts",             ID_ACCOUNTS_MANAGEACCOUNTS
+    END
+    POPUP "Settings"
+    BEGIN
+        MENUITEM "General",                     ID_SETTING_GENERAL
+        MENUITEM "Pop3 Settings",               ID_SETTING_POP3SETTING
+        MENUITEM "SMTP Settings",               ID_SETTING_SMTPSETTINGS
+    END
+    POPUP "Others"
+    BEGIN
+        MENUITEM "Add to Taskbar",              ID_OTHERS_ADDTOSTARTBAR
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // String Table
 //
 

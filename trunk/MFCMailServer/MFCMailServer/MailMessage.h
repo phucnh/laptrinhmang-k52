@@ -1,32 +1,5 @@
 #pragma once
 
-class MailMessage
-{
-private:
-	CString _mailId;
-	CString _fromAdd;
-	CString _toAdd;
-	CString _mailHeader;
-	CString _mailSubject;
-	CString _body;
-	CTime _date;
-
-public:
-	MailMessage();
-
-	MailMessage(
-		CString mailId, 
-		CString fromAdd, 
-		CString toAdd, 
-		CString mailHeader, 
-		CString mailSubject,
-		CString body,
-		CTime date
-		);
-
-	~MailMessage(void);
-};
-
 class MailHeader
 {
 public:
@@ -55,4 +28,12 @@ public:
 
 	MailHeader(void);
 	~MailHeader(void);
+
+	CRecordset* MailHeader::getAllMail(CString username);
+	CRecordset* MailHeader::getAllInboxMailByUser(CString username);
+	CRecordset* MailHeader::getAllSendedMailByUser(CString username);
+
+	MailHeader* getMail(UINT mailID);
+	bool insertMail(CString from,CString to,CString date,CString subject,CString cc,CString replyto,CString textbody,CString realattach);
+	bool deleteMail(UINT mailID);
 };
