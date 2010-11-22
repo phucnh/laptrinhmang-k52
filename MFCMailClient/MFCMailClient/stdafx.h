@@ -44,6 +44,9 @@
 #include <afxtempl.h>
 #include <afxdhtml.h>
 
+#include <afxdb.h>				// MFC support for Database
+#include <afxdao.h>				// MFC support for Database
+
 
 
 

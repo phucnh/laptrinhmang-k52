@@ -192,6 +192,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DAL.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EntitiesServices.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MailMessage.cpp"
 				>
 			</File>
@@ -251,6 +259,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\User.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -259,6 +271,14 @@
 			>
 			<File
 				RelativePath=".\AccountDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DAL.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EntitiesServices.h"
 				>
 			</File>
 			<File
@@ -307,6 +327,10 @@
 			</File>
 			<File
 				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\User.h"
 				>
 			</File>
 		</Filter>

@@ -1,33 +1,6 @@
 #pragma once
 
-class MailMessage
-{
-private:
-	CString _mailId;
-	CString _fromAdd;
-	CString _toAdd;
-	CString _mailHeader;
-	CString _mailSubject;
-	CString _body;
-	CTime _date;
-
-public:
-	MailMessage();
-
-	MailMessage(
-		CString mailId, 
-		CString fromAdd, 
-		CString toAdd, 
-		CString mailHeader, 
-		CString mailSubject,
-		CString body,
-		CTime date
-		);
-
-	~MailMessage(void);
-};
-
-class MailHeader
+public class MailHeader
 {
 public:
 	CString  MessageID;
@@ -41,6 +14,7 @@ public:
 	CString  MimeVersion;
 	CString  ContentType;
 	BYTE     RealAttach;
+	INT		 UserId;
 
 	MailHeader(
 		CString _from,
