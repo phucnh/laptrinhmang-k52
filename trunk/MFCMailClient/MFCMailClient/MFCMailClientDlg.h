@@ -54,4 +54,5 @@ public:
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnBnClickedButton1();
 	void OnNewMail();
+	afx_msg void OnBnClickedButton5();
 };

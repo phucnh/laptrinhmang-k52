@@ -7,7 +7,9 @@ public class CUserEntitiesServices
 {
 private:
 	CDAL* dal;
-	CString sqlCommand;
+	CRecordset* dataUser;
+	CString sqlCommand1;
+	CString sqlCommand2;
 public:
 	CUserEntitiesServices(void);
 
@@ -16,11 +18,11 @@ public:
 	CUser* GetByUsername(CString username);
 	CUser* DeleteUserById(INT userId);
 	CUser* DeleteUserByUsername(CString username);
-	BOOL UpdateUserById(INT userId);
-	BOOL UpdateUserByUsername(CString username);
+	BOOL UpdateUserById(INT userId,CUser* user);
+	BOOL UpdateUserByUsername(CString username,CUser* user);
 
 	BOOL Login(CString username, CString password);
-	CString* ChangePassWord(INT userId);
+	CString* ChangePassWord(INT userId,CString newpass);
 
 };
 
@@ -28,11 +30,13 @@ public class CMailHeaderServices
 {
 private:
 	CDAL *dal;
-	CString sqlCommand;
+	CRecordset *dataMail;
+	CString sqlCommand1;
+	CString sqlCommand2;
 
 public:
 	CArray<MailHeader,&MailHeader>* GetAllMail();
-	MailHeader GetByMailId(INT mailId);
+	MailHeader* GetByMailId(INT mailId);
 	CArray<MailHeader,&MailHeader>* GetByUserId(INT userId);
 	CArray<MailHeader,&MailHeader>* GetByGroupId(INT groupId);
 	CArray<MailHeader,&MailHeader>* GetByUserIdGroupId(INT userId, INT groupId);
@@ -42,7 +46,9 @@ public class CAddressBookServices
 {
 private:
 	CDAL *dal;
-	CString sqlCommand;
+	CString sqlCommand1;
+	CString sqlCommand2;
+
 
 public:
 	CArray<CAddressBook,&CAddressBook>* GetByUserId(INT userId);
@@ -52,7 +58,8 @@ public class CGroupServices
 {
 private:
 	CDAL *dal;
-	CString sqlCommand;
+	CString sqlCommand1;
+	CString sqlCommand2;
 public:
 	CGroup* GetByGroupId(INT groupId);
 };

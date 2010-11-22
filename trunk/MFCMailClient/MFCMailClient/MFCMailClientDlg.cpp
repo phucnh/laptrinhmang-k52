@@ -88,6 +88,7 @@ BEGIN_MESSAGE_MAP(CMFCMailClientDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON2, &CMFCMailClientDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CMFCMailClientDlg::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON1, &CMFCMailClientDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON5, &CMFCMailClientDlg::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 
@@ -407,4 +408,9 @@ void CMFCMailClientDlg::OnBnClickedButton1()
 	mailHdr.Subject = "Test";
 	CNewMailDlg newdlg;
 	newdlg.DoModal(&mailHdr,"Re: ");*/
+}
+
+void CMFCMailClientDlg::OnBnClickedButton5()
+{
+	// TODO: Add your control notification handler code here
 }
