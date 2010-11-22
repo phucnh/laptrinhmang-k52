@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 #include "Global.h"
-//#include "MailHeader.h"
+#include "MailHeader.h"
 
 //SMTP const
 #define MAX_SMTP_BUFFER_SIZE 1024
@@ -36,7 +36,7 @@ static CMailServerCommand SMTP_CMD[10] =
 class CSMTPClient : public CAsyncSocket
 {
 private:
-	CDialog* m_parrent;
+	CMFCMailServerDlg* m_parrent;
 	//MailHeader* m_mailHdr; //Mail dinh gui di luu tru vao day
 	CString m_ClientAddress;
 	CString	m_sQueue; //Day luu thong tin khi du lieu chua hoan toan duoc gui toi server
@@ -52,10 +52,12 @@ public:
 	void SmtpProcessId(INT val) { smtpProcessId = val; }
 
 	CSMTPClient();
-	CSMTPClient(CDialog*);
+	CSMTPClient(CMFCMailServerDlg*);
 	virtual ~CSMTPClient();
 
+	void Initialize();
 	void Reply(CString msg);
+	void CloseSocket();
 
 	INT GetSMTPCommand(CString* requestMessage);
 	void ProcessCommand(INT );

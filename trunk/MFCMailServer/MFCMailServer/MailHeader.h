@@ -1,7 +1,14 @@
 #include "stdafx.h"
 
+#ifndef CLASS_H_
+#define CLASS_H_
+
 class MailHeader
 {
+private:
+	CString  sql;
+	CRecordset *dataset;
+
 public:
 	CString  MessageID;
 	CString  From;
@@ -14,17 +21,6 @@ public:
 	CString  MimeVersion;
 	CString  ContentType;
 	BYTE     RealAttach;
-
-	MailHeader(
-		CString _from,
-		CString _to,
-		CString _date,
-		CString _subject,
-		CString _cc,
-		CString _replyTo,
-		CString _textBody,
-		BYTE _realAttach
-		);
 
 	MailHeader(void);
 	~MailHeader(void);
@@ -41,3 +37,5 @@ public:
 	bool InsertMail(MailHeader* mailHeader);
 	//end phuc add 20101121
 };
+
+#endif
