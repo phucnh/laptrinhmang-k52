@@ -37,7 +37,7 @@ class CSMTPClient : public CAsyncSocket
 {
 private:
 	CMFCMailServerDlg* m_parrent;
-	//MailHeader* m_mailHdr; //Mail dinh gui di luu tru vao day
+	MailHeader* m_mailHdr; //Mail dinh gui di luu tru vao day
 	CString m_ClientAddress;
 	CString	m_sQueue; //Day luu thong tin khi du lieu chua hoan toan duoc gui toi server
 	char m_Buffer[MAX_SMTP_BUFFER_SIZE]; //Bo dem dung de luu thong tin khi du lieu gui den server
