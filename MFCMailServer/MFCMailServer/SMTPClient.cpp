@@ -177,5 +177,5 @@ void CSMTPClient::Initialize()
 {
 	this->m_ClientRequest = "";
 	this->m_ClientAddress = "";
-	//this->m_mailHdr = NULL;
+	this->m_mailHdr = NULL;
 }
