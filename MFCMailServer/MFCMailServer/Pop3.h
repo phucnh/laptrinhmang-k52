@@ -3,7 +3,7 @@
 #include "MFCMailServerDlg.h"
 // CPop3 command target
 
-public class CPop3 : public CAsyncSocket
+class CPop3 : public CAsyncSocket
 {
 private:
 	CMFCMailServerDlg* parrentDlg;

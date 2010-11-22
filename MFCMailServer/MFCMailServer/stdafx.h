@@ -38,11 +38,14 @@
 #include <afxsock.h>            // MFC socket extensions
 #include <atltime.h>
 #include <afxdb.h>
+#include <afxtempl.h>
 
 #include <wtypes.h>
 #include "Pop3.h"
 #include "Smtp.h"
 #include "DAL.h"
+#include "SMTPClient.h"
+#include "ClientSocket.h"
 
 
 
@@ -63,11 +66,8 @@
 #endif
 
 //Global Struct
-struct COMMAND
-{
-	char *cmd_name;	// Ten lenh
-	UINT cmd_code;	// Ma lenh
-};
+typedef CTypedPtrList<CObList, CSMTPClient*> CSMTPProcessList;
+typedef CTypedPtrList<CObList, CClientSocket*> CPOP3ProcessList;
 
 //Add global variables in here
 extern INT pop3RequestId;
@@ -83,5 +83,11 @@ extern INT nSmtpConnectionsCount;
 extern INT settingPop3Port;
 extern INT settingSmtpPort;
 
+extern CSMTPProcessList m_SMTPConnectionsList;
+extern CPOP3ProcessList m_POP3ConnectionsList;
+
 //Bien cua DAL
 extern DAL* dal;
+
+//Add global function
+CString GetCurrentTimeStr();

@@ -11,6 +11,7 @@
 CPop3::CPop3( CMFCMailServerDlg* parrentDlg ) : CAsyncSocket()
 {
 	this->parrentDlg = parrentDlg;
+
 }
 CPop3::~CPop3()
 {
