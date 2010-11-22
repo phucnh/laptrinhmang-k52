@@ -59,6 +59,7 @@ public:
 	virtual ~CClientSocket();
 
 	void Initialize();
+	void CloseSocket();
 	void Reply(CString _message);
 
 	INT GetPop3Command(CString* requestMessage);

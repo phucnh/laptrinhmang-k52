@@ -3,29 +3,27 @@
 #include <string>
 #include <cstring>
 
-CString  sql;
-CRecordset *dataset;
+//MailHeader::MailHeader( 
+//					   CString _from,
+//					   CString _to,
+//					   CString _date,
+//					   CString _subject,
+//					   CString _cc,
+//					   CString _replyTo,
+//					   CString _textBody,
+//					   BYTE _realAttach 
+//					   )
+//{
+//	this->From = _from;
+//	this->To = _to;
+//	this->Date = _date;
+//	this->Subject = _subject;
+//	this->Cc = _cc;
+//	this->ReplyTo = _replyTo;
+//	this->TextBody = _textBody;
+//	this->RealAttach = _realAttach;
+//}
 
-MailHeader::MailHeader( 
-					   CString _from,
-					   CString _to,
-					   CString _date,
-					   CString _subject,
-					   CString _cc,
-					   CString _replyTo,
-					   CString _textBody,
-					   BYTE _realAttach 
-					   )
-{
-	this->From = _from;
-	this->To = _to;
-	this->Date = _date;
-	this->Subject = _subject;
-	this->Cc = _cc;
-	this->ReplyTo = _replyTo;
-	this->TextBody = _textBody;
-	this->RealAttach = _realAttach;
-}
 
 MailHeader::MailHeader( void )
 {
@@ -43,7 +41,6 @@ MailHeader::~MailHeader( void )
 {
 
 }
-
 CRecordset* MailHeader::getAllMail(CString username)
 {
 	sql.Format(_T("Select * from MailHeader where [From]='%s' or [To] like '%'%s'%' ;"),username,username);

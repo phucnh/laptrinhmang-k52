@@ -13,13 +13,25 @@ CSMTPClient::CSMTPClient()
 	this->smtpProcessId = -1;
 }
 
-CSMTPClient::CSMTPClient( CDialog* dialog)
+CSMTPClient::CSMTPClient( CMFCMailServerDlg* dialog)
 {
 	this->m_parrent = dialog;
 	this->smtpProcessId = -1;
+
+	//phuc add 20101123
+	nSmtpConnectionsCount++;
+	this->smtpProcessId = nSmtpConnectionsCount;
+	this->m_parrent->UpdateStatusbar();
+
+	m_SMTPConnectionsList.AddTail(this);
 }
 CSMTPClient::~CSMTPClient()
 {
+	POSITION pos = m_SMTPConnectionsList.Find(this);
+	if (pos != NULL) m_SMTPConnectionsList.RemoveAt(pos);
+
+	nSmtpConnectionsCount--;
+	this->m_parrent->UpdateStatusbar();
 }
 
 
@@ -49,6 +61,12 @@ void CSMTPClient::OnReceive(int nErrorCode)
 
 void CSMTPClient::OnClose(int nErrorCode)
 {
+	//phuc add 20101123
+	CString message;
+	message.Format(_T("%s - SMTP connection (ID=%d) closed"), GetCurrentTimeStr(), smtpProcessId);
+	m_parrent->WriteLog(message);
+	//end phuc add 20101123
+
 	CAsyncSocket::OnClose(nErrorCode);
 }
 
@@ -145,4 +163,19 @@ void CSMTPClient::ProcessQUITCommand()
 	}
 	Reply("221 SMTP Mail Server quited."); // TODO: May co the thay tu ngu khac cho no pro hon
 	// TODO: Add cac cau lenh dong socket vao cho nay nhe
+}
+
+void CSMTPClient::CloseSocket()
+{
+	CString message;
+	message.Format("%s - SMTP connection (ID=%d) closed", GetCurrentTimeStr(), smtpProcessId);
+	this->m_parrent->WriteLog(message);
+	Close();
+}
+
+void CSMTPClient::Initialize()
+{
+	this->m_ClientRequest = "";
+	this->m_ClientAddress = "";
+	//this->m_mailHdr = NULL;
 }

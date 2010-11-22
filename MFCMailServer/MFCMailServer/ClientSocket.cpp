@@ -28,6 +28,11 @@ CClientSocket::CClientSocket( CMFCMailServerDlg* parrentDlg )
 }
 CClientSocket::~CClientSocket()
 {
+	POSITION pos = m_POP3ConnectionsList.Find(this);
+	if (pos != NULL) m_POP3ConnectionsList.RemoveAt(pos);
+
+	nPop3ConnectionsCount--;
+	this->m_parrent->UpdateStatusbar();
 }
 
 
@@ -56,8 +61,11 @@ void CClientSocket::OnReceive(int nErrorCode)
 
 void CClientSocket::OnClose(int nErrorCode)
 {
-	// TODO: Add your specialized code here and/or call the base class
-	
+	//phuc add 20101123
+	CString message;
+	message.Format(_T("%s - POP3 connection (ID=%d) closed"), GetCurrentTimeStr(), pop3ProcessId);
+	this->m_parrent->WriteLog(message);
+	//end phuc add 20101123
 	CAsyncSocket::OnClose(nErrorCode);
 }
 
@@ -102,7 +110,7 @@ void CClientSocket::ProcessUSERCommand()
 
 void CClientSocket::ProcessERROR()
 {
-
+	
 }
 
 void CClientSocket::ProcessPASSCommand()
@@ -132,5 +140,22 @@ void CClientSocket::ProcessDELECommand()
 
 void CClientSocket::ProcessQUITCommand()
 {
+	//phuc add 20101123
+	CloseSocket();
+	//end phuc add 20101123
+}
 
+void CClientSocket::CloseSocket()
+{
+	CString message;
+	message.Format(_T("%s - POP3 connection (ID=%d) closed"), GetCurrentTimeStr(),pop3ProcessId);
+	this->m_parrent->WriteLog(message);
+	Close();
+}
+
+void CClientSocket::Initialize()
+{
+	m_ClientRequest = "";
+	m_username = "";
+	m_password = "";
 }
