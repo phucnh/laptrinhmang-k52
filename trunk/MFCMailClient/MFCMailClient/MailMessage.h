@@ -15,6 +15,8 @@ public:
 	CString  ContentType;
 	BYTE     RealAttach;
 	INT		 UserId;
+	INT		 GroupId;
+	INT		 MailId;
 
 	MailHeader(
 		CString _from,

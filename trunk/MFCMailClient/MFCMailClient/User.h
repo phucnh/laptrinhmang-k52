@@ -38,3 +38,18 @@ public:
 	INT FriendId() const { return friendId; }
 	void FriendId(INT val) { friendId = val; }
 };
+
+public class CGroup
+{
+private:
+	INT groupId;
+	CString groupName;
+	CString description;
+	
+	INT GroupId() const { return groupId; }
+	void GroupId(INT val) { groupId = val; }
+	CString GroupName() const { return groupName; }
+	void GroupName(CString val) { groupName = val; }
+	CString Description() const { return description; }
+	void Description(CString val) { description = val; }
+};

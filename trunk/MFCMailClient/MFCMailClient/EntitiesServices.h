@@ -29,6 +29,13 @@ public class CMailHeaderServices
 private:
 	CDAL *dal;
 	CString sqlCommand;
+
+public:
+	CArray<MailHeader,&MailHeader>* GetAllMail();
+	MailHeader GetByMailId(INT mailId);
+	CArray<MailHeader,&MailHeader>* GetByUserId(INT userId);
+	CArray<MailHeader,&MailHeader>* GetByGroupId(INT groupId);
+	CArray<MailHeader,&MailHeader>* GetByUserIdGroupId(INT userId, INT groupId);
 };
 
 public class CAddressBookServices
@@ -36,4 +43,16 @@ public class CAddressBookServices
 private:
 	CDAL *dal;
 	CString sqlCommand;
+
+public:
+	CArray<CAddressBook,&CAddressBook>* GetByUserId(INT userId);
+};
+
+public class CGroupServices
+{
+private:
+	CDAL *dal;
+	CString sqlCommand;
+public:
+	CGroup* GetByGroupId(INT groupId);
 };
