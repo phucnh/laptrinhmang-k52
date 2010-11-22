@@ -3,7 +3,7 @@
 #include "MFCMailServerDlg.h"
 // CSmtp command target
 
-public class CSmtp : public CAsyncSocket
+class CSmtp : public CAsyncSocket
 {
 private:
 	CMFCMailServerDlg* parrentDlg;

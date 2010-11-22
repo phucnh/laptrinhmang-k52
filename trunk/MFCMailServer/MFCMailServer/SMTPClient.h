@@ -1,20 +1,23 @@
 #pragma once
 
-#include "MailMessage.h"
+#include "stdafx.h"
+#include "Global.h"
+//#include "MailHeader.h"
 
+//SMTP const
 #define MAX_SMTP_BUFFER_SIZE 1024
-# define SMTP_ERROR_CMD	0
-# define SMTP_HELO_CMD	1
-# define SMTP_MAIL_CMD	2
-# define SMTP_RCPT_CMD	3
-# define SMTP_DATA_CMD	4
-# define SMTP_RSET_CMD	5
-# define SMTP_VRFY_CMD	6
-# define SMTP_NOOP_CMD	7
-# define SMTP_QUIT_CMD	8
-# define SMTP_HELP_CMD	9
+#define SMTP_ERROR_CMD	0
+#define SMTP_HELO_CMD	1
+#define SMTP_MAIL_CMD	2
+#define SMTP_RCPT_CMD	3
+#define SMTP_DATA_CMD	4
+#define SMTP_RSET_CMD	5
+#define SMTP_VRFY_CMD	6
+#define SMTP_NOOP_CMD	7
+#define SMTP_QUIT_CMD	8
+#define SMTP_HELP_CMD	9
 
-static COMMAND SMTP_CMD[] = 
+static CMailServerCommand SMTP_CMD[10] = 
 {
 	{ NULL,	 SMTP_ERROR_CMD},
 	{"helo", SMTP_HELO_CMD},
@@ -28,14 +31,13 @@ static COMMAND SMTP_CMD[] =
 	{"help", SMTP_HELP_CMD}	
 };
 
-
 // CSMTPClient command target
 
 class CSMTPClient : public CAsyncSocket
 {
 private:
 	CDialog* m_parrent;
-	MailHeader* m_mailHdr; //Mail dinh gui di luu tru vao day
+	//MailHeader* m_mailHdr; //Mail dinh gui di luu tru vao day
 	CString m_ClientAddress;
 	CString	m_sQueue; //Day luu thong tin khi du lieu chua hoan toan duoc gui toi server
 	char m_Buffer[MAX_SMTP_BUFFER_SIZE]; //Bo dem dung de luu thong tin khi du lieu gui den server
@@ -45,6 +47,7 @@ private:
 	BOOL isLocked;
 
 public:
+
 	INT SmtpProcessId() const { return smtpProcessId; }
 	void SmtpProcessId(INT val) { smtpProcessId = val; }
 

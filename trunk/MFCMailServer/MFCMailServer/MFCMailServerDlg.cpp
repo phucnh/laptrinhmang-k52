@@ -57,7 +57,7 @@ CMFCMailServerDlg::CMFCMailServerDlg(CWnd* pParent /*=NULL*/)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	//AfxSocketInit();
-	StartMailServer();
+	//StartMailServer();
 }
 
 
@@ -66,6 +66,8 @@ void CMFCMailServerDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_LBString(pDX, IDC_LIST1, m_log);
 	DDX_Control(pDX, IDC_LIST1, m_listBoxCtrl);
+
+	//StartMailServer();
 }
 
 BEGIN_MESSAGE_MAP(CMFCMailServerDlg, CDialog)
@@ -112,6 +114,10 @@ BOOL CMFCMailServerDlg::OnInitDialog()
 
 	// TODO: Add extra initialization here
 	m_isIconShow = FALSE;
+
+	InitStatusbar();
+
+	StartMailServer();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -205,9 +211,13 @@ BOOL CMFCMailServerDlg::StartMailServer()
 	pop3RequestId = 0;
 	nPop3ConnectionsCount = 0;
 
+	UpdateStatusbar();
+
 	WriteLog("======================================================");
 	WriteLog("%s - SMTP Server started. Listening on port 25");
 	WriteLog("%s - POP3 Server started. Listening on port 110");
+
+	return TRUE;
 }
 
 void CMFCMailServerDlg::WriteLog( CString message )
@@ -215,4 +225,78 @@ void CMFCMailServerDlg::WriteLog( CString message )
 	UpdateData(TRUE);
 	m_listBoxCtrl.AddString(message);
 	UpdateData(FALSE);
+}
+
+void CMFCMailServerDlg::UpdateStatusbar()
+{
+	CString	strSMTPConnections;
+	CString	strPOP3Connections;
+
+	strSMTPConnections.Format("SMTP Connections : %i ", nSmtpConnectionsCount);
+	strPOP3Connections.Format("POP3 Connections : %i ", nPop3ConnectionsCount);
+
+	m_wndStatusBar.SetText(strSMTPConnections, SBP_SMTPCONNECTION, 0);
+	m_wndStatusBar.SetText(strPOP3Connections, SBP_POP3CONNECTION, 0);
+	m_wndStatusBar.SetText("Mail Server", SBP_STATUS, SBT_NOBORDERS);
+}
+
+void CMFCMailServerDlg::InitStatusbar()
+{
+	CRect rcDialog;
+	GetWindowRect(&rcDialog);
+	rcDialog.top = rcDialog.bottom - SB_HEIGHT;
+
+	m_wndStatusBar.Create(WS_CHILD | WS_BORDER | WS_VISIBLE, rcDialog, this, AFX_IDW_STATUS_BAR);
+
+	SBPartsSetting(rcDialog.Width(), rcDialog.Height());
+
+	UpdateStatusbar();
+}
+
+void CMFCMailServerDlg::SBPartsSetting(int cxParent, int cyParent)
+{
+	int	nWidths[SBP_NUMPARTS];
+
+	CString	strSMTPConnections;
+	CString	strPOP3Connections;
+	strSMTPConnections.Format("SMTP Connections : %i ", 0x00);
+	strPOP3Connections.Format("POP3 Connections : %i ", 0x00);
+
+	int nSMTPConnectionWidth = m_wndStatusBar.GetDC()->GetTextExtent(strSMTPConnections).cx;
+	int nPOP3ConnectionWidth = m_wndStatusBar.GetDC()->GetTextExtent(strPOP3Connections).cx;
+	//int nTimerWidth = m_wndStatusBar.GetDC()->GetTextExtent(CString("88:88 PM    ")).cx;
+
+	nWidths[SBP_STATUS] = cxParent - 50 - nSMTPConnectionWidth- nPOP3ConnectionWidth;
+	nWidths[SBP_SMTPCONNECTION] = nSMTPConnectionWidth + nWidths[SBP_STATUS];
+	nWidths[SBP_POP3CONNECTION] = nPOP3ConnectionWidth + nWidths[SBP_SMTPCONNECTION];
+
+	m_wndStatusBar.SetMinHeight(SB_HEIGHT);
+	m_wndStatusBar.SetParts(SBP_NUMPARTS, nWidths);
+}
+
+void CMFCMailServerDlg::StopMailServer()
+{
+	if (serverSmtpSocket)
+	{
+		serverSmtpSocket->Close();
+		delete serverSmtpSocket;
+		serverSmtpSocket = NULL;
+
+		CString message;
+		message.Format(_T("%s - SMTP Server stopped."),GetCurrentTimeStr());
+		WriteLog("%s - SMTP Server stopped.");
+	}
+
+	if (serverPop3Socket)
+	{
+		serverPop3Socket->Close();
+		delete serverPop3Socket;
+		serverPop3Socket = NULL;
+
+		CString message;
+		message.Format(_T("%s - POP3 Server stopped."),GetCurrentTimeStr());
+		WriteLog("%s - SMTP Server stopped.");
+	}
+
+	UpdateStatusbar();
 }

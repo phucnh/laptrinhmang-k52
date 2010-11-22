@@ -13,10 +13,17 @@ CClientSocket::CClientSocket()
 	this->pop3ProcessId = -1;
 }
 
-CClientSocket::CClientSocket( CDialog* parrentDlg )
+CClientSocket::CClientSocket( CMFCMailServerDlg* parrentDlg )
 {
 	this->m_parrent = parrentDlg;
-	this->pop3ProcessId = -1;
+
+	//phuc add 20101122
+	nPop3ConnectionsCount++;
+	this->pop3ProcessId = nPop3ConnectionsCount;
+	this->m_parrent->UpdateStatusbar();
+
+	m_POP3ConnectionsList.AddTail(this);
+
 
 }
 CClientSocket::~CClientSocket()

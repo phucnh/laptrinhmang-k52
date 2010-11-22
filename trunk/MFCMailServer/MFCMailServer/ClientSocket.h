@@ -1,4 +1,6 @@
-#pragma once
+#include "stdafx.h"
+#include "Global.h"
+#include "MFCMailServerDlg.h"
 
 // CClientSocket command target
 #define MAX_POP3_BUFFER_SIZE 1024
@@ -14,9 +16,9 @@
 #define RSET_CMD 9
 #define TOP_CMD 10
 
-static COMMAND POP3_CMD[] = 
+static CMailServerCommand POP3_CMD[11] = 
 {
-	{ NULL,	 CMDERROR},
+	{NULL, CMDERROR},
 	{"user", USER_CMD},
 	{"pass", PASS_CMD},
 	{"quit", QUIT_CMD},
@@ -29,12 +31,14 @@ static COMMAND POP3_CMD[] =
 	{"top",  TOP_CMD}
 };	
 
+#pragma once
+
 //Lop socket client de giao tiep voi POP 3
 
 class CClientSocket : public CAsyncSocket
 {
 private:
-	CDialog* m_parrent;
+	CMFCMailServerDlg* m_parrent;
 	CString m_username;
 	CString m_password;
 	UINT m_totalMail;
@@ -50,7 +54,7 @@ public:
 	void Pop3ProcessId(INT val) { pop3ProcessId = val; }
 
 	CClientSocket();
-	CClientSocket(CDialog* parrentDlg);
+	CClientSocket(CMFCMailServerDlg* parrentDlg);
 
 	virtual ~CClientSocket();
 

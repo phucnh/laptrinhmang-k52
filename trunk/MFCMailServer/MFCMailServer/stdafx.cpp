@@ -19,5 +19,16 @@ INT nSmtpConnectionsCount;
 INT settingPop3Port = 110;
 INT settingSmtpPort = 25;
 
+CSMTPProcessList m_SMTPConnectionsList;
+CPOP3ProcessList m_POP3ConnectionsList;
+
 //Bien cua DAL
 DAL* dal;
+
+CString GetCurrentTimeStr()
+{
+	CTime	tDateTime = CTime::GetCurrentTime();;
+	return	tDateTime.Format("%m/%d/%Y %H:%M:%S");
+}
+
+

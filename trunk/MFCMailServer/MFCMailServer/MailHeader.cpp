@@ -1,12 +1,10 @@
 #include "StdAfx.h"
-#include "MailMessage.h"
+#include "MailHeader.h"
 #include <string>
 #include <cstring>
 
 CString  sql;
 CRecordset *dataset;
-
-#pragma region MailHeader
 
 MailHeader::MailHeader( 
 					   CString _from,
@@ -133,4 +131,3 @@ bool MailHeader::InsertMail( MailHeader* mailHeader )
 
 	return dal->ExecuteSQL(sql);
 }
-#pragma endregion MailHeader
