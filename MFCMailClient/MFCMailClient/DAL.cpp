@@ -10,6 +10,7 @@
 
 CDAL::CDAL()
 {
+	_connectionString = _T("DSN=MySqlServerConnection;UID=sa;PWD=sa;APP=Microsoft\x00ae Visual Studio\x00ae 2008;WSID=PHUC-PC;DATABASE=MailClient;Network=DBMSSOCN");
 }
 
 CDAL::~CDAL()
@@ -21,7 +22,9 @@ BOOL CDAL::ExecuteSQL( CString sql )
 	CDatabase *db = new CDatabase();
 	try
 	{
-		db->Open(_T("LTMTEST"), FALSE, FALSE, _T("ODBC;"), FALSE);
+		//db->m_strConnect = _connectionString; db->m_hdbc
+		//db->Open(_T("LTMTEST"), FALSE, FALSE, _T("ODBC;"), FALSE);
+		db->OpenEx(_connectionString);
 		db->ExecuteSQL(sql);
 		db->Close();
 		return TRUE;
@@ -39,7 +42,8 @@ CRecordset* CDAL::GetRecordSet( CString sql )
 	CDatabase *db=new CDatabase();
 	CRecordset *data;
 
-	db->Open(_T("LTMSQL"), FALSE, FALSE, _T("ODBC;"), FALSE);
+	//db->Open(_T("LTMSQL"), FALSE, FALSE, _T("ODBC;"), FALSE);
+	db->OpenEx(_connectionString);
 
 	data = new CRecordset(db);
 

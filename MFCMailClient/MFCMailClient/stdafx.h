@@ -47,6 +47,10 @@
 #include <afxdb.h>				// MFC support for Database
 #include <afxdao.h>				// MFC support for Database
 
+#include "Pop3.h"
+#include "SMTP.h"
+#include "MailMessage.h"
+
 
 
 
@@ -63,5 +67,12 @@
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
 #endif
+
+//add global variables in here
+extern CPop3 globalPop3;
+extern CSMTP globalSmtp;
+extern CArray<MailHeader,MailHeader> globalMailList;
+extern CString globalUsername;
+extern CString globalPassword;
 
 

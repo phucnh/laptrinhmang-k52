@@ -2,6 +2,7 @@
 
 #pragma once
 #include "User.h"
+#include "MailMessage.h"
 
 public class CUserEntitiesServices
 {
@@ -26,6 +27,8 @@ public:
 
 };
 
+
+
 public class CMailHeaderServices
 {
 private:
@@ -35,13 +38,14 @@ private:
 	CString sqlCommand2;
 
 public:
-	CArray<MailHeader,&MailHeader>* GetAllMail();
+	CArray<MailHeader,MailHeader>* GetAllMail();
 	MailHeader* GetByMailId(INT mailId);
-	CArray<MailHeader,&MailHeader>* GetByUserId(INT userId);
-	CArray<MailHeader,&MailHeader>* GetByGroupId(INT groupId);
-	CArray<MailHeader,&MailHeader>* GetByUserIdGroupId(INT userId, INT groupId);
+	CArray<MailHeader,MailHeader>* GetByUserId(INT userId);
+	CArray<MailHeader,MailHeader>* GetByGroupId(INT groupId);
+	CArray<MailHeader,MailHeader>* GetByUserIdGroupId(INT userId, INT groupId);
 };
 
+#pragma region "CAddressBookServices"
 public class CAddressBookServices
 {
 private:
@@ -51,7 +55,7 @@ private:
 
 
 public:
-	CArray<CAddressBook,&CAddressBook>* GetByUserId(INT userId);
+	CArray<CAddressBook,CAddressBook>* GetByUserId(INT userId);
 };
 
 public class CGroupServices
@@ -63,3 +67,4 @@ private:
 public:
 	CGroup* GetByGroupId(INT groupId);
 };
+#pragma endregion "CAddressBookServices"

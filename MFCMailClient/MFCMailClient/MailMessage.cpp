@@ -1,37 +1,6 @@
 #include "StdAfx.h"
 #include "MailMessage.h"
 
-#pragma region MailMessage
-
-MailMessage::MailMessage( 
-						 CString mailId, 
-						 CString fromAdd, 
-						 CString toAdd, 
-						 CString mailHeader, 
-						 CString mailSubject, 
-						 CString body, 
-						 CTime date
-						 )
-{
-	this->_mailId = mailId;
-	this->_fromAdd = fromAdd;
-	this->_toAdd = toAdd;
-	this->_mailHeader = mailHeader;
-	this->_mailSubject = mailSubject;
-	this->_body = body;
-	this->_date = date;
-}
-
-MailMessage::MailMessage()
-{
-
-}
-MailMessage::~MailMessage(void)
-{
-}
-
-#pragma endregion MailMessage
-
 #pragma region MailHeader
 MailHeader::MailHeader( 
 					   CString _from,
