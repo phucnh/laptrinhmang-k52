@@ -16,6 +16,10 @@ enum STATUSBAR_PARTS{
 	SBP_NUMPARTS
 };
 
+//Bien toan cuc:
+extern CStringList		AccountList;
+extern CString			sMailStoreDirectory;
+
 
 // CMFCMailServerDlg dialog
 class CMFCMailServerDlg : public CDialog
@@ -23,6 +27,7 @@ class CMFCMailServerDlg : public CDialog
 // Construction
 public:
 	CMFCMailServerDlg(CWnd* pParent = NULL);	// standard constructor
+	CListBox	m_lstLog;
 
 // Dialog Data
 	enum { IDD = IDD_MFCMAILSERVER_DIALOG };

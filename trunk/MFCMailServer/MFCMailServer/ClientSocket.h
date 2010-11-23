@@ -48,6 +48,7 @@ private:
 	CString m_ClientRequest; //Du lieu request tu client gui den server
 	INT pop3ProcessId;
 	BOOL isLocked;
+	CStringList	m_MailboxInfo;
 
 public:
 	INT Pop3ProcessId() const { return pop3ProcessId; }
@@ -59,8 +60,12 @@ public:
 	virtual ~CClientSocket();
 
 	void Initialize();
-	void CloseSocket();
+	void SendString(const void *lpBuf, int nBufLen, int nFlags);
+	void GetMailboxInfo(CString sMailbox);
+	CString GetMessageInfo(UINT nID, int nField);
 	void Reply(CString _message);
+	void Reply(LPSTR format,...);
+
 
 	INT GetPop3Command(CString* requestMessage);
 	void ProcessCommand(INT );
@@ -77,6 +82,8 @@ public:
 
 	virtual void OnReceive(int nErrorCode);
 	virtual void OnClose(int nErrorCode);
+	void CloseSocket();
+
 };
 
 
