@@ -19,8 +19,8 @@ MailUser::MailUser( CString name,CString pass )
 }
 MailUser::MailUser()
 {
-	this->_username=L"";
-	this->_password=L"";
+	this->_username=_T("");
+	this->_password=_T("");
 	dal=new DAL();
 }
 
