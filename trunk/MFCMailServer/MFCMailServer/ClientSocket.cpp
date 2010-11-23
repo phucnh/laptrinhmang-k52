@@ -25,7 +25,9 @@ CClientSocket::CClientSocket( CMFCMailServerDlg* parrentDlg )
 
 	m_POP3ConnectionsList.AddTail(this);
 
-
+	//phuc add 20101123
+	Initialize();
+	//end phuc add 20101123
 }
 CClientSocket::~CClientSocket()
 {
@@ -34,6 +36,8 @@ CClientSocket::~CClientSocket()
 
 	nPop3ConnectionsCount--;
 	this->m_parrent->UpdateStatusbar();
+
+	if (m_user != NULL)	delete m_user;
 }
 
 
@@ -63,8 +67,9 @@ void CClientSocket::OnReceive(int nErrorCode)
 void CClientSocket::Initialize()
 {
 	m_ClientRequest = "";
-	m_username = "";
-	m_password = "";
+	m_totalMail = 0;
+	m_totalSize = 0;
+	m_user = NULL;
 }
 
 void CClientSocket::OnClose(int nErrorCode)
@@ -117,11 +122,13 @@ INT CClientSocket::GetPop3Command( CString* requestMessage )
 
 void CClientSocket::ProcessUSERCommand()
 {
-	if (!m_username.IsEmpty())
+	/*if ((m_user == NULL) &&
+		(m_user->_username.IsEmpty())
+		)
 	{
 		Reply("-ERR Username already specified.");
 		return;
-	}
+	}*/
 
 	CString sUserInfo = m_ClientRequest;
 	sUserInfo.Delete(0,4);
@@ -134,14 +141,20 @@ void CClientSocket::ProcessUSERCommand()
 		return;
 	}
 
-	/*if (GetAccountInfo(sUserInfo, 1) == "")
-	{
-		Reply("-ERR There's no %s user info.", sUserInfo);
-		return;
-	}*/
+	//m_user = GetUserByUsername(sUserInfo);
+	m_user = new MailUser("PHUC","12345");
 
-	Reply("+OK %s is a valid mailbox. Please enter password.", sUserInfo);
-	m_username = sUserInfo;
+	if (m_user != NULL)
+	{
+		sUserInfo = m_user->_username;
+	}
+
+	CString returnMsg;
+	returnMsg.Format("+OK %s is a valid mailbox. Please enter password.", sUserInfo);
+	m_parrent->WriteLog(returnMsg);
+	returnMsg.ReleaseBuffer();
+	returnMsg+="\r\n";
+	Reply(returnMsg);
 }
 
 void CClientSocket::ProcessERROR()
@@ -151,7 +164,9 @@ void CClientSocket::ProcessERROR()
 
 void CClientSocket::ProcessPASSCommand()
 {
-	if (m_username.IsEmpty())
+	if ((m_user == NULL) &&
+		(m_user->_username.IsEmpty())
+		)
 	{
 		Reply("-ERR No user specified. Uses \"USER\" command first.");
 		return;
@@ -168,16 +183,12 @@ void CClientSocket::ProcessPASSCommand()
 		return;
 	}
 
-	/*if (GetAccountInfo(m_username, 3) != sPassInfo)
-	{
-		Reply("-ERR Invalid password.");
-		Initialize();
-		return;
-	}*/
-
-	GetMailboxInfo(m_username);
-	Reply("+OK %s's mailbox has %d messages (%d octets)", m_username, m_totalMail, m_totalSize);
-	m_password = sPassInfo;
+	CString returnMsg;
+	returnMsg.Format("+OK %s's mailbox has %d messages (%d octets)", m_user->_username, m_totalMail, m_totalSize);
+	this->m_parrent->WriteLog(returnMsg);
+	returnMsg.ReleaseBuffer();
+	returnMsg+="\r\n";
+	Reply(returnMsg);
 }
 
 void CClientSocket::ProcessLISTCommand()
@@ -410,4 +421,12 @@ void CClientSocket::CloseSocket()
 void CClientSocket::Reply( CString _message )
 {
 	Send(_message,_message.GetLength(),0);
+}
+
+MailUser* CClientSocket::GetUserByUsername( CString username )
+{
+	MailUser* currentUser = new MailUser();
+	currentUser = currentUser->GetUserByUsername(username);
+
+	return currentUser;
 }

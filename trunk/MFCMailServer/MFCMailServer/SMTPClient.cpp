@@ -25,6 +25,10 @@ CSMTPClient::CSMTPClient( CMFCMailServerDlg* dialog)
 	this->m_parrent->UpdateStatusbar();
 
 	m_SMTPConnectionsList.AddTail(this);
+
+	//phuc add 20101123
+	Initialize();
+	//end phuc add 20101123
 }
 CSMTPClient::~CSMTPClient()
 {

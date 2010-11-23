@@ -32,6 +32,7 @@ static CMailServerCommand POP3_CMD[11] =
 };	
 
 #pragma once
+#include "MailUser.h"
 
 //Lop socket client de giao tiep voi POP 3
 
@@ -39,8 +40,7 @@ class CClientSocket : public CAsyncSocket
 {
 private:
 	CMFCMailServerDlg* m_parrent;
-	CString m_username;
-	CString m_password;
+	MailUser* m_user;
 	UINT m_totalMail;
 	UINT m_totalSize;
 	CString	m_sQueue; //Day luu thong tin khi du lieu chua hoan toan duoc gui toi server
@@ -63,6 +63,7 @@ public:
 	void SendString(const void *lpBuf, int nBufLen, int nFlags);
 	void GetMailboxInfo(CString sMailbox);
 	CString GetMessageInfo(UINT nID, int nField);
+	MailUser* GetUserByUsername(CString username);
 	void Reply(CString _message);
 	void Reply(LPSTR format,...);
 
