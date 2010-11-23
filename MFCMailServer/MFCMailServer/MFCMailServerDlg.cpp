@@ -14,6 +14,8 @@
 #define new DEBUG_NEW
 #endif
 
+CStringList		AccountList;
+CString			sMailStoreDirectory;
 
 // CAboutDlg dialog used for App About
 
@@ -32,6 +34,33 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 };
+
+CString GetAccountInfo(CString sUsername, int iIndex)
+{
+	CString sReturn = "";
+	for (POSITION pos = AccountList.GetHeadPosition(); pos != NULL;)
+	{
+		CString sTemp = AccountList.GetNext(pos);
+		int i = sTemp.Find(";");
+		int j = sTemp.Find(";", i+1);
+		if ((i>0) && (j>0))
+		{
+			CString s1 = sTemp.Left(i);
+			CString s2 = sTemp.Mid(i+1, j-i-1);
+			CString s3 = sTemp.Mid(j+1, sTemp.GetLength()-j-2);
+			if (s2.CompareNoCase(sUsername) == 0)
+			{
+				switch (iIndex)
+				{
+				case 1 : return s1;
+				case 2 : return s2;
+				case 3 : return s3;
+				}
+			}
+		}
+	}
+	return sReturn;
+}
 
 CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
 {
