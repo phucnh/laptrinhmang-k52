@@ -19,7 +19,8 @@ CClientSocket::CClientSocket( CMFCMailServerDlg* parrentDlg )
 
 	//phuc add 20101122
 	nPop3ConnectionsCount++;
-	this->pop3ProcessId = nPop3ConnectionsCount;
+	pop3RequestId++;
+	this->pop3ProcessId = pop3RequestId;
 	this->m_parrent->UpdateStatusbar();
 
 	m_POP3ConnectionsList.AddTail(this);
@@ -67,6 +68,10 @@ void CClientSocket::OnClose(int nErrorCode)
 	this->m_parrent->WriteLog(message);
 	//end phuc add 20101123
 	CAsyncSocket::OnClose(nErrorCode);
+
+	//phuc add 20101123
+	delete this;
+	//end phuc add 20101123
 }
 
 void CClientSocket::ProcessCommand( INT _cmdCode )
@@ -158,4 +163,9 @@ void CClientSocket::Initialize()
 	m_ClientRequest = "";
 	m_username = "";
 	m_password = "";
+}
+
+void CClientSocket::Reply( CString _message )
+{
+	Send(_message,_message.GetLength(),0);
 }

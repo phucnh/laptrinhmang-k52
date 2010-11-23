@@ -20,7 +20,8 @@ CSMTPClient::CSMTPClient( CMFCMailServerDlg* dialog)
 
 	//phuc add 20101123
 	nSmtpConnectionsCount++;
-	this->smtpProcessId = nSmtpConnectionsCount;
+	smtpRequestId++;
+	this->smtpProcessId = smtpRequestId;
 	this->m_parrent->UpdateStatusbar();
 
 	m_SMTPConnectionsList.AddTail(this);
@@ -68,6 +69,10 @@ void CSMTPClient::OnClose(int nErrorCode)
 	//end phuc add 20101123
 
 	CAsyncSocket::OnClose(nErrorCode);
+
+	//phuc add 20101123
+	delete this;
+	//end phuc add 20101123
 }
 
 INT CSMTPClient::GetSMTPCommand( CString* requestMessage )
@@ -134,7 +139,7 @@ void CSMTPClient::ProcessCommand( INT cmdCode)
 
 void CSMTPClient::Reply( CString msg )
 {
-	Send(&msg,msg.GetLength(),0);
+	Send(msg,msg.GetLength(),0);
 }
 
 void CSMTPClient::ProcessERRORCommand()
@@ -145,7 +150,7 @@ void CSMTPClient::ProcessERRORCommand()
 void CSMTPClient::ProcessHELOCommand()
 {
 	CString _returnMsg;
-	_returnMsg.Format("250 %s Please to meet you.", m_ClientAddress); // TODO: May co the sua cho no pro hon :D
+	_returnMsg.Format(_T("250 %s Nice to meet you."), m_ClientAddress); // TODO: May co the sua cho no pro hon :D
 	Reply(_returnMsg);
 }
 

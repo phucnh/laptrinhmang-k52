@@ -213,9 +213,11 @@ BOOL CMFCMailServerDlg::StartMailServer()
 
 	UpdateStatusbar();
 
-	WriteLog("======================================================");
-	WriteLog("%s - SMTP Server started. Listening on port 25");
-	WriteLog("%s - POP3 Server started. Listening on port 110");
+	CString message;
+	message.Format(_T("%s - SMTP Server started. Listening on port 25"),GetCurrentTimeStr());
+	WriteLog(message);
+	message.Format(_T("%s - POP3 Server started. Listening on port 110"),GetCurrentTimeStr());
+	WriteLog(message);
 
 	return TRUE;
 }
@@ -299,4 +301,10 @@ void CMFCMailServerDlg::StopMailServer()
 	}
 
 	UpdateStatusbar();
+}
+
+void CMFCMailServerDlg::OnDestroy()
+{
+	CDialog::OnDestroy();
+	StopMailServer();
 }

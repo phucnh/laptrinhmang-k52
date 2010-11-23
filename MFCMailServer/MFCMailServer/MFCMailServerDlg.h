@@ -6,14 +6,16 @@
 #include "afxwin.h"
 #include "Resource.h"
 
-//Add global const 
+
 #define SB_HEIGHT 20
+#define TOOLBAR_HEIGHT	42
 enum STATUSBAR_PARTS{
 	SBP_STATUS = 0,
 	SBP_SMTPCONNECTION,
 	SBP_POP3CONNECTION,
 	SBP_NUMPARTS
 };
+
 
 // CMFCMailServerDlg dialog
 class CMFCMailServerDlg : public CDialog
@@ -40,6 +42,7 @@ protected:
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
+	afx_msg void OnDestroy();
 	DECLARE_MESSAGE_MAP()
 
 private:

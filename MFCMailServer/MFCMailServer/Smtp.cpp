@@ -27,14 +27,14 @@ CSmtp::~CSmtp()
 
 void CSmtp::OnAccept(int nErrorCode)
 {
-	CSMTPClient socketClient;
+	CSMTPClient* socketClient = new CSMTPClient(parrentDlg);
 
-	if (Accept(socketClient))
+	if (Accept(*socketClient))
 	{
 		CString	sMsg("+OK SMTP Mail server connected"); // TODO: Implement message in here
 		sMsg.ReleaseBuffer();
 		sMsg+="\r\n";
-		socketClient.Send(sMsg,sMsg.GetLength(),0);
+		socketClient->Send(sMsg,sMsg.GetLength(),0);
 
 		//phuc add 20101121
 		this->parrentDlg->WriteLog(sMsg);
