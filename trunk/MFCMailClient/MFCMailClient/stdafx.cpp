@@ -5,4 +5,11 @@
 
 #include "stdafx.h"
 
+//Global variables
+CPop3 globalPop3;
+CSMTP globalSmtp;
+CArray<MailHeader,MailHeader> globalMailList;
+CString globalUsername;
+CString globalPassword;
+
 

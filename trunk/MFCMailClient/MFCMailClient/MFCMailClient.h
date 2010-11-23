@@ -34,8 +34,3 @@ public:
 };
 
 extern CMFCMailClientApp theApp;
-extern CPop3 globalPop3;
-extern CSMTP globalSmtp;
-extern CArray<MailHeader,MailHeader> globalMailList;
-extern CString globalUsername;
-extern CString globalPassword;

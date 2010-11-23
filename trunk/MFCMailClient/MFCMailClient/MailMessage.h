@@ -1,3 +1,6 @@
+#include "stdafx.h"
+#ifndef CLASS_H_
+#define CLASS_H_
 #pragma once
 
 public class MailHeader
@@ -32,3 +35,5 @@ public:
 	MailHeader(void);
 	~MailHeader(void);
 };
+
+#endif
