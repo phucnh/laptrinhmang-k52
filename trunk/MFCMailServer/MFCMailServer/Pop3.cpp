@@ -21,13 +21,13 @@ CPop3::~CPop3()
 
 void CPop3::OnAccept(int nErrorCode)
 {
-	CClientSocket socketClient;
-	if (Accept(socketClient))
+	CClientSocket* socketClient = new CClientSocket(this->parrentDlg);
+	if (Accept(*socketClient))
 	{
 		CString	sMsg("+OK Mail server ready"); //TODO: Implement message in here
 		sMsg.ReleaseBuffer();
 		sMsg+="\r\n";
-		socketClient.Send(sMsg,sMsg.GetLength(),0);
+		socketClient->Send(sMsg,sMsg.GetLength(),0);
 
 		//phuc add 20101121
 		this->parrentDlg->WriteLog(sMsg);

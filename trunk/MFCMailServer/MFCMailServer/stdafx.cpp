@@ -6,15 +6,15 @@
 #include "stdafx.h"
 #include "Smtp.h"
 
-INT pop3RequestId;
-INT smtpRequestId;
+INT pop3RequestId = 0;
+INT smtpRequestId = 0;
 CString logMessage;
 
 CPop3* serverPop3Socket;
-INT nPop3ConnectionsCount;
+INT nPop3ConnectionsCount = 0;
 
 CSmtp* serverSmtpSocket;
-INT nSmtpConnectionsCount;
+INT nSmtpConnectionsCount = 0;
 
 INT settingPop3Port = 110;
 INT settingSmtpPort = 25;
