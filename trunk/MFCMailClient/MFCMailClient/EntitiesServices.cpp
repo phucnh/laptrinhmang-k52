@@ -515,7 +515,7 @@ CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByUserId( INT userId )
 
 							listMailHeader->Add(*mailheader);
 
-							
+							dataMail->MoveNext();
 
 						}
 						return listMailHeader;
@@ -580,7 +580,8 @@ CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByGroupId( INT groupId )
 							mailheader=new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,RealAttach);
 
 							listMailHeader->Add(*mailheader);
-
+							
+							dataMail->MoveNext();
 							
 
 						}
@@ -651,7 +652,7 @@ CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByUserIdGroupId( INT use
 
 							listMailHeader->Add(*mailheader);
 
-							
+							dataMail->MoveNext();	
 
 						}
 						return listMailHeader;
