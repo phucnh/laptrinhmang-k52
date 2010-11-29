@@ -3,6 +3,7 @@
 
 CUserEntitiesServices::CUserEntitiesServices(void)
 {
+	dal = new CDAL();
 }
 
 CUser* CUserEntitiesServices::InsertNewUser( CUser* user )
@@ -18,14 +19,14 @@ CUser* CUserEntitiesServices::InsertNewUser( CUser* user )
 		user->EmailAddress(),
 		user->DisplayName()
 		);
-	sqlCommand2.Format(_T("SELECT * From [User] where Username='%s' and EmailAddress='%s' ; " ),
-		user->Username(),
-		user->EmailAddress());
+
+	sqlCommand2.Format(_T("SELECT * From [User] where Username='%s'"),
+		user->Username());
 	
 	try
 	{	
 		
-		dal->ExecuteSQL(sqlCommand1);
+		if (!dal->ExecuteSQL(sqlCommand1)) return NULL;
 
 		dataUser=dal->GetRecordSet(sqlCommand2);
 		dataUser->GetFieldValue(_T("UserID"),userid);
