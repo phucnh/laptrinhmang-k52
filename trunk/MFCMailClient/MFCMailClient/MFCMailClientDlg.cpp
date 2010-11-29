@@ -294,9 +294,9 @@ void CMFCMailClientDlg::OnAcountAccount()
 void CMFCMailClientDlg::CreateGroupTree()
 {
 
-	/*m_GroupTree.ModifyStyle(m_GroupTree.GetStyle(),WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER
+	m_GroupTree.ModifyStyle(m_GroupTree.GetStyle(),WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER
 		| TVS_HASBUTTONS | TVS_LINESATROOT | TVS_HASLINES
-		| TVS_DISABLEDRAGDROP);*/
+		| TVS_DISABLEDRAGDROP);
 
 	CImageList m_ImageList;
 	m_ImageList.Create(IDB_BITMAP_EMAIL,16,0,RGB(0,128,128));

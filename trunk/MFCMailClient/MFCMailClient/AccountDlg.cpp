@@ -7,6 +7,8 @@
 #include "Pop3.h"
 #include "MailMessage.h"
 #include "MFCMailClientDlg.h"
+#include "User.h"
+#include "EntitiesServices.h"
 
 
 // CAccountDlg dialog
@@ -83,6 +85,14 @@ void CAccountDlg::OnBnClickedOk()
 	globalPop3.Username(_username);
 	globalPop3.Password(_password);
 	globalPop3.Connect();
+
+	CUserEntitiesServices userService;
+	CUser *user = new CUser();
+	user->Username(globalUsername);
+	user->Password(globalPassword);
+
+	userService.InsertNewUser(user);
+
 	OnCancel();
 	UpdateData(FALSE);
 }
