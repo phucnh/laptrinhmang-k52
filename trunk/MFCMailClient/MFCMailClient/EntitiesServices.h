@@ -1,8 +1,7 @@
 #include "DAL.h"
-
+#include "MailMessage.h"
 #pragma once
 #include "User.h"
-#include "MailMessage.h"
 
 public class CUserEntitiesServices
 {
@@ -23,11 +22,9 @@ public:
 	BOOL UpdateUserByUsername(CString username,CUser* user);
 
 	BOOL Login(CString username, CString password);
-	CString* ChangePassWord(INT userId,CString newpass);
+	CString ChangePassWord(INT userId,CString newpass);
 
 };
-
-
 
 public class CMailHeaderServices
 {
@@ -38,14 +35,13 @@ private:
 	CString sqlCommand2;
 
 public:
-	CArray<MailHeader,MailHeader>* GetAllMail();
+	CArray<MailHeader,MailHeader&>* GetAllMail();
 	MailHeader* GetByMailId(INT mailId);
-	CArray<MailHeader,MailHeader>* GetByUserId(INT userId);
-	CArray<MailHeader,MailHeader>* GetByGroupId(INT groupId);
-	CArray<MailHeader,MailHeader>* GetByUserIdGroupId(INT userId, INT groupId);
+	CArray<MailHeader,MailHeader&>* GetByUserId(INT userId);
+	CArray<MailHeader,MailHeader&>* GetByGroupId(INT groupId);
+	CArray<MailHeader,MailHeader&>* GetByUserIdGroupId(INT userId, INT groupId);
 };
 
-#pragma region "CAddressBookServices"
 public class CAddressBookServices
 {
 private:
@@ -55,7 +51,7 @@ private:
 
 
 public:
-	CArray<CAddressBook,CAddressBook>* GetByUserId(INT userId);
+	CArray<CAddressBook,CAddressBook&>* GetByUserId(INT userId);
 };
 
 public class CGroupServices
@@ -67,4 +63,3 @@ private:
 public:
 	CGroup* GetByGroupId(INT groupId);
 };
-#pragma endregion "CAddressBookServices"

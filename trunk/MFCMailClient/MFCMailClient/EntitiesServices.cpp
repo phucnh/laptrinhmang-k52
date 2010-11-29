@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "EntitiesServices.h"
 
-#pragma region "CUserServices"
 CUserEntitiesServices::CUserEntitiesServices(void)
 {
 }
@@ -13,13 +12,13 @@ CUser* CUserEntitiesServices::InsertNewUser( CUser* user )
 	CUser* userreturn;
 	if (user == NULL)	return NULL;
 
-	sqlCommand1.Format(_T("INSERT INTO [User] (Username, Password, EmailAddress, DisplayName) VALUES (%s,%s,%s,%s)"),
+	sqlCommand1.Format(_T("INSERT INTO [User] (Username, Password, EmailAddress, DisplayName) VALUES ('%s','%s','%s','%s') ;"),
 		user->Username(),
 		user->Password(),
 		user->EmailAddress(),
 		user->DisplayName()
 		);
-	sqlCommand2.Format(_T("SELECT * From [User] where Username='%s' and EmailAddress='%s'"),
+	sqlCommand2.Format(_T("SELECT * From [User] where Username='%s' and EmailAddress='%s' ; " ),
 		user->Username(),
 		user->EmailAddress());
 	
@@ -45,7 +44,7 @@ CUser* CUserEntitiesServices::InsertNewUser( CUser* user )
 	}
 
 	userreturn->Username(username);
-	userreturn->UserId(atoi(userid));
+	userreturn->UserId(_tstoi(userid)); //CString to UINT
 	userreturn->Password(password);
 	userreturn->EmailAddress(emailaddress);
 	userreturn->DisplayName(displayname);
@@ -58,7 +57,7 @@ CUser* CUserEntitiesServices::GetByUserId( INT userId )
 	CUser *userreturn;
 	CString userid,username,password,emailaddress,displayname;
 	
-	sqlCommand2.Format(_T("SELECT * From [User] where UserID=%d"),userId);
+	sqlCommand2.Format(_T("SELECT * From [User] where UserID=%d ;"),userId);
 	
 	try
 	{
@@ -74,27 +73,30 @@ CUser* CUserEntitiesServices::GetByUserId( INT userId )
 
 	else
 			{
-
-			
-			dataUser=dal->GetRecordSet(sqlCommand2);
-			dataUser->GetFieldValue(_T("UserID"),userid);
-			dataUser->GetFieldValue(_T("Username"),username);
-			dataUser->GetFieldValue(_T("Password"),password);
-			dataUser->GetFieldValue(_T("EmailAddress"),emailaddress);
-			dataUser->GetFieldValue(_T("DisplayName"),displayname);
-			
-			return userreturn;
-
+				dataUser->GetFieldValue(_T("UserID"),userid);
+				dataUser->GetFieldValue(_T("Username"),username);
+				dataUser->GetFieldValue(_T("Password"),password);
+				dataUser->GetFieldValue(_T("EmailAddress"),emailaddress);
+				dataUser->GetFieldValue(_T("DisplayName"),displayname);
+				
+				userreturn->Username(username);
+				userreturn->UserId(_tstoi(userid)); //CString to UINT
+				userreturn->Password(password);
+				userreturn->EmailAddress(emailaddress);
+				userreturn->DisplayName(displayname);
+				
+				return userreturn;
 			}
 
-	}
+	
+}
 
-CUser* CUserEntitiesServices::GetByUsername( CString _username )
+CUser* CUserEntitiesServices::GetByUsername( CString username )
 {
 	CUser *userreturn;
-	CString userid,username,password,emailaddress,displayname;
+	CString userid,usernamereturn,password,emailaddress,displayname;
 
-	sqlCommand2.Format(_T("SELECT * From [User] where Username='%s';"),_username);
+	sqlCommand2.Format(_T("SELECT * From [User] where Username='%s';"),username);
 
 	try
 	{
@@ -114,10 +116,16 @@ CUser* CUserEntitiesServices::GetByUsername( CString _username )
 
 		dataUser=dal->GetRecordSet(sqlCommand2);
 		dataUser->GetFieldValue(_T("UserID"),userid);
-		dataUser->GetFieldValue(_T("Username"),username);
+		dataUser->GetFieldValue(_T("Username"),usernamereturn);
 		dataUser->GetFieldValue(_T("Password"),password);
 		dataUser->GetFieldValue(_T("EmailAddress"),emailaddress);
 		dataUser->GetFieldValue(_T("DisplayName"),displayname);
+		
+		userreturn->Username(usernamereturn);
+		userreturn->UserId(_tstoi(userid)); //CString to UINT
+		userreturn->Password(password);
+		userreturn->EmailAddress(emailaddress);
+		userreturn->DisplayName(displayname);
 
 		return userreturn;
 
@@ -150,28 +158,34 @@ CUser* CUserEntitiesServices::DeleteUserById( INT userID )
 	{
 
 
-		dataUser=dal->GetRecordSet(sqlCommand2);
+		dataUser=dal->GetRecordSet(sqlCommand1);
 		dataUser->GetFieldValue(_T("UserID"),userid);
 		dataUser->GetFieldValue(_T("Username"),username);
 		dataUser->GetFieldValue(_T("Password"),password);
 		dataUser->GetFieldValue(_T("EmailAddress"),emailaddress);
 		dataUser->GetFieldValue(_T("DisplayName"),displayname);
+		//creat user info
+		userreturn->Username(username);
+		userreturn->UserId(_tstoi(userid)); //CString to UINT
+		userreturn->Password(password);
+		userreturn->EmailAddress(emailaddress);
+		userreturn->DisplayName(displayname);
 		//delete User
 		dal->ExecuteSQL(sqlCommand2);
-
+		
 		return userreturn;
 
 	}
 
 }
 
-CUser* CUserEntitiesServices::DeleteUserByUsername( CString _username )
+CUser* CUserEntitiesServices::DeleteUserByUsername( CString username )
 {
 	CUser *userreturn;
-	CString userid,username,password,emailaddress,displayname;
+	CString userid,usernamereturn,password,emailaddress,displayname;
 
-	sqlCommand1.Format(_T("SELECT * From [User] where Username='%s' ;"),_username);
-	sqlCommand2.Format(_T("Delete from [User] where UserID='%s' ;"),_username);
+	sqlCommand1.Format(_T("SELECT * From [User] where Username='%s' ;"),username);
+	sqlCommand2.Format(_T("Delete from [User] where UserID='%s' ;"),username);
 
 	try
 	{
@@ -191,10 +205,16 @@ CUser* CUserEntitiesServices::DeleteUserByUsername( CString _username )
 
 		
 		dataUser->GetFieldValue(_T("UserID"),userid);
-		dataUser->GetFieldValue(_T("Username"),username);
+		dataUser->GetFieldValue(_T("Username"),usernamereturn);
 		dataUser->GetFieldValue(_T("Password"),password);
 		dataUser->GetFieldValue(_T("EmailAddress"),emailaddress);
 		dataUser->GetFieldValue(_T("DisplayName"),displayname);
+		//fill user info
+		userreturn->Username(usernamereturn);
+		userreturn->UserId(_tstoi(userid)); //CString to UINT
+		userreturn->Password(password);
+		userreturn->EmailAddress(emailaddress);
+		userreturn->DisplayName(displayname);
 		//delete User
 		dal->ExecuteSQL(sqlCommand2);
 
@@ -276,31 +296,46 @@ BOOL CUserEntitiesServices::Login( CString username, CString password )
 		e->Delete();
 		return FALSE;
 	}
-	if(dataUser->GetRecordCount()==1)
+	int numberRecord=0;
+
+	while (!dataUser->IsEOF())
+	{
+		numberRecord += 1;
+		dataUser->MoveNext();
+	}
+
+	if(numberRecord==1)
 		 return TRUE;
 	else
 		 return FALSE;
 
 }
 
-CString* CUserEntitiesServices::ChangePassWord( INT userId,CString newpass )
+CString CUserEntitiesServices::ChangePassWord( INT userId,CString newpass )
 {
 	CString oldpass;
 
 	sqlCommand1.Format(_T("Select * from [User] where UserId=%d"),userId);
-	sqlCommand2.Format(_T("Update [User] set Password='%s' where UserId=%d"),newpass,userId);
+	sqlCommand2.Format(_T("Update [User] set Password='%s' where UserId=%d  ;"),newpass,userId);
 
+
+	
 	try
 	{
-		dataUser = dal->GetRecordSet(sqlCommand1);
-		if(dataUser == NULL)
+		dataUser=dal->GetRecordSet(sqlCommand1);
+		if(dataUser==NULL)
 			return NULL;
 		else
 		{
+
 			dataUser->GetFieldValue(_T("Password"),oldpass);
 			dal->ExecuteSQL(sqlCommand2);
+			return oldpass;
 		}
-		return &oldpass;
+
+		
+
+
 	}
 	catch (CException* e)
 	{
@@ -310,48 +345,89 @@ CString* CUserEntitiesServices::ChangePassWord( INT userId,CString newpass )
 	
 
 }
-#pragma endregion "CUserServices"
 
-#pragma region "MailHeaderServices"
-CArray<MailHeader,MailHeader>* CMailHeaderServices::GetAllMail()
+
+
+
+CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetAllMail()
 {
-	CArray<MailHeader,MailHeader>* listMailHeader = new CArray<MailHeader,MailHeader>();
-	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttach,UserId,GroupId,MailId,MessageId;
+	CArray<MailHeader,MailHeader&>* listMailHeader;
+	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString;
+	BYTE RealAttach;
+	INT UserId,GroupId,MailId,MessageId;
 	MailHeader* mailheader;
 
 	sqlCommand1.Format(_T("SELECT * FROM Mail;"));
-	dataMail = dal->GetRecordSet(sqlCommand1);
-	if(dataMail==NULL) return NULL;
-	
-	while(!dataMail->IsEOF())
+	try
 	{
-		dataMail->GetFieldValue(_T("MessageId"),MessageId);
-		dataMail->GetFieldValue(_T("From"),From);
-		dataMail->GetFieldValue(_T("To"),To);
-		dataMail->GetFieldValue(_T("Subject"),Subject);
-		dataMail->GetFieldValue(_T("Cc"),Cc);
-		dataMail->GetFieldValue(_T("Date"),Date);
-		dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
-		dataMail->GetFieldValue(_T("TextBody"),TextBody);
-		dataMail->GetFieldValue(_T("MimeVersion"),MimeVersion);
-		dataMail->GetFieldValue(_T("ContendType"),ContendType);
-		dataMail->GetFieldValue(_T("RealAttach"),RealAttach);
-		dataMail->GetFieldValue(_T("GroupId"),GroupId);
-		dataMail->GetFieldValue(_T("UserId"),UserId);
-		dataMail->GetFieldValue(_T("MailId"),MailId);
+	
+		dataMail=dal->GetRecordSet(sqlCommand1);
+		if(dataMail==NULL) return NULL;
+	
+			else
+				{
+					int numberRecord=0;
+					
+					while (!dataMail->IsEOF())
+					{
+						numberRecord += 1;
+						dataMail->MoveNext();
+					}
 
-		mailheader = new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,atoi(RealAttach));
+					listMailHeader->SetSize(numberRecord);
 
-		listMailHeader->Add(*mailheader);
-	}
+					while(!dataMail->IsEOF())
+					{
+							
+						//dataMail->GetFieldValue(_T("MessageId",MessageId);
+						dataMail->GetFieldValue(_T("From"),From);
+						dataMail->GetFieldValue(_T("To"),To);
+						dataMail->GetFieldValue(_T("Subject"),Subject);
+						dataMail->GetFieldValue(_T("Cc"),Cc);
+						dataMail->GetFieldValue(_T("Date"),Date);
+						dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
+						dataMail->GetFieldValue(_T("TextBody"),TextBody);
+					/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
+						dataMail->GetFieldValue(_T("ContendType",ContendType);*/
 
-	return listMailHeader;
+						dataMail->GetFieldValue(_T("RealAttach"),RealAttachString);
+					/*	dataMail->GetFieldValue(_T("GroupId",GroupId);
+						dataMail->GetFieldValue(_T("UserId",UserId);
+						dataMail->GetFieldValue(_T("MailId",MailId);*/
+
+						//convert String to BYTE
+						RealAttach=(BYTE)(LPSTR)(LPCTSTR)RealAttachString;
+
+						mailheader=new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,RealAttach);
+
+						listMailHeader->Add(*mailheader);
+
+
+						dataMail->MoveNext();
+
+						
+
+					}
+
+				return listMailHeader;
+				}
+
+		}
+	 catch(CException* e)
+		 {
+				throw;
+				e->Delete();
+
+		 }
+
+
 }
 
 MailHeader* CMailHeaderServices::GetByMailId( INT mailId )
 {
 
-	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,RealAttach,MimeVersion,ContentType;
+	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,RealAttachString;
+	BYTE RealAttach;
 	
 	MailHeader* mailheader;
 
@@ -367,89 +443,223 @@ MailHeader* CMailHeaderServices::GetByMailId( INT mailId )
 		dataMail->GetFieldValue(_T("Date"),Date);
 		dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
 		dataMail->GetFieldValue(_T("TextBody"),TextBody);
-		dataMail->GetFieldValue(_T("MimeVersion"),MimeVersion);
-		dataMail->GetFieldValue(_T("ContendType"),ContentType);
+	/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
+		dataMail->GetFieldValue(_T("ContendType",ContendType);*/
 
-		dataMail->GetFieldValue(_T("RealAttach"),RealAttach);
+		dataMail->GetFieldValue(_T("RealAttach"),RealAttachString);
+		//convert String to BYTE
+		
+		RealAttach=(BYTE)(LPSTR)(LPCTSTR)RealAttachString;
 
-		mailheader = new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,atoi(RealAttach));
+		mailheader=new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,RealAttach);
 		
 		return mailheader;
+		
+
 		}
+
+
+
+
 }
 
-CArray<MailHeader,MailHeader>* CMailHeaderServices::GetByUserId( INT userId )
+CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByUserId( INT userId )
 {
-	CArray<MailHeader,MailHeader>* listMailHeader = new CArray<MailHeader,MailHeader>();
-	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContentType,RealAttach,UserId,GroupId,MailId,MessageId;
+	CArray<MailHeader,MailHeader&>* listMailHeader;
+	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString;
+	BYTE RealAttach;
+	INT UserId,GroupId,MailId,MessageId;
 	MailHeader* mailheader;
 
-	sqlCommand1.Format(_T("SELECT * FROM Mail where USerId=%d ;"),userId);
-	dataMail=dal->GetRecordSet(sqlCommand1);
-	if(dataMail==NULL) return NULL;
+	sqlCommand1.Format(_T("SELECT * FROM Mail where UserId=%d ;"),userId);
 	
-	while(!dataMail->IsEOF())
+	try
 	{
-			
-		dataMail->GetFieldValue(_T("MessageId"),MessageId);
-		dataMail->GetFieldValue(_T("From"),From);
-		dataMail->GetFieldValue(_T("To"),To);
-		dataMail->GetFieldValue(_T("Subject"),Subject);
-		dataMail->GetFieldValue(_T("Cc"),Cc);
-		dataMail->GetFieldValue(_T("Date"),Date);
-		dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
-		dataMail->GetFieldValue(_T("TextBody"),TextBody);
-		dataMail->GetFieldValue(_T("MimeVersion"),MimeVersion);
-		dataMail->GetFieldValue(_T("ContendType"),ContentType);
+	
+			dataMail=dal->GetRecordSet(sqlCommand1);
+			if(dataMail==NULL) return NULL;
+			else
+			{
+						int numberRecord=0;
 
-		dataMail->GetFieldValue(_T("RealAttach"),RealAttach);
-		dataMail->GetFieldValue(_T("GroupId"),GroupId);
-		dataMail->GetFieldValue(_T("UserId"),UserId);
-		dataMail->GetFieldValue(_T("MailId"),MailId);
+						while (!dataMail->IsEOF())
+						{
+							numberRecord += 1;
+							dataMail->MoveNext();
+						}
 
-		mailheader=new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,atoi(RealAttach));
+						listMailHeader->SetSize(numberRecord);
+		
+						while(!dataMail->IsEOF())
+						{
+								
+							//dataMail->GetFieldValue(_T("MessageId",MessageId);
+							dataMail->GetFieldValue(_T("From"),From);
+							dataMail->GetFieldValue(_T("To"),To);
+							dataMail->GetFieldValue(_T("Subject"),Subject);
+							dataMail->GetFieldValue(_T("Cc"),Cc);
+							dataMail->GetFieldValue(_T("Date"),Date);
+							dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
+							dataMail->GetFieldValue(_T("TextBody"),TextBody);
+						/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
+							dataMail->GetFieldValue(_T("ContendType",ContendType);*/
 
-		listMailHeader->Add(*mailheader);
-	}
+							dataMail->GetFieldValue(_T("RealAttach"),RealAttachString);
+						/*	dataMail->GetFieldValue(_T("GroupId",GroupId);
+							dataMail->GetFieldValue(_T("UserId",UserId);
+							dataMail->GetFieldValue(_T("MailId",MailId);*/
+							
+							RealAttach=(BYTE)(LPSTR)(LPCTSTR)RealAttachString;
 
-	return listMailHeader;
+							mailheader=new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,RealAttach);
+
+							listMailHeader->Add(*mailheader);
+
+							
+
+						}
+						return listMailHeader;
+					}
+			}
+			catch(CException* e)
+			{
+				throw;
+				e->Delete();
+			}
+
+
 }
 
-CArray<MailHeader,MailHeader>* CMailHeaderServices::GetByGroupId( INT groupId )
+CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByGroupId( INT groupId )
 {
-	CArray<MailHeader,MailHeader>* listMailHeader = new CArray<MailHeader,MailHeader>();
-	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttach,UserId,GroupId,MailId,MessageId;
+	CArray<MailHeader,MailHeader&>* listMailHeader;
+	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString;
+	BYTE RealAttach;
+	INT UserId,GroupId,MailId,MessageId;
 	MailHeader* mailheader;
 
-	sqlCommand1.Format(_T("SELECT * FROM Mail where GroupId=%d;"),groupId);
-	dataMail=dal->GetRecordSet(sqlCommand1);
-	if(dataMail==NULL) return NULL;
+	sqlCommand1.Format(_T("Select * From Mail where GroupId=%d;"),groupId);
 	
-	while(!dataMail->IsEOF())
+	try
 	{
-			
-		dataMail->GetFieldValue(_T("MessageId"),MessageId);
-		dataMail->GetFieldValue(_T("From"),From);
-		dataMail->GetFieldValue(_T("To"),To);
-		dataMail->GetFieldValue(_T("Subject"),Subject);
-		dataMail->GetFieldValue(_T("Cc"),Cc);
-		dataMail->GetFieldValue(_T("Date"),Date);
-		dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
-		dataMail->GetFieldValue(_T("TextBody"),TextBody);
-		dataMail->GetFieldValue(_T("MimeVersion"),MimeVersion);
-		dataMail->GetFieldValue(_T("ContendType"),ContendType);
+				dataMail=dal->GetRecordSet(sqlCommand1);
+			if(dataMail==NULL) return NULL;
+			else
+			{
+				int numberRecord=0;
 
-		dataMail->GetFieldValue(_T("RealAttach"),RealAttach);
-		dataMail->GetFieldValue(_T("GroupId"),GroupId);
-		dataMail->GetFieldValue(_T("UserId"),UserId);
-		dataMail->GetFieldValue(_T("MailId"),MailId);
+				while (!dataMail->IsEOF())
+				{
+					numberRecord += 1;
+					dataMail->MoveNext();
+				}
 
-		mailheader = new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,atoi(RealAttach));
+				listMailHeader->SetSize(numberRecord);
+						
+						while(!dataMail->IsEOF())
+						{
+								
+							//dataMail->GetFieldValue(_T("MessageId",MessageId);
+							dataMail->GetFieldValue(_T("From"),From);
+							dataMail->GetFieldValue(_T("To"),To);
+							dataMail->GetFieldValue(_T("Subject"),Subject);
+							dataMail->GetFieldValue(_T("Cc"),Cc);
+							dataMail->GetFieldValue(_T("Date"),Date);
+							dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
+							dataMail->GetFieldValue(_T("TextBody"),TextBody);
+						/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
+							dataMail->GetFieldValue(_T("ContendType",ContendType);*/
 
-		listMailHeader->Add(*mailheader);
+							dataMail->GetFieldValue(_T("RealAttach"),RealAttachString);
+						/*	dataMail->GetFieldValue(_T("GroupId",GroupId);
+							dataMail->GetFieldValue(_T("UserId",UserId);
+							dataMail->GetFieldValue(_T("MailId",MailId);*/
+							//convert String to BYTE
+							RealAttach=(BYTE)(LPSTR)(LPCTSTR)RealAttachString;
+
+							mailheader=new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,RealAttach);
+
+							listMailHeader->Add(*mailheader);
+
+							
+
+						}
+						return listMailHeader;
+				}	
+	}
+	catch(CException* e)
+	{
+		throw;
+		e->Delete();
 	}
 
-	return listMailHeader;
 }
 
-#pragma endregion "MailHeaderServices"
+
+
+
+CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByUserIdGroupId( INT userId, INT groupId )
+{
+	CArray<MailHeader,MailHeader&>* listMailHeader;
+
+	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString;
+	BYTE RealAttach;
+	INT UserId,GroupId,MailId,MessageId;
+	MailHeader* mailheader;
+
+	sqlCommand1.Format(_T("Select * From Mail where GroupId=%d and UserId=%d ;"),groupId,userId);
+	
+	try
+	{
+				dataMail=dal->GetRecordSet(sqlCommand1);
+			if(dataMail==NULL) return NULL;
+			else
+			{
+				int numberRecord=0;
+
+				while (!dataMail->IsEOF())
+				{
+					numberRecord += 1;
+					dataMail->MoveNext();
+				}
+
+				listMailHeader->SetSize(numberRecord);
+						
+						while(!dataMail->IsEOF())
+						{
+								
+							//dataMail->GetFieldValue(_T("MessageId",MessageId);
+							dataMail->GetFieldValue(_T("From"),From);
+							dataMail->GetFieldValue(_T("To"),To);
+							dataMail->GetFieldValue(_T("Subject"),Subject);
+							dataMail->GetFieldValue(_T("Cc"),Cc);
+							dataMail->GetFieldValue(_T("Date"),Date);
+							dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
+							dataMail->GetFieldValue(_T("TextBody"),TextBody);
+						/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
+							dataMail->GetFieldValue(_T("ContendType",ContendType);*/
+
+							dataMail->GetFieldValue(_T("RealAttach"),RealAttachString);
+						/*	dataMail->GetFieldValue(_T("GroupId",GroupId);
+							dataMail->GetFieldValue(_T("UserId",UserId);
+							dataMail->GetFieldValue(_T("MailId",MailId);*/
+
+							//convert String to BYTE
+							RealAttach=(BYTE)(LPSTR)(LPCTSTR)RealAttachString;
+
+							mailheader=new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,RealAttach);
+
+							listMailHeader->Add(*mailheader);
+
+							
+
+						}
+						return listMailHeader;
+				}	
+	}
+	catch(CException* e)
+	{
+		throw;
+		e->Delete();
+	}
+}
