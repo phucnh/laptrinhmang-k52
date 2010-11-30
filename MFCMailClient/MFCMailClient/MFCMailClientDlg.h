@@ -12,6 +12,8 @@ class CMFCMailClientDlg : public CDialog
 {
 // Construction
 public:
+	CStatusBarCtrl	m_wndStatusBar;
+
 	CMFCMailClientDlg(CWnd* pParent = NULL);	// standard constructor
 	void SetIconToMenuButton();
 
@@ -55,4 +57,8 @@ public:
 	afx_msg void OnBnClickedButton1();
 	void OnNewMail();
 	afx_msg void OnBnClickedButton5();
+
+	void UpdateStatusbar();
+	void InitStatusbar();
+	void SBPartsSetting(int cxParent, int cyParent);
 };

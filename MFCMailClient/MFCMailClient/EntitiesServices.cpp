@@ -97,7 +97,7 @@ CUser* CUserEntitiesServices::GetByUsername( CString username )
 	CUser *userreturn;
 	CString userid,usernamereturn,password,emailaddress,displayname;
 
-	sqlCommand2.Format(_T("SELECT * From [User] where Username='%s';"),username);
+	sqlCommand2.Format(_T("select * from User where Username = '%s'"),username);
 
 	try
 	{
@@ -110,12 +110,11 @@ CUser* CUserEntitiesServices::GetByUsername( CString username )
 	}
 
 	if(dataUser==NULL) return NULL;	
-
 	else
 	{
 
 
-		dataUser=dal->GetRecordSet(sqlCommand2);
+		//dataUser=dal->GetRecordSet(sqlCommand2);
 		dataUser->GetFieldValue(_T("UserID"),userid);
 		dataUser->GetFieldValue(_T("Username"),usernamereturn);
 		dataUser->GetFieldValue(_T("Password"),password);
@@ -140,8 +139,8 @@ CUser* CUserEntitiesServices::DeleteUserById( INT userID )
 	CUser *userreturn;
 	CString userid,username,password,emailaddress,displayname;
 
-	sqlCommand1.Format(_T("SELECT * From [User] where UserID=%d ;"),userID);
-	sqlCommand2.Format(_T("Delete from [User] where UserID=%d"),userID);
+	sqlCommand1.Format(_T("SELECT * From User where UserID=%d ;"),userID);
+	sqlCommand2.Format(_T("Delete from User where UserID=%d"),userID);
 
 	try
 	{
@@ -185,8 +184,8 @@ CUser* CUserEntitiesServices::DeleteUserByUsername( CString username )
 	CUser *userreturn;
 	CString userid,usernamereturn,password,emailaddress,displayname;
 
-	sqlCommand1.Format(_T("SELECT * From [User] where Username='%s' ;"),username);
-	sqlCommand2.Format(_T("Delete from [User] where UserID='%s' ;"),username);
+	sqlCommand1.Format(_T("SELECT * From User where Username='%s' ;"),username);
+	sqlCommand2.Format(_T("Delete from User where UserID='%s' ;"),username);
 
 	try
 	{

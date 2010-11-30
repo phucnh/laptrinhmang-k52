@@ -50,6 +50,7 @@
 #include "Pop3.h"
 #include "SMTP.h"
 #include "MailMessage.h"
+#include <afxstr.h>
 
 
 
@@ -68,11 +69,25 @@
 #endif
 #endif
 
+//add global funcion in here
+#define SB_HEIGHT 20
+
+enum STATUSBAR_PARTS{
+	SBP_STATUS = 0,
+	SBP_SMTPCONNECTION,
+	SBP_POP3CONNECTION,
+	SBP_NUMPARTS
+};
+
 //add global variables in here
 extern CPop3 globalPop3;
 extern CSMTP globalSmtp;
 extern CArray<MailHeader,MailHeader> globalMailList;
 extern CString globalUsername;
 extern CString globalPassword;
+extern CString globalServerIP;
+extern BOOL globalIsConnected;
+
+
 
 

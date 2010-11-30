@@ -11,5 +11,7 @@ CSMTP globalSmtp;
 CArray<MailHeader,MailHeader> globalMailList;
 CString globalUsername;
 CString globalPassword;
+CString globalServerIP;
+BOOL globalIsConnected;
 
 

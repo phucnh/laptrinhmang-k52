@@ -160,6 +160,8 @@ BOOL CMFCMailClientDlg::OnInitDialog()
 	CreateListMailColumn();
 	SetIconToMenuButton();
 
+	InitStatusbar();
+
 	ShowWindow(SW_MINIMIZE);
 
 	// TODO: Add extra initialization here
@@ -289,6 +291,7 @@ void CMFCMailClientDlg::OnAcountAccount()
 {
 	CAccountDlg accountDlg;
 	accountDlg.DoModal();
+	UpdateStatusbar();
 }
 
 void CMFCMailClientDlg::CreateGroupTree()
@@ -413,4 +416,61 @@ void CMFCMailClientDlg::OnBnClickedButton1()
 void CMFCMailClientDlg::OnBnClickedButton5()
 {
 	// TODO: Add your control notification handler code here
+}
+
+void CMFCMailClientDlg::InitStatusbar()
+{
+	CRect rcDialog;
+	GetWindowRect(&rcDialog);
+	rcDialog.top = rcDialog.bottom - SB_HEIGHT;
+
+	m_wndStatusBar.Create(WS_CHILD | WS_BORDER | WS_VISIBLE, rcDialog, this, AFX_IDW_STATUS_BAR);
+
+	SBPartsSetting(rcDialog.Width(), rcDialog.Height());
+
+	UpdateStatusbar();
+}
+
+void CMFCMailClientDlg::UpdateStatusbar()
+{
+	/*CString	strSMTPConnections;
+	CString	strPOP3Connections;
+
+	strSMTPConnections.Format("SMTP Connections : %i ");
+	strPOP3Connections.Format("POP3 Connections : %i ");
+
+	m_wndStatusBar.SetText(strSMTPConnections, SBP_SMTPCONNECTION, 0);
+	m_wndStatusBar.SetText(strPOP3Connections, SBP_POP3CONNECTION, 0);*/
+
+	CString sStatus;
+	if (globalIsConnected)
+	{
+	sStatus.Format("%s already connected!",globalUsername);
+	}
+	else
+	{
+		sStatus.Format("Not connect");
+	}
+	m_wndStatusBar.SetText(sStatus, SBP_STATUS, SBT_NOBORDERS);
+}
+
+void CMFCMailClientDlg::SBPartsSetting(int cxParent, int cyParent)
+{
+	int	nWidths[SBP_NUMPARTS];
+
+	/*CString	strSMTPConnections;
+	CString	strPOP3Connections;
+	strSMTPConnections.Format("SMTP Connections : %i ", 0x00);
+	strPOP3Connections.Format("POP3 Connections : %i ", 0x00);
+
+	int nSMTPConnectionWidth = m_wndStatusBar.GetDC()->GetTextExtent(strSMTPConnections).cx;
+	int nPOP3ConnectionWidth = m_wndStatusBar.GetDC()->GetTextExtent(strPOP3Connections).cx;*/
+	//int nTimerWidth = m_wndStatusBar.GetDC()->GetTextExtent(CString("88:88 PM    ")).cx;
+
+	nWidths[SBP_STATUS] = cxParent - 50;// - nSMTPConnectionWidth- nPOP3ConnectionWidth;
+	//nWidths[SBP_SMTPCONNECTION] = nSMTPConnectionWidth + nWidths[SBP_STATUS];
+	//nWidths[SBP_POP3CONNECTION] = nPOP3ConnectionWidth + nWidths[SBP_SMTPCONNECTION];
+
+	m_wndStatusBar.SetMinHeight(SB_HEIGHT);
+	m_wndStatusBar.SetParts(SBP_NUMPARTS, nWidths);
 }
