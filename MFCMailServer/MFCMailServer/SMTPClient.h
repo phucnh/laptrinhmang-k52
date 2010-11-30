@@ -65,9 +65,14 @@ public:
 	void ProcessERRORCommand();
 	void ProcessHELOCommand();
 	void ProcessMAILFROMCommand();
+	void ProcessRCPTCommand(); //Long add
+	void ProcessDATACommand(); //Long add
 	void ProcessQUITCommand();
 	//Add them ham de xu ly vao day nhe
-
+	void GetMailFrom();
+	//Long add
+	void GetRCPTTo(); //Long add
+	void GetDATA(); //Long add
 	virtual void OnReceive(int nErrorCode);
 	virtual void OnClose(int nErrorCode);
 };

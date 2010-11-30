@@ -136,6 +136,8 @@ void CSMTPClient::ProcessCommand( INT cmdCode)
 	case SMTP_HELO_CMD:		ProcessHELOCommand();		break;
 	case SMTP_ERROR_CMD:	ProcessERRORCommand();		break;
 	case SMTP_MAIL_CMD:		ProcessMAILFROMCommand();	break;
+	case SMTP_RCPT_CMD:		ProcessRCPTCommand();		break;
+	case SMTP_DATA_CMD:		ProcessDATACommand();		break;
 	case SMTP_QUIT_CMD:		ProcessQUITCommand();		break;
 		// TODO: Add them vao day
 	}
@@ -154,13 +156,35 @@ void CSMTPClient::ProcessERRORCommand()
 void CSMTPClient::ProcessHELOCommand()
 {
 	CString _returnMsg;
-	_returnMsg.Format(_T("250 %s Nice to meet you."), m_ClientAddress); // TODO: May co the sua cho no pro hon :D
+
+	_returnMsg.Format("250 Welcome %s, Pleased to meet you.\r\n", m_ClientAddress); // TODO: May co the sua cho no pro hon :D
+
 	Reply(_returnMsg);
 }
 
 void CSMTPClient::ProcessMAILFROMCommand()
 {
+	//long add
+	CString _returnMsg;
+	GetMailFrom();
+	_returnMsg.Format("250 sender %s OK...\r\n", m_mailHdr->From);
+	Reply(_returnMsg);
 
+}
+void CSMTPClient::ProcessRCPTCommand()
+{
+//long add
+	CString _returnMsg;
+	GetRCPTTo();
+	_returnMsg.Format("250 Recipient %s OK...\r\n", m_mailHdr->To);
+	Reply(_returnMsg);
+}
+void CSMTPClient::ProcessDATACommand()
+{
+	//long add
+	Reply("354 Enter mail, end with "+"."+" on a line by itself\r\n");
+	
+	
 }
 
 void CSMTPClient::ProcessQUITCommand()
@@ -172,6 +196,7 @@ void CSMTPClient::ProcessQUITCommand()
 	}
 	Reply("221 SMTP Mail Server quited."); // TODO: May co the thay tu ngu khac cho no pro hon
 	// TODO: Add cac cau lenh dong socket vao cho nay nhe
+	CloseSocket();
 }
 
 void CSMTPClient::CloseSocket()
@@ -187,4 +212,23 @@ void CSMTPClient::Initialize()
 	this->m_ClientRequest = "";
 	this->m_ClientAddress = "";
 	this->m_mailHdr = NULL;
+
+}
+//long add
+void CSMTPClient::GetMailFrom()
+{
+	CString temp;
+	temp = m_sQueue;
+	temp.Delete(0,11);
+	temp.Delete(temp.GetLength()-1, 1);
+	m_mailHdr->From = temp;
+
+}
+void CSMTPClient::GetRCPTTo()
+{
+	CString temp;
+	temp = m_sQueue;
+	temp.Delete(0,9);
+	temp.Delete(temp.GetLength()-1, 1);
+	m_mailHdr->To = temp;
 }
