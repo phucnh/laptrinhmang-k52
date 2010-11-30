@@ -77,6 +77,7 @@ void CAccountDlg::OnBnClickedOk()
 	CString _username = m_UserName;
 	CString _password = m_Password;
 	
+	globalServerIP = _serverIP;
 	globalUsername = m_UserName;
 	globalPassword = m_Password;
 
@@ -86,12 +87,18 @@ void CAccountDlg::OnBnClickedOk()
 	globalPop3.Password(_password);
 	globalPop3.Connect();
 
+	if (globalPop3.IsConnected())
+	{
+		globalIsConnected = TRUE;
+	}
+
 	CUserEntitiesServices userService;
 	CUser *user = new CUser();
 	user->Username(globalUsername);
 	user->Password(globalPassword);
 
-	userService.InsertNewUser(user);
+	if (userService.GetByUsername(globalUsername) != NULL)
+		userService.InsertNewUser(user);
 
 	OnCancel();
 	UpdateData(FALSE);

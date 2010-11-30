@@ -10,12 +10,14 @@
 
 CDAL::CDAL()
 {
-	_connectionString = _T("DSN=MySqlServerConnection;UID=sa;PWD=sa;APP=Microsoft\x00ae Visual Studio\x00ae 2008;WSID=PHUC-PC;DATABASE=MailClient;Network=DBMSSOCN");
-	CDatabase::OpenEx(_connectionString);
+	//_connectionString = _T("DSN=MySqlServerConnection;UID=sa;PWD=sa;APP=Microsoft\x00ae Visual Studio\x00ae 2008;WSID=PHUC-PC;DATABASE=MailClient;Network=DBMSSOCN");
+	//CDatabase::OpenEx(_connectionString);
+	Initialize();
 }
 
 CDAL::~CDAL()
 {
+	pRecordSet->Close();
 	CDatabase::Close();
 }
 
@@ -26,14 +28,14 @@ BOOL CDAL::ExecuteSQL( CString sql )
 		CDatabase *db=new CDatabase();
 		//db->m_strConnect = _connectionString; db->m_hdbc
 		/*db->Open(_T("LTMTEST"), FALSE, FALSE, _T("ODBC;"), FALSE);*/
-		db->OpenEx(_connectionString);
+		//db->OpenEx(_connectionString);
 		CDatabase::ExecuteSQL(sql);
 		CDatabase::Close();
 		return TRUE;
 	}
-	catch (CException* e)
+	catch (CDBException* e)
 	{
-		e->ReportError();
+		AfxMessageBox(e->m_strError);
 		CDatabase::Close();
 //		delete e;
 		return FALSE;
@@ -42,18 +44,44 @@ BOOL CDAL::ExecuteSQL( CString sql )
 
 CRecordset* CDAL::GetRecordSet( CString sql )
 {
-	CDatabase *db=new CDatabase();
-	CRecordset *data;
+	//CDatabase *db=new CDatabase();
+	//CRecordset *data;
 
 	//db->Open(_T("LTMSQL"), FALSE, FALSE, _T("ODBC;"), FALSE);
 	//db->OpenEx(_connectionString);
+	try
+	{
+		//data = new CRecordset(this);
 
-	data = new CRecordset(db);
+		//data->Open(AFX_DB_USE_DEFAULT_TYPE,sql);
+		//data->Close();
+		pRecordSet->Open(CRecordset::forwardOnly,sql,CRecordset::readOnly);
+	}
+	catch (CDBException* e)
+	{
+		AfxMessageBox(e->m_strError);
+		pRecordSet->Close();
+		CDatabase::Close();
+	}
+	
+	//db->Close();
 
-	data->Open(AFX_DB_USE_DEFAULT_TYPE,sql);
-	db->Close();
-	data->Close();
+	return pRecordSet;
+}
 
-	return data;
+void CDAL::Initialize()
+{
+	hInst = AfxGetInstanceHandle();
+
+	GetModuleFileName(hInst, szFullPath, MAX_PATH);
+	_splitpath(szFullPath, szDrive, szDir, NULL, NULL);
+	sExePath.Format("%s%s", szDrive, szDir);
+	sDbPath.Format("%s%s", sExePath + "\\Database\\", "MFCMailClient.mdb");
+
+	sDriver = "MICROSOFT ACCESS DRIVER (*.mdb)";
+	sFile = "B:\\Tai Lieu\\Hoctap\\20101\\Course Project\\Network Programming\\Source\\MFCMailClient\\MFCMailClient\\Database\\MFCMailClient.mdb";
+	sDsn.Format("ODBC;DRIVER={%s};DSN='';DBQ=%s",sDriver,sFile);
+	CDatabase::Open(NULL,false,false,sDsn);
+	pRecordSet = new CRecordset(this);
 }
 // CDAL member functions
