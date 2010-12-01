@@ -63,4 +63,6 @@ public:
 	void UpdateStatusbar();
 	void InitStatusbar();
 	void SBPartsSetting(int cxParent, int cyParent);
+	afx_msg void OnAccountsManageaccounts();
+	afx_msg void OnAccountsNewaccount();
 };

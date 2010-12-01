@@ -24,6 +24,7 @@ bool DAL::ExecuteSQL( CString sql)
 	{
 
 		db->Open(_T("LTMTEST"), FALSE, FALSE, _T("ODBC;"), FALSE);
+		//db->OpenEx("connect");
 		db->ExecuteSQL(sql);
 		db->Close();
 		return true;
@@ -31,7 +32,7 @@ bool DAL::ExecuteSQL( CString sql)
 	catch (CException* e)
 	{
 		db->Close();
-		delete e;
+		//delete e;
 		return false;
 	}
 

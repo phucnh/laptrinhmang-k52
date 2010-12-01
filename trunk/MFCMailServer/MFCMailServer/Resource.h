@@ -9,7 +9,13 @@
 #define IDP_SOCKETS_INIT_FAILED         103
 #define IDR_MAINFRAME                   128
 #define IDR_MENU_MAIN                   129
+#define IDD_DIALOG_USER                 130
+#define IDD_DIALOG1                     131
+#define IDD_DIALOG_NEWUSER              131
 #define IDC_LIST1                       1001
+#define IDC_BUTTON1                     1002
+#define IDC_EDIT1                       1003
+#define IDC_EDIT2                       1004
 #define ID_ACCOUNTS_NEWACCOUNT          32771
 #define ID_ACCOUNTS_MANAGEACCOUNTS      32772
 #define ID_SETTING_GENERAL              32773
@@ -21,9 +27,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        130
+#define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1002
+#define _APS_NEXT_CONTROL_VALUE         1006
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

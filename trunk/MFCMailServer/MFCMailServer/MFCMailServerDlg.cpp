@@ -8,6 +8,8 @@
 #include "MFCMailServerDlg.h"
 #include "Pop3.h"
 #include "Smtp.h"
+#include "UserDlg.h"
+#include "NewUserDlg.h"
 
 
 #ifdef _DEBUG
@@ -105,6 +107,8 @@ BEGIN_MESSAGE_MAP(CMFCMailServerDlg, CDialog)
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDOK, &CMFCMailServerDlg::OnBnClickedOk)
+	ON_COMMAND(ID_ACCOUNTS_MANAGEACCOUNTS, &CMFCMailServerDlg::OnAccountsManageaccounts)
+	ON_COMMAND(ID_ACCOUNTS_NEWACCOUNT, &CMFCMailServerDlg::OnAccountsNewaccount)
 END_MESSAGE_MAP()
 
 
@@ -336,4 +340,16 @@ void CMFCMailServerDlg::OnDestroy()
 {
 	CDialog::OnDestroy();
 	StopMailServer();
+}
+
+void CMFCMailServerDlg::OnAccountsManageaccounts()
+{
+	CUserDlg userDlg;
+	userDlg.DoModal();
+}
+
+void CMFCMailServerDlg::OnAccountsNewaccount()
+{
+	CNewUserDlg newUserDlg;
+	newUserDlg.DoModal();
 }

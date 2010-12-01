@@ -129,7 +129,7 @@ void CClientSocket::ProcessUSERCommand()
 		Reply("-ERR Username already specified.");
 		return;
 	}*/
-
+	CString currentStatus;
 	CString sUserInfo = m_ClientRequest;
 	sUserInfo.Delete(0,4);
 	sUserInfo.TrimLeft();
@@ -137,7 +137,9 @@ void CClientSocket::ProcessUSERCommand()
 
 	if (sUserInfo.IsEmpty())
 	{
-		Reply("-ERR No username specified.");
+		currentStatus = "-ERR No username specified.";
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
 		return;
 	}
 
@@ -164,11 +166,14 @@ void CClientSocket::ProcessERROR()
 
 void CClientSocket::ProcessPASSCommand()
 {
+	CString currentStatus;
 	if ((m_user == NULL) &&
 		(m_user->_username.IsEmpty())
 		)
 	{
-		Reply("-ERR No user specified. Uses \"USER\" command first.");
+		currentStatus = "-ERR No user specified. Uses \"USER\" command first.";
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
 		return;
 	}
 
@@ -179,7 +184,9 @@ void CClientSocket::ProcessPASSCommand()
 
 	if (sPassInfo.IsEmpty())
 	{
-		Reply("-ERR No password specified.");
+		currentStatus = "-ERR No password specified.";
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
 		return;
 	}
 
@@ -193,6 +200,15 @@ void CClientSocket::ProcessPASSCommand()
 
 void CClientSocket::ProcessLISTCommand()
 {
+	CString currentStatus;
+	MailHeader* test1 = new MailHeader();
+	test1->Subject = "test1";
+	MailHeader* test2 = new MailHeader();
+	test2->Subject = "test2";
+	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
+	testArray->Add(*test1);
+	testArray->Add(*test2);
+	m_totalMail = testArray->GetCount();
 	m_ClientRequest.Delete(0,4);
 	m_ClientRequest.TrimLeft();
 	m_ClientRequest.TrimRight();
@@ -205,41 +221,65 @@ void CClientSocket::ProcessLISTCommand()
 			nIndex = atoi(m_ClientRequest);
 			if (nIndex <= 0)
 			{
-				Reply("-ERR No such message.");
+				currentStatus = "-ERR No such message.";
+				m_parrent->WriteLog(currentStatus);
+				Reply(currentStatus);
 				return;
 			}
 			if (nIndex > m_totalMail)
 			{
-				Reply("-ERR No such message, only %d messages in mailbox.", m_totalMail);
+				currentStatus.Format("-ERR No such message, only %d messages in mailbox.",m_totalMail);
+				m_parrent->WriteLog(currentStatus);
+				Reply(currentStatus);
 				return;
 			}
-			Reply("+OK %d %s", nIndex, GetMessageInfo(nIndex, 2));
+			currentStatus.Format("+OK %d %s",nIndex, GetMessageInfo(nIndex, 2));
+			m_parrent->WriteLog(currentStatus);
+			Reply(currentStatus);
 			return;
 		}
-		Reply("-ERR Please enter only digits (0..9).");
+		currentStatus.Format("-ERR Please enter only digits (0..9).");
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
 		return;
 	}
 	// Hien thong tin tat ca cac mail trong box
-	Reply("+OK %d messages (%d octets)", m_totalMail, m_totalSize);
+	currentStatus.Format("+OK %d messages (%d octets)", m_totalMail, m_totalSize);
+	m_parrent->WriteLog(currentStatus);
+	Reply(currentStatus);
 	for (nIndex=1; nIndex<=m_totalMail; nIndex++) Reply("%d %s", nIndex, GetMessageInfo(nIndex, 2));
 	Reply(".");
 }
 
 void CClientSocket::ProcessRETRCommand()
 {
+	MailHeader* test1 = new MailHeader();
+	test1->Subject = "test1";
+	MailHeader* test2 = new MailHeader();
+	test2->Subject = "test2";
+	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
+	testArray->Add(*test1);
+	testArray->Add(*test2);
+	m_totalMail = testArray->GetCount();
+
+	CString currentStatus;
 	m_ClientRequest.Delete(0, 4);
 	m_ClientRequest.TrimLeft();
 	m_ClientRequest.TrimRight();
 
 	if (m_ClientRequest == "")
 	{
-		Reply("-ERR Please enter parameter.");
+		currentStatus = "-ERR Please enter parameter.";
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
 		return;
 	}
 
 	if (strspn(m_ClientRequest, "0123456789") != (UINT)m_ClientRequest.GetLength())
 	{
-		Reply("-ERR Please enter only digits (0..9).");
+		currentStatus = "-ERR Please enter only digits (0..9).";
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
 		return;
 	}
 
@@ -247,16 +287,22 @@ void CClientSocket::ProcessRETRCommand()
 
 	if ((nMailIndex <= 0) || (nMailIndex > m_totalMail))
 	{
-		Reply("-ERR No such message.");
+		currentStatus = "-ERR No such message.";
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
 		return;
 	}
 
-	if (GetMessageInfo(nMailIndex, 3) != "0")
+	if (testArray->GetCount() == 0)
 	{
-		Reply("-ERR Sorry, message %d already deleted.", nMailIndex);
+		currentStatus.Format("-ERR Sorry, message %d already deleted.", nMailIndex);
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
 		return;
 	}
-	Reply("+OK %s octets", GetMessageInfo(nMailIndex, 2));
+	currentStatus.Format("+OK %s octets", GetMessageInfo(nMailIndex, 2));
+	m_parrent->WriteLog(currentStatus);
+	Reply(currentStatus);
 
 	#define	BUF_SIZE	2048
 	CFile	F;
