@@ -106,3 +106,22 @@ bool MailUser::UpdateUserByID(UINT userID,CString name,CString password)
 
 	return dal->ExecuteSQL(sqlMailUser);
 }
+
+CArray<MailUser,MailUser>* MailUser::GetAllUsers()
+{
+	CArray<MailUser,MailUser>* mailUsers;
+
+	// TODO : Implement GetAllUser in here
+
+	return mailUsers;
+}
+
+bool MailUser::UpdateUserByUsername( CString oldUsername, CString newUsername, CString newPassword )
+{
+	sqlMailUser.Format(_T("Update MailUser set UserName='%s' , Password='%s'  where UserName='%s'"),
+		newUsername,
+		newPassword,
+		oldUsername);
+
+	return dal->ExecuteSQL(sqlMailUser);
+}

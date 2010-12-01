@@ -216,6 +216,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NewUserDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Pop3.cpp"
 				>
 			</File>
@@ -246,6 +250,10 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\UserDlg.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
@@ -282,6 +290,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NewUserDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Pop3.h"
 				>
 			</File>
@@ -303,6 +315,10 @@
 			</File>
 			<File
 				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UserDlg.h"
 				>
 			</File>
 		</Filter>

@@ -21,11 +21,11 @@ static CMailServerCommand POP3_CMD[11] =
 	{NULL, CMDERROR},
 	{"user", USER_CMD},
 	{"pass", PASS_CMD},
-	{"quit", QUIT_CMD},
-	{"stat", STAT_CMD},
 	{"list", LIST_CMD},
 	{"retr", RETR_CMD},
+	{"stat", STAT_CMD},
 	{"dele", DELE_CMD},
+	{"quit", QUIT_CMD},
 	{"noop", NOOP_CMD},
 	{"rset", RSET_CMD},		
 	{"top",  TOP_CMD}
