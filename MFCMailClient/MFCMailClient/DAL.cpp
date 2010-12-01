@@ -25,10 +25,13 @@ BOOL CDAL::ExecuteSQL( CString sql )
 {
 	try
 	{
-		CDatabase *db=new CDatabase();
+		//CDatabase *db=new CDatabase();
 		//db->m_strConnect = _connectionString; db->m_hdbc
 		/*db->Open(_T("LTMTEST"), FALSE, FALSE, _T("ODBC;"), FALSE);*/
 		//db->OpenEx(_connectionString);
+		//Initialize();
+		if (!this->IsOpen())
+			CDatabase::Open(NULL,false,false,sDsn);
 		CDatabase::ExecuteSQL(sql);
 		CDatabase::Close();
 		return TRUE;

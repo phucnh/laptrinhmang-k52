@@ -15,13 +15,13 @@ public:
 	INT UserId() const { return userId; }
 	void UserId(INT val) { userId = val; }
 	CString Username() const { return username; }
-	void Username(CString val) { username = val; }
+	void Username(CString val) { this->username = val; }
 	CString Password() const { return password; }
-	void Password(CString val) { password = val; }
+	void Password(CString val) { this->password = val; }
 	CString EmailAddress() const { return emailAddress; }
-	void EmailAddress(CString val) { emailAddress = val; }
+	void EmailAddress(CString val) { this->emailAddress = val; }
 	CString DisplayName() const { return displayName; }
-	void DisplayName(CString val) { displayName = val; }
+	void DisplayName(CString val) { this->displayName = val; }
 };
 
 public class CAddressBook

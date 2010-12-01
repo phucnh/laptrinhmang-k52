@@ -7,6 +7,7 @@
 #include "SMTP.h"
 #include "Mime.h"
 #include "MimeCode.h"
+#include "EntitiesServices.h"
 
 
 // CNewMailDlg dialog
@@ -20,6 +21,7 @@ CNewMailDlg::CNewMailDlg(CWnd* pParent /*=NULL*/)
 	, m_Subject(_T(""))
 	, m_TextBody(_T(""))
 	, m_serverip(0)
+	, m_sCc(_T(""))
 {
 
 }
@@ -37,6 +39,7 @@ void CNewMailDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT4, m_TextBody);
 	DDX_Control(pDX, IDC_IPADDRESS1, m_serverIP);
 	DDX_IPAddress(pDX, IDC_IPADDRESS1, m_serverip);
+	DDX_Text(pDX, IDC_EDIT5, m_sCc);
 }
 
 BOOL CNewMailDlg::OnInitDialog()
@@ -98,6 +101,14 @@ void CNewMailDlg::OnBnClickedOk()
 		nSize = msgmime.Store(pBuff, nSize);
 		msg.TextBody = pBuff;*/
 		_smtp.SendMessage(&msg);
+
+		//CMailHeaderServices* mailHeaderService = new CMailHeaderServices();
+		//msg.GroupId = 3; //Group Sent mail
+		//msg.UserId = globalUser.UserId();
+		//mailHeaderService->InsertNewMail(&msg);
+
+		//if (mailHeaderService != NULL)	delete mailHeaderService;
+
 		AfxMessageBox("Success",MB_OK);
 		UpdateData(FALSE);
 		//long add
@@ -106,13 +117,17 @@ void CNewMailDlg::OnBnClickedOk()
 INT_PTR CNewMailDlg::DoModal(MailHeader* mailHdr,CString prefixSubject)
 {
 	if (mailHdr != NULL)
+	{
+		this->m_From = mailHdr->From;
+		this->m_To = mailHdr->To;
+		this->m_sCc = mailHdr->Cc;
+		this->m_TextBody = mailHdr->TextBody;
 		this->m_Subject = prefixSubject + mailHdr->Subject;
+	}
 	return CDHtmlDialog::DoModal();
 }
 
 INT_PTR CNewMailDlg::DoModal()
 {
-	// TODO: Add your specialized code here and/or call the base class
-
 	return CDHtmlDialog::DoModal();
 }

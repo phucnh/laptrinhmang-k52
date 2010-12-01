@@ -41,4 +41,5 @@ public:
 
 	virtual INT_PTR DoModal(MailHeader* mailHdr,CString prefixSubject);
 	virtual INT_PTR DoModal();
+	CString m_sCc;
 };

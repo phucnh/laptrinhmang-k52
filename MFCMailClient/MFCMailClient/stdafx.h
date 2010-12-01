@@ -51,6 +51,7 @@
 #include "SMTP.h"
 #include "MailMessage.h"
 #include <afxstr.h>
+#include "User.h"
 
 
 
@@ -80,6 +81,7 @@ enum STATUSBAR_PARTS{
 };
 
 //add global variables in here
+extern CUser globalUser;
 extern CPop3 globalPop3;
 extern CSMTP globalSmtp;
 extern CArray<MailHeader,MailHeader> globalMailList;

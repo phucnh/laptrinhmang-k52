@@ -89,6 +89,9 @@ BEGIN_MESSAGE_MAP(CMFCMailClientDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON3, &CMFCMailClientDlg::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON1, &CMFCMailClientDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON5, &CMFCMailClientDlg::OnBnClickedButton5)
+	ON_COMMAND(ID_MESSAGE_REPLYMESSAGE, &CMFCMailClientDlg::OnMessageReplymessage)
+	ON_COMMAND(ID_MESSAGE_FORWARDMESSAGE, &CMFCMailClientDlg::OnMessageForwardmessage)
+	ON_BN_CLICKED(IDC_BUTTON4, &CMFCMailClientDlg::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -387,6 +390,11 @@ void CMFCMailClientDlg::OnBnClickedButton2()
 
 void CMFCMailClientDlg::OnBnClickedButton3()
 {
+	ReplySelectedMail();
+}
+
+void CMFCMailClientDlg::ReplySelectedMail()
+{
 	POSITION pos = m_ListMail.GetFirstSelectedItemPosition();
 	if (pos == NULL)
 	{
@@ -398,6 +406,9 @@ void CMFCMailClientDlg::OnBnClickedButton3()
 		MailHeader _mailHeader = globalMailList.GetAt(_selectedItem);
 		MailHeader _mailHdrTemp;
 		_mailHdrTemp.Subject = _mailHeader.Subject;
+		_mailHdrTemp.From = _mailHeader.From;
+		_mailHdrTemp.To = _mailHeader.To;
+		_mailHdrTemp.TextBody = "\n--------Original Message---------" + _mailHeader.TextBody;
 		CNewMailDlg dlg;
 		dlg.DoModal(&_mailHdrTemp,"Re: ");
 		// TODO: Implement here
@@ -473,4 +484,40 @@ void CMFCMailClientDlg::SBPartsSetting(int cxParent, int cyParent)
 
 	m_wndStatusBar.SetMinHeight(SB_HEIGHT);
 	m_wndStatusBar.SetParts(SBP_NUMPARTS, nWidths);
+}
+void CMFCMailClientDlg::OnMessageReplymessage()
+{
+	ReplySelectedMail();
+}
+
+void CMFCMailClientDlg::OnMessageForwardmessage()
+{
+	ForwardMessage();
+}
+
+void CMFCMailClientDlg::ForwardMessage()
+{
+	POSITION pos = m_ListMail.GetFirstSelectedItemPosition();
+	if (pos == NULL)
+	{
+		AfxMessageBox("Choose one mail");
+	}
+	else
+	{
+		UINT _selectedItem = m_ListMail.GetNextSelectedItem(pos);
+		MailHeader _mailHeader = globalMailList.GetAt(_selectedItem);
+		MailHeader _mailHdrTemp;
+		_mailHdrTemp.Subject = _mailHeader.Subject;
+		_mailHdrTemp.From = _mailHeader.From;
+		_mailHdrTemp.To = _mailHeader.To;
+		_mailHdrTemp.TextBody = "--------Original Message---------" + _mailHeader.TextBody;
+		CNewMailDlg dlg;
+		dlg.DoModal(&_mailHdrTemp,"Fwd: ");
+		// TODO: Implement here
+	}
+}
+
+void CMFCMailClientDlg::OnBnClickedButton4()
+{
+	ForwardMessage();
 }
