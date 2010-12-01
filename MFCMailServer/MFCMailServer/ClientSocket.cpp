@@ -200,6 +200,7 @@ void CClientSocket::ProcessPASSCommand()
 
 void CClientSocket::ProcessLISTCommand()
 {
+	INT32 i = 0;
 	CString currentStatus;
 	MailHeader* test1 = new MailHeader();
 	test1->Subject = "test1";
@@ -209,6 +210,7 @@ void CClientSocket::ProcessLISTCommand()
 	testArray->Add(*test1);
 	testArray->Add(*test2);
 	m_totalMail = testArray->GetCount();
+
 	m_ClientRequest.Delete(0,4);
 	m_ClientRequest.TrimLeft();
 	m_ClientRequest.TrimRight();
@@ -247,14 +249,18 @@ void CClientSocket::ProcessLISTCommand()
 	currentStatus.Format("+OK %d messages (%d octets)", m_totalMail, m_totalSize);
 	m_parrent->WriteLog(currentStatus);
 	Reply(currentStatus);
-	for (nIndex=1; nIndex<=m_totalMail; nIndex++) Reply("%d %s", nIndex, GetMessageInfo(nIndex, 2));
+	for (i=0; i<m_totalMail; i++) Reply("%d %s", i+1, testArray->ElementAt(i).Subject);
 	Reply(".");
 }
 
 void CClientSocket::ProcessRETRCommand()
 {
+	MailHeader* requestedMail = new MailHeader();
 	MailHeader* test1 = new MailHeader();
 	test1->Subject = "test1";
+	test1->From = "Phuc";
+	test1->Subject = "Test Mail";
+	test1->TextBody = "test test test";
 	MailHeader* test2 = new MailHeader();
 	test2->Subject = "test2";
 	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
@@ -263,6 +269,7 @@ void CClientSocket::ProcessRETRCommand()
 	m_totalMail = testArray->GetCount();
 
 	CString currentStatus;
+	
 	m_ClientRequest.Delete(0, 4);
 	m_ClientRequest.TrimLeft();
 	m_ClientRequest.TrimRight();
@@ -284,6 +291,7 @@ void CClientSocket::ProcessRETRCommand()
 	}
 
 	UINT nMailIndex = atoi(m_ClientRequest);
+	INT32 currentMailIndex = nMailIndex;
 
 	if ((nMailIndex <= 0) || (nMailIndex > m_totalMail))
 	{
@@ -304,64 +312,118 @@ void CClientSocket::ProcessRETRCommand()
 	m_parrent->WriteLog(currentStatus);
 	Reply(currentStatus);
 
-	#define	BUF_SIZE	2048
-	CFile	F;
-	BYTE	Buffer[BUF_SIZE];
-	DWORD	dwRead;
-
-	F.Open(GetMessageInfo(nMailIndex, 1), CFile::modeRead, NULL);
-	do
+	//Lay toan bo thong tin cua mail ma nsd muon lay:
+	requestedMail = &testArray->GetAt(currentMailIndex-1);
+	if (requestedMail != NULL)
 	{
-		dwRead = F.Read(Buffer, BUF_SIZE);
-		if (dwRead > 0) SendString(Buffer, dwRead, 0);
+		//currentStatus.Append("\n");
+		currentStatus.Format("Received: from %s by %s \r\nMessage-ID: %s \nDate: %s \nSubject: %s \nContent: \n%s \n",
+									requestedMail->From.Trim(), 
+									requestedMail->From.Trim(),
+									requestedMail->MessageID.Trim(),
+									requestedMail->Date.Trim(),
+									requestedMail->Subject.Trim(),
+									requestedMail->TextBody.Trim());
+		m_parrent->WriteLog(currentStatus);
+		
+		Reply(currentStatus);
 	}
-	while (dwRead > 0);
-	F.Close();
-
 	Reply(".");
 }
 
 void CClientSocket::ProcessSTATCommand()
 {
-	
+	MailHeader* test1 = new MailHeader();
+	test1->Subject = "test1";
+	test1->From = "Phuc";
+	test1->Subject = "Test Mail";
+	test1->TextBody = "test test test";
+	MailHeader* test2 = new MailHeader();
+	test2->Subject = "test2";
+	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
+	testArray->Add(*test1);
+	testArray->Add(*test2);
+	m_totalMail = testArray->GetCount();
+
+	CString currentStatus;
+
+	if (m_totalMail == 0)
+	{
+		currentStatus.Format("-ERR No such messages.");
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
+		return;
+	}
+	currentStatus.Format("+OK %d %d", m_totalMail, m_totalSize);
+	m_parrent->WriteLog(currentStatus);
+	Reply(currentStatus);
 }
 
 void CClientSocket::ProcessDELECommand()
 {
+	MailHeader* requestedMail = new MailHeader();
+	MailHeader* test1 = new MailHeader();
+	test1->Subject = "test1";
+	test1->From = "Phuc";
+	test1->Subject = "Test Mail";
+	test1->TextBody = "test test test";
+	MailHeader* test2 = new MailHeader();
+	test2->Subject = "test2";
+	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
+	testArray->Add(*test1);
+	testArray->Add(*test2);
+	m_totalMail = testArray->GetCount();
+
+	CString currentStatus;
+	INT32 currentMailIndex;
+	CString tempClientRequest = m_ClientRequest;
+	currentMailIndex = tempClientRequest.Delete(0,5);
+
 	m_ClientRequest.Delete(0, 4);
 	m_ClientRequest.TrimLeft();
 	m_ClientRequest.TrimRight();
 	// Neu khong co tham so
 	if (m_ClientRequest == "")
 	{
-		Reply("-ERR Please enter parameter.");
+		currentStatus = "-ERR Please enter parameter.";
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
 		return;
 	}
 	if (strspn(m_ClientRequest, "0123456789") != (UINT)m_ClientRequest.GetLength())
 	{
-		Reply("-ERR Invalid parameter.");
+		currentStatus = "-ERR Invalid parameter.";
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
 		return;
 	}
 	UINT nIndex = atoi(m_ClientRequest);
 	if ((nIndex <= 0) || (nIndex > m_totalMail))
 	{
-		Reply("-ERR No such message.");
+		currentStatus = "-ERR No such message.";
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
 		return;
 	}
 	// Kiem tra xem mail thu nIndex da duoc xoa hay chua
-	if (GetMessageInfo(nIndex, 3) != "0")
+	if (&testArray->ElementAt(currentMailIndex) == NULL)
 	{
-		Reply("-ERR Message %d already deleted.", nIndex);
+		currentStatus.Format("-ERR Message %d already deleted.",currentMailIndex);
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
 		return;
 	}
 	// Danh dau mail nay se duoc xoa
-	POSITION	pos;
+	/*POSITION	pos;
 	CString		sTemp;
 	pos = m_MailboxInfo.FindIndex(nIndex-1);
 	sTemp = m_MailboxInfo.GetAt(pos);
 	sTemp.SetAt(sTemp.GetLength()-2, '1');
-	m_MailboxInfo.SetAt(pos, sTemp);
-	Reply("+OK Message %d deleted.", nIndex);
+	m_MailboxInfo.SetAt(pos, sTemp);*/
+	testArray->RemoveAt(currentMailIndex-1,1);
+	currentStatus.Format("+OK Message %d deleted.", currentMailIndex);
+	m_parrent->WriteLog(currentStatus);
+	Reply(currentStatus);
 }
 
 void CClientSocket::ProcessQUITCommand()
