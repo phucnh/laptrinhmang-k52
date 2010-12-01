@@ -85,6 +85,7 @@ INT CSMTPClient::GetSMTPCommand( CString* requestMessage )
 	CString	sRequestTemp = *requestMessage;
 
 	if (requestMessage->GetLength() < 4) return SMTP_ERROR_CMD;
+	
 	requestMessage->TrimLeft();
 	requestMessage->TrimRight();
 	sTemp = requestMessage->Left(5);
@@ -150,7 +151,7 @@ void CSMTPClient::Reply( CString msg )
 
 void CSMTPClient::ProcessERRORCommand()
 {
-
+	Reply("502 Unknown command\r\n");
 }
 
 void CSMTPClient::ProcessHELOCommand()
@@ -183,8 +184,11 @@ void CSMTPClient::ProcessDATACommand()
 {
 	//long add
 	Reply("354 Enter mail, end with "+"."+" on a line by itself\r\n");
-	
-	
+	GetDATA();
+	if (!m_mailHdr->TextBody.IsEmpty())
+	{
+		Reply("250 Message accepted for delivery.\r\n");		
+	}
 }
 
 void CSMTPClient::ProcessQUITCommand()
@@ -194,7 +198,7 @@ void CSMTPClient::ProcessQUITCommand()
 		ProcessERRORCommand();
 		return;
 	}
-	Reply("221 SMTP Mail Server quited."); // TODO: May co the thay tu ngu khac cho no pro hon
+	Reply("221 SMTP Mail Server quited.\r\n"); // TODO: May co the thay tu ngu khac cho no pro hon
 	// TODO: Add cac cau lenh dong socket vao cho nay nhe
 	CloseSocket();
 }
@@ -218,7 +222,7 @@ void CSMTPClient::Initialize()
 void CSMTPClient::GetMailFrom()
 {
 	CString temp;
-	temp = m_sQueue;
+	temp = m_ClientRequest;
 	temp.Delete(0,11);
 	temp.Delete(temp.GetLength()-1, 1);
 	m_mailHdr->From = temp;
@@ -227,8 +231,21 @@ void CSMTPClient::GetMailFrom()
 void CSMTPClient::GetRCPTTo()
 {
 	CString temp;
-	temp = m_sQueue;
+	temp = m_ClientRequest;
 	temp.Delete(0,9);
 	temp.Delete(temp.GetLength()-1, 1);
 	m_mailHdr->To = temp;
+}
+void CSMTPClient::GetDATA()
+{
+	CString temp;
+	while (1)
+	{ 
+		if (m_ClientRequest == ".\r\n")
+		{
+			break;
+		}
+		temp += m_ClientRequest;
+	}
+	m_mailHdr->TextBody = temp;
 }
