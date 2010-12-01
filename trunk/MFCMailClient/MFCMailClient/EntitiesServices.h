@@ -35,11 +35,14 @@ private:
 	CString sqlCommand2;
 
 public:
+	CMailHeaderServices(void);
+
 	CArray<MailHeader,MailHeader&>* GetAllMail();
 	MailHeader* GetByMailId(INT mailId);
 	CArray<MailHeader,MailHeader&>* GetByUserId(INT userId);
 	CArray<MailHeader,MailHeader&>* GetByGroupId(INT groupId);
 	CArray<MailHeader,MailHeader&>* GetByUserIdGroupId(INT userId, INT groupId);
+	MailHeader* InsertNewMail(MailHeader* mailHeader);
 };
 
 public class CAddressBookServices

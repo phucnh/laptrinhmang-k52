@@ -58,7 +58,12 @@ public:
 	void OnNewMail();
 	afx_msg void OnBnClickedButton5();
 
+	void ReplySelectedMail();
+	void ForwardMessage();
 	void UpdateStatusbar();
 	void InitStatusbar();
 	void SBPartsSetting(int cxParent, int cyParent);
+	afx_msg void OnMessageReplymessage();
+	afx_msg void OnMessageForwardmessage();
+	afx_msg void OnBnClickedButton4();
 };

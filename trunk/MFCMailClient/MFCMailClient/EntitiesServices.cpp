@@ -29,7 +29,7 @@ CUser* CUserEntitiesServices::InsertNewUser( CUser* user )
 		if (!dal->ExecuteSQL(sqlCommand1)) return NULL;
 
 		dataUser=dal->GetRecordSet(sqlCommand2);
-		dataUser->GetFieldValue(_T("UserID"),userid);
+		dataUser->GetFieldValue(_T("UserId"),userid);
 		dataUser->GetFieldValue(_T("Username"),username);
 		dataUser->GetFieldValue(_T("Password"),password);
 		dataUser->GetFieldValue(_T("EmailAddress"),emailaddress);
@@ -55,10 +55,10 @@ CUser* CUserEntitiesServices::InsertNewUser( CUser* user )
 
 CUser* CUserEntitiesServices::GetByUserId( INT userId )
 {
-	CUser *userreturn;
+	CUser *userreturn = new CUser();
 	CString userid,username,password,emailaddress,displayname;
 	
-	sqlCommand2.Format(_T("SELECT * From [User] where UserID=%d ;"),userId);
+	sqlCommand2.Format(_T("SELECT * From [User] where UserId=%d ;"),userId);
 	
 	try
 	{
@@ -74,7 +74,7 @@ CUser* CUserEntitiesServices::GetByUserId( INT userId )
 
 	else
 			{
-				dataUser->GetFieldValue(_T("UserID"),userid);
+				dataUser->GetFieldValue(_T("UserId"),userid);
 				dataUser->GetFieldValue(_T("Username"),username);
 				dataUser->GetFieldValue(_T("Password"),password);
 				dataUser->GetFieldValue(_T("EmailAddress"),emailaddress);
@@ -94,7 +94,7 @@ CUser* CUserEntitiesServices::GetByUserId( INT userId )
 
 CUser* CUserEntitiesServices::GetByUsername( CString username )
 {
-	CUser *userreturn;
+	CUser *userreturn = new CUser();
 	CString userid,usernamereturn,password,emailaddress,displayname;
 
 	sqlCommand2.Format(_T("select * from User where Username = '%s'"),username);
@@ -115,17 +115,17 @@ CUser* CUserEntitiesServices::GetByUsername( CString username )
 
 
 		//dataUser=dal->GetRecordSet(sqlCommand2);
-		dataUser->GetFieldValue(_T("UserID"),userid);
+		dataUser->GetFieldValue(_T("UserId"),userid);
 		dataUser->GetFieldValue(_T("Username"),usernamereturn);
 		dataUser->GetFieldValue(_T("Password"),password);
 		dataUser->GetFieldValue(_T("EmailAddress"),emailaddress);
 		dataUser->GetFieldValue(_T("DisplayName"),displayname);
 		
-		userreturn->Username(usernamereturn);
-		userreturn->UserId(_tstoi(userid)); //CString to UINT
-		userreturn->Password(password);
-		userreturn->EmailAddress(emailaddress);
-		userreturn->DisplayName(displayname);
+		userreturn->Username(usernamereturn.GetString());
+		userreturn->UserId(_tstoi(userid.GetString())); //CString to UINT
+		userreturn->Password(password.GetString());
+		userreturn->EmailAddress(emailaddress.GetString());
+		userreturn->DisplayName(displayname.GetString());
 
 		return userreturn;
 
@@ -136,11 +136,11 @@ CUser* CUserEntitiesServices::GetByUsername( CString username )
 CUser* CUserEntitiesServices::DeleteUserById( INT userID )
 {
 
-	CUser *userreturn;
+	CUser *userreturn = new CUser();
 	CString userid,username,password,emailaddress,displayname;
 
-	sqlCommand1.Format(_T("SELECT * From User where UserID=%d ;"),userID);
-	sqlCommand2.Format(_T("Delete from User where UserID=%d"),userID);
+	sqlCommand1.Format(_T("SELECT * From User where UserId=%d ;"),userID);
+	sqlCommand2.Format(_T("Delete from User where UserId=%d"),userID);
 
 	try
 	{
@@ -159,7 +159,7 @@ CUser* CUserEntitiesServices::DeleteUserById( INT userID )
 
 
 		dataUser=dal->GetRecordSet(sqlCommand1);
-		dataUser->GetFieldValue(_T("UserID"),userid);
+		dataUser->GetFieldValue(_T("UserId"),userid);
 		dataUser->GetFieldValue(_T("Username"),username);
 		dataUser->GetFieldValue(_T("Password"),password);
 		dataUser->GetFieldValue(_T("EmailAddress"),emailaddress);
@@ -181,11 +181,11 @@ CUser* CUserEntitiesServices::DeleteUserById( INT userID )
 
 CUser* CUserEntitiesServices::DeleteUserByUsername( CString username )
 {
-	CUser *userreturn;
+	CUser *userreturn = new CUser();
 	CString userid,usernamereturn,password,emailaddress,displayname;
 
 	sqlCommand1.Format(_T("SELECT * From User where Username='%s' ;"),username);
-	sqlCommand2.Format(_T("Delete from User where UserID='%s' ;"),username);
+	sqlCommand2.Format(_T("Delete from User where UserId='%s' ;"),username);
 
 	try
 	{
@@ -204,7 +204,7 @@ CUser* CUserEntitiesServices::DeleteUserByUsername( CString username )
 
 
 		
-		dataUser->GetFieldValue(_T("UserID"),userid);
+		dataUser->GetFieldValue(_T("UserId"),userid);
 		dataUser->GetFieldValue(_T("Username"),usernamereturn);
 		dataUser->GetFieldValue(_T("Password"),password);
 		dataUser->GetFieldValue(_T("EmailAddress"),emailaddress);
@@ -663,4 +663,44 @@ CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByUserIdGroupId( INT use
 		throw;
 		e->Delete();
 	}
+}
+
+MailHeader* CMailHeaderServices::InsertNewMail( MailHeader* mailHeader )
+{
+	MailHeader* _returnMailHeader = new MailHeader();
+	mailHeader->GroupId = 1;
+
+	sqlCommand1.Format(_T("INSERT INTO MailHeader (MessageID, [From], To, SentDate,Subject,Cc,ReplyTo,TextBody,MimeVersion,ContentType,RealAttach,UserId,GroupId) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%d,%d,%d);"),
+		mailHeader->MessageID,
+		mailHeader->From,
+		mailHeader->To,
+		mailHeader->Date.GetString(),
+		mailHeader->Subject,
+		mailHeader->Cc,
+		mailHeader->ReplyTo,
+		mailHeader->TextBody,
+		mailHeader->MimeVersion,
+		mailHeader->ContentType,
+		mailHeader->RealAttach,
+		mailHeader->UserId,
+		mailHeader->GroupId
+		);
+
+	try
+	{
+		dal->ExecuteSQL(sqlCommand1);
+	}
+	catch (CDBException* e)
+	{
+		throw;
+	}
+	
+
+	return _returnMailHeader;
+}
+
+CMailHeaderServices::CMailHeaderServices( void )
+{
+	this->dal = new CDAL();
+
 }

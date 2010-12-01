@@ -6,6 +6,7 @@
 #include "stdafx.h"
 
 //Global variables
+CUser globalUser;
 CPop3 globalPop3;
 CSMTP globalSmtp;
 CArray<MailHeader,MailHeader> globalMailList;

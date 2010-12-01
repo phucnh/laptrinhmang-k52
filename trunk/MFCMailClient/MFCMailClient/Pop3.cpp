@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "Pop3.h"
+#include "EntitiesServices.h"
 
 
 // CPop3
@@ -108,7 +109,7 @@ void CPop3::Disconnect()
 		return;
 	}
 
-	serverSocket.Close();
+	//serverSocket.Close();
 
 	isConnected = FALSE;
 }
@@ -347,6 +348,15 @@ MailHeader CPop3::ReadMail( INT _mailNumber )
 	mailHeader.Cc = GetHeaderItem(_messageHeader,"CC");
 	mailHeader.ReplyTo = GetHeaderItem(_messageHeader,"Reply-To");
 	mailHeader.TextBody = ReadMessageBody(_messageHeader);
+
+	mailHeader.UserId = globalUser.UserId();
+
+	/*CMailHeaderServices* mailHeaderService = new CMailHeaderServices();
+	mailHeaderService->InsertNewMail(&mailHeader);
+
+	if (mailHeaderService != NULL)	delete mailHeaderService;*/
+
+	// TODO : Fix InsertNewMail
 
 	return mailHeader;
 }

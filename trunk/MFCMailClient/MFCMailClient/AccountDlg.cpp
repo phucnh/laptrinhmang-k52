@@ -97,8 +97,16 @@ void CAccountDlg::OnBnClickedOk()
 	user->Username(globalUsername);
 	user->Password(globalPassword);
 
-	if (userService.GetByUsername(globalUsername) != NULL)
-		userService.InsertNewUser(user);
+	user = userService.GetByUsername(globalUsername);
+
+	if (user == NULL)
+	{
+		user->Username(globalUsername);
+		user->Password(globalPassword);
+		globalUser = *userService.InsertNewUser(user);
+	}
+	else
+		globalUser = *user;
 
 	OnCancel();
 	UpdateData(FALSE);
