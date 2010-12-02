@@ -21,12 +21,12 @@ MailUser::MailUser()
 {
 	this->_username=_T("");
 	this->_password=_T("");
-	dal=new DAL();
+	dal = new DAL();
 }
 
 MailUser::~MailUser()
 {
-	dal=new DAL();
+	if (dal != NULL) delete dal;
 }
 
 
