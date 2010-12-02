@@ -35,11 +35,13 @@ MailHeader::MailHeader( void )
 	this->ReplyTo = "";
 	this->TextBody = "";
 	this->RealAttach = FALSE;
+
+	dal = new DAL();
 }
 
 MailHeader::~MailHeader( void )
 {
-
+	if (dal != NULL) delete dal;
 }
 CRecordset* MailHeader::getAllMail(CString username)
 {
