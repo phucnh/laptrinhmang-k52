@@ -53,6 +53,10 @@
 #define IDC_BUTTON5                     1011
 #define IDC_EDIT5                       1011
 #define IDC_BUTTON6                     1012
+#define IDC_LIST1                       1012
+#define IDC_LIST_FILELIST               1012
+#define IDC_BUTTON_ADDFILE              1013
+#define IDC_BUTTON_REMOVE               1014
 #define ID_ACOUNT_ACCOUNT               32771
 #define ID_ACCOUNT_QUIT                 32772
 #define ID_GROUPS_INBOX                 32773
@@ -71,7 +75,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        171
 #define _APS_NEXT_COMMAND_VALUE         32782
-#define _APS_NEXT_CONTROL_VALUE         1012
+#define _APS_NEXT_CONTROL_VALUE         1015
 #define _APS_NEXT_SYMED_VALUE           106
 #endif
 #endif

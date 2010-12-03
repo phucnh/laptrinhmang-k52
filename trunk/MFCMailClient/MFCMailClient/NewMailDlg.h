@@ -1,6 +1,7 @@
 #pragma once
 #include "afxcmn.h"
 #include "MailMessage.h"
+#include "afxwin.h"
 
 #ifdef _WIN32_WCE
 #error "CDHtmlDialog is not supported for Windows CE."
@@ -42,4 +43,6 @@ public:
 	virtual INT_PTR DoModal(MailHeader* mailHdr,CString prefixSubject);
 	virtual INT_PTR DoModal();
 	CString m_sCc;
+	afx_msg void OnBnClickedButtonAddfile();
+	CListBox m_lstFileList;
 };
