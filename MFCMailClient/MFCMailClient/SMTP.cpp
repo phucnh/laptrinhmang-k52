@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SMTP.h"
 #include "string.h"
+#include "EntitiesServices.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -222,7 +223,7 @@ CString CSMTP::prepare_body(MailHeader * msg)
 	return sTemp;
 }
 
-BOOL CSMTP::transmit_message(MailHeader * msg)
+BOOL CSMTP::transmit_message(MailHeader* msg)
 {
 	CString sFrom;
 	CString sTo;
@@ -283,6 +284,17 @@ BOOL CSMTP::transmit_message(MailHeader * msg)
 	{
 		return FALSE;
 	}
+
+	////phuc add 20101204
+	//CMailHeaderServices* mailHeadrService = new CMailHeaderServices();
+	//msg->UserId = globalUser.UserId();
+	//msg->GroupId = 3;
+	//mailHeadrService->InsertNewMail(msg);
+
+	/*if (mailHeadrService != NULL) delete mailHeadrService;*/
+	////end phuc add 20101204
+	// TODO : Add insert new mail in here
+
 	return TRUE;
 }
 

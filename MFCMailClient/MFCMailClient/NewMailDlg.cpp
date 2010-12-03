@@ -95,7 +95,7 @@ void CNewMailDlg::OnBnClickedOk()
 
 
 		CMimeMessage msgmime;
-		msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,m_lstFileList,msg.TextBody);
+		msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,&m_lstFileList,msg.TextBody);
 		msgmime.ConvertToString(msg.TextBody);
 		_smtp.SendMessage(&msg);
 
