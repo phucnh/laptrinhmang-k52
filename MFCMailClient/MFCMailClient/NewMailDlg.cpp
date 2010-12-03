@@ -95,26 +95,8 @@ void CNewMailDlg::OnBnClickedOk()
 
 
 		CMimeMessage msgmime;
-
-		if (m_lstFileList.GetCount() == 0)
-			msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,"",msg.TextBody);
-		else
-		{
-			for (int i=0; i<m_lstFileList.GetCount() - 1;i++)
-			{
-				CString _tempPath;
-				m_lstFileList.GetDlgItemText(i,_tempPath);
-				msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,_tempPath,msg.TextBody);
-			}
-		}
-		//msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,filePath,msg.TextBody);
-		//su dung ham nay de tao mime
-		
-		/*CMimeEnvironment::SetAutoFolding(true); 
-		int nSize = msgmime.GetLength();
-		char* pBuff = new char[nSize];
-		nSize = msgmime.Store(pBuff, nSize);
-		msg.TextBody = pBuff;*/
+		msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,m_lstFileList,msg.TextBody);
+		msgmime.ConvertToString(msg.TextBody);
 		_smtp.SendMessage(&msg);
 
 		//CMailHeaderServices* mailHeaderService = new CMailHeaderServices();

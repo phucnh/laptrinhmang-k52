@@ -955,3 +955,11 @@ void CMimeMessage::SetDate(int nYear, int nMonth, int nDay, int nHour, int nMinu
 
 	SetFieldValue("Date", szDate);
 }
+void CMimeMessage::ConvertToString(CString textBody)
+{
+	CMimeEnvironment::SetAutoFolding(true); 
+	int nSize = this->GetLength();
+	char* pBuff = new char[nSize];
+	nSize = this->Store(pBuff, nSize);
+	textBody = pBuff;
+}
