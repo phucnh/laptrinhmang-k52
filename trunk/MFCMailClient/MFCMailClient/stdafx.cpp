@@ -14,5 +14,3 @@ CString globalUsername;
 CString globalPassword;
 CString globalServerIP;
 BOOL globalIsConnected;
-
-

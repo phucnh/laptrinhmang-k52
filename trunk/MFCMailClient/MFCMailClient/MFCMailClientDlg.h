@@ -58,6 +58,7 @@ public:
 	void OnNewMail();
 	afx_msg void OnBnClickedButton5();
 
+	void Checkmail();
 	void ReplySelectedMail();
 	void ForwardMessage();
 	void UpdateStatusbar();
