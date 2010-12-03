@@ -436,7 +436,7 @@ public:
 	const char* GetDate() const;
 	void SetVersion();
 	void SetMailMime(const char* pszFrom, const char* pszTo, const char* pszCc, const char* pszSubject, CListBox* listFilePath, const char* textBody);
-	void ConvertToString(CString textBody);
+	CString ConvertToString();
 };
 
 inline void CMimeMessage::SetFrom(const char* pszAddr, const char* pszCharset)
@@ -487,13 +487,14 @@ inline void CMimeMessage::SetMailMime(const char *pszFrom, const char *pszTo,  c
 	this->SetBoundary(NULL);
 	CMimeBody* msg_body = this->CreatePart();
 	msg_body->SetText(textBody);
-	if(listFilePath->GetCount()>0)
+	
+	if( listFilePath->GetCount()>0)
 	{
-		for (int i=0; i<listFilePath->GetCount() - 1;i++)
+		for (int i=0; i <  listFilePath->GetCount(); i++)
 		{
 			CString _filePath;
-			listFilePath->GetDlgItemText(i,_filePath);
-			if (_filePath.IsEmpty())
+			listFilePath->GetText(i,_filePath);
+			if (_filePath.GetLength() == 0)
 			{
 				break;
 			}
