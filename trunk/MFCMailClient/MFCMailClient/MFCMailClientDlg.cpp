@@ -103,9 +103,17 @@ void CMFCMailClientDlg::CreateListMailColumn()
 	m_ListMail.ModifyStyle(m_ListMail.GetStyle(),WS_CHILD|WS_VISIBLE|WS_BORDER|LVS_REPORT|LVS_AUTOARRANGE);
 	m_ListMail.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES|LVS_EX_CHECKBOXES);
 
-	m_ListMail.InsertColumn(0, "From",LVCFMT_LEFT, 130);
-	m_ListMail.InsertColumn(1, "Subject",LVCFMT_LEFT, 270);
-	m_ListMail.InsertColumn(2, "Date",LVCFMT_LEFT, 90);
+	LV_COLUMN	lvColumn;
+	lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_IMAGE;
+	lvColumn.fmt = LVCFMT_LEFT;
+	lvColumn.cx = 25;
+	lvColumn.iImage = 0;
+
+	
+	m_ListMail.InsertColumn(1, "From",LVCFMT_LEFT, 120);
+	m_ListMail.InsertColumn(2, "Subject",LVCFMT_LEFT, 265);
+	m_ListMail.InsertColumn(3, "Date",LVCFMT_LEFT, 85);
+	m_ListMail.InsertColumn(4, &lvColumn);
 
 	//lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM | LVCF_IMAGE;
 	//lvColumn.cx = 30;
@@ -323,6 +331,7 @@ void CMFCMailClientDlg::Checkmail()
 {
 	globalMailList.RemoveAll();
 	globalPop3.GetAllMail(globalMailList);
+	//globalMailList.Add(globalPop3.ReadMail(7));
 	
 	if (globalMailList.GetCount() == 0)
 	{
@@ -343,9 +352,16 @@ void CMFCMailClientDlg::Checkmail()
 		_listMailItem.pszText = _mailArray.GetAt(i).Subject.GetBuffer(_mailArray.GetAt(i).Subject.GetLength());
 
 		m_ListMail.InsertItem(&_listMailItem);*/
+		CImageList m_ImageList;
+		m_ImageList.Create(10, 10, ILC_COLOR8, 0, 6);
+		m_ImageList.Add(theApp.LoadIcon(IDI_ICON_INBOX));
+		m_ListMail.SetImageList(&m_ImageList,LVSIL_SMALL);
+
+		int test = m_ImageList.GetImageCount();
+
 		CString subject;
 		subject.Format("%s",globalMailList.GetAt(i).Subject);
-		int nIndex = m_ListMail.InsertItem(i,globalMailList[i].From);
+		int nIndex = m_ListMail.InsertItem(i,globalMailList[i].From,0);
 		m_ListMail.SetItemText(nIndex,1,globalMailList[i].Subject);
 		m_ListMail.SetItemText(nIndex,2,globalMailList[i].Date);
 	}
@@ -462,7 +478,7 @@ void CMFCMailClientDlg::UpdateStatusbar()
 	CString sStatus;
 	if (globalIsConnected)
 	{
-	sStatus.Format("%s already connected!",globalUsername);
+	sStatus.Format("%s is already connected!",globalUsername);
 	}
 	else
 	{

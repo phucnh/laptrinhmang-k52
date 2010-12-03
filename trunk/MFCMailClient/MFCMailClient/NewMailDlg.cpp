@@ -90,8 +90,9 @@ void CNewMailDlg::OnBnClickedOk()
 		MailHeader msg;
 		msg.From = m_From;
 		msg.To = m_To;
-		msg.Cc= m_sCc;
-		msg.Subject = m_Subject;	
+		msg.Cc = m_sCc;
+		msg.Subject = m_Subject;
+		msg.TextBody = m_TextBody;
 		//long 20101108
 
 		//long 20101204
@@ -99,6 +100,9 @@ void CNewMailDlg::OnBnClickedOk()
 		msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,&m_lstFileList,m_TextBody);
 		msg.TextBody = msgmime.ConvertToString();		
 		
+		if (m_lstFileList.GetCount() != 0)
+			msg.RealAttach = TRUE;
+
 		_smtp.SendMessage(&msg);
 
 		//CMailHeaderServices* mailHeaderService = new CMailHeaderServices();
