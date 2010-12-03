@@ -435,7 +435,7 @@ public:
 	void SetDate(int nYear, int nMonth, int nDay, int nHour, int nMinute, int nSecond);
 	const char* GetDate() const;
 	void SetVersion();
-	void SetMailMime(const char* pszFrom, const char* pszTo, const char* pszCc, const char* pszSubject, CListBox listFilePath, const char* textBody);
+	void SetMailMime(const char* pszFrom, const char* pszTo, const char* pszCc, const char* pszSubject, CListBox* listFilePath, const char* textBody);
 	void ConvertToString(CString textBody);
 };
 
@@ -474,7 +474,7 @@ inline const char* CMimeMessage::GetDate() const
 
 inline void CMimeMessage::SetVersion()
 { SetFieldValue(CMimeConst::MimeVersion(), "1.0"); }
-inline void CMimeMessage::SetMailMime(const char *pszFrom, const char *pszTo,  const char* pszCc, const char *pszSubject, CListBox listFilePath, const char* textBody)
+inline void CMimeMessage::SetMailMime(const char *pszFrom, const char *pszTo,  const char* pszCc, const char *pszSubject, CListBox* listFilePath, const char* textBody)
 {
 	this->SetFrom(pszFrom);
 	this->SetTo(pszTo);
@@ -487,12 +487,12 @@ inline void CMimeMessage::SetMailMime(const char *pszFrom, const char *pszTo,  c
 	this->SetBoundary(NULL);
 	CMimeBody* msg_body = this->CreatePart();
 	msg_body->SetText(textBody);
-	if(listFilePath.GetCount()>0)
+	if(listFilePath->GetCount()>0)
 	{
-		for (int i=0; i<listFilePath.GetCount() - 1;i++)
+		for (int i=0; i<listFilePath->GetCount() - 1;i++)
 		{
 			CString _filePath;
-			listFilePath.GetDlgItemText(i,_filePath);
+			listFilePath->GetDlgItemText(i,_filePath);
 			if (_filePath.IsEmpty())
 			{
 				break;
