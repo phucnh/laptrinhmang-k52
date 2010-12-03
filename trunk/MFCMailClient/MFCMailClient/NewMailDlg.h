@@ -45,4 +45,5 @@ public:
 	CString m_sCc;
 	afx_msg void OnBnClickedButtonAddfile();
 	CListBox m_lstFileList;
+	afx_msg void OnBnClickedButtonRemove();
 };

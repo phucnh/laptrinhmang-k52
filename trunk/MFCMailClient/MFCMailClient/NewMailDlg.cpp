@@ -52,6 +52,7 @@ BOOL CNewMailDlg::OnInitDialog()
 BEGIN_MESSAGE_MAP(CNewMailDlg, CDHtmlDialog)
 	ON_BN_CLICKED(IDOK, &CNewMailDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BUTTON_ADDFILE, &CNewMailDlg::OnBnClickedButtonAddfile)
+	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CNewMailDlg::OnBnClickedButtonRemove)
 END_MESSAGE_MAP()
 
 BEGIN_DHTML_EVENT_MAP(CNewMailDlg)
@@ -165,5 +166,20 @@ void CNewMailDlg::OnBnClickedButtonAddfile()
 			AfxMessageBox(_T("File is already in list"),MB_OK);
 		else
 			m_lstFileList.AddString(fileName);
+	}
+}
+
+void CNewMailDlg::OnBnClickedButtonRemove()
+{
+	int pos = -1;
+	pos = m_lstFileList.GetCurSel();
+
+	if (pos < 0)
+	{
+		AfxMessageBox(_T("Select one path"));
+	}
+	else
+	{
+		m_lstFileList.DeleteString(pos);
 	}
 }
