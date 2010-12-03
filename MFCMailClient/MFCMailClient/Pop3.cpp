@@ -334,7 +334,7 @@ MailHeader CPop3::ReadMail( INT _mailNumber )
 	strCommand.Format("RETR %d\r\n",_mailNumber);
 	serverSocket.Send(strCommand,strCommand.GetLength(),0);
 	Sleep(300);
-	INT _bytesRead = serverSocket.Receive(_receiveMessage,65340);
+	INT _bytesRead = serverSocket.Receive(_receiveMessage,32768);
 	_receiveMessage[_bytesRead] = '\0';
 	if(!ReceiveMessageIsOK(_receiveMessage))
 		return mailHeader;

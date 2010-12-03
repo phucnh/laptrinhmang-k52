@@ -13,6 +13,7 @@ MailHeader::MailHeader(
 					   BYTE _realAttach 
 					   )
 {
+	this->MimeVersion = "1.0";
 	this->From = _from;
 	this->To = _to;
 	this->Date = _date;
@@ -25,6 +26,7 @@ MailHeader::MailHeader(
 
 MailHeader::MailHeader( void )
 {
+	this->MimeVersion = "1.0";
 	this->From = "";
 	this->To = "";
 	this->Date = "";
