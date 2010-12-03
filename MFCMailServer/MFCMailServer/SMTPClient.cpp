@@ -169,7 +169,9 @@ void CSMTPClient::Reply( CString msg )
 
 void CSMTPClient::ProcessERRORCommand()
 {
-	Reply("502 Unknown command\r\n");
+	CString returnMsg(_T("502 Unknown command\r\n"));
+	m_parrent->WriteLog(returnMsg);
+	Reply(returnMsg);
 }
 
 void CSMTPClient::ProcessHELOCommand()
@@ -177,7 +179,7 @@ void CSMTPClient::ProcessHELOCommand()
 	CString _returnMsg;
 
 	_returnMsg.Format("250 Welcome %s, Pleased to meet you.\r\n", m_ClientAddress); // TODO: May co the sua cho no pro hon :D
-
+	m_parrent->WriteLog(_returnMsg);
 	Reply(_returnMsg);
 }
 
@@ -187,6 +189,7 @@ void CSMTPClient::ProcessMAILFROMCommand()
 	CString _returnMsg;
 	GetMailFrom();
 	_returnMsg.Format("250 sender %s OK...\r\n", m_mailHdr->From);
+	m_parrent->WriteLog(_returnMsg);
 	Reply(_returnMsg);
 
 }
@@ -196,6 +199,7 @@ void CSMTPClient::ProcessRCPTCommand()
 	CString _returnMsg;
 	GetRCPTTo();
 	_returnMsg.Format("250 Recipient %s OK...\r\n", m_mailHdr->To);
+	m_parrent->WriteLog(_returnMsg);
 	Reply(_returnMsg);
 }
 void CSMTPClient::ProcessDATACommand()
