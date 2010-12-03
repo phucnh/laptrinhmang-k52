@@ -66,4 +66,6 @@ public:
 	afx_msg void OnMessageReplymessage();
 	afx_msg void OnMessageForwardmessage();
 	afx_msg void OnBnClickedButton4();
+
+	void Dang_TestInsertNewMail();
 };
