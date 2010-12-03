@@ -280,7 +280,7 @@ BOOL CUserEntitiesServices::UpdateUserByUsername(CString username,CUser* user )
 BOOL CUserEntitiesServices::Login( CString username, CString password )
 {
 
-	sqlCommand1.Format(_T("SELECT * FROM [User] where Usernam='%s' and Password='%s';"),
+	sqlCommand1.Format(_T("SELECT * FROM [User] where Username='%s' and Password='%s';"),
 		username,
 		password);
 
@@ -351,16 +351,15 @@ CString CUserEntitiesServices::ChangePassWord( INT userId,CString newpass )
 
 CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetAllMail()
 {
-	CArray<MailHeader,MailHeader&>* listMailHeader;
+	CArray<MailHeader,MailHeader&>* listMailHeader = new CArray<MailHeader,MailHeader&>();
 	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString;
 	BYTE RealAttach;
 	INT UserId,GroupId,MailId,MessageId;
-	MailHeader* mailheader;
+	MailHeader* mailheader = new MailHeader();
 
-	sqlCommand1.Format(_T("SELECT * FROM Mail;"));
+	sqlCommand1.Format(_T("SELECT * FROM MailHeader;"));
 	try
 	{
-	
 		dataMail=dal->GetRecordSet(sqlCommand1);
 		if(dataMail==NULL) return NULL;
 	

@@ -9,6 +9,7 @@
 #include "AccountDlg.h"
 
 #include "MailMessage.h"
+#include "EntitiesServices.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -519,5 +520,22 @@ void CMFCMailClientDlg::ForwardMessage()
 
 void CMFCMailClientDlg::OnBnClickedButton4()
 {
-	ForwardMessage();
+	//ForwardMessage();
+	Dang_TestInsertNewMail();
+}
+
+void CMFCMailClientDlg::Dang_TestInsertNewMail()
+{
+	CUserEntitiesServices* service = new CUserEntitiesServices();
+	CMailHeaderServices* mailService = new CMailHeaderServices();
+	CUser* user = new CUser();
+	user->Username(_T("abc"));
+	user->Password(_T("12345"));
+
+	CArray<MailHeader,MailHeader&>* testMailArray = mailService->GetAllMail();
+
+	/*if (service->Login(user->Username(),user->Password()))
+		AfxMessageBox(_T("OK"));
+	else
+		AfxMessageBox(_T("Can not login"));*/
 }
