@@ -89,7 +89,3 @@ extern CString globalUsername;
 extern CString globalPassword;
 extern CString globalServerIP;
 extern BOOL globalIsConnected;
-
-
-
-

@@ -319,7 +319,7 @@ void CMFCMailClientDlg::CreateGroupTree()
 	childitem = m_GroupTree.InsertItem("Trash",3,3,item);
 }
 
-void CMFCMailClientDlg::OnMessageCheckmail()
+void CMFCMailClientDlg::Checkmail()
 {
 	globalMailList.RemoveAll();
 	globalPop3.GetAllMail(globalMailList);
@@ -350,6 +350,11 @@ void CMFCMailClientDlg::OnMessageCheckmail()
 		m_ListMail.SetItemText(nIndex,2,globalMailList[i].Date);
 	}
 	UpdateData(FALSE);
+}
+
+void CMFCMailClientDlg::OnMessageCheckmail()
+{
+	Checkmail();
 }
 
 void CMFCMailClientDlg::OnLvnItemchangedList3(NMHDR *pNMHDR, LRESULT *pResult)

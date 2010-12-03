@@ -200,6 +200,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GlobalFunctions.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MailMessage.cpp"
 				>
 			</File>
@@ -279,6 +283,10 @@
 			</File>
 			<File
 				RelativePath=".\EntitiesServices.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GlobalFunctions.h"
 				>
 			</File>
 			<File
