@@ -40,6 +40,7 @@ void CNewMailDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_IPADDRESS1, m_serverIP);
 	DDX_IPAddress(pDX, IDC_IPADDRESS1, m_serverip);
 	DDX_Text(pDX, IDC_EDIT5, m_sCc);
+	DDX_Control(pDX, IDC_LIST_FILELIST, m_lstFileList);
 }
 
 BOOL CNewMailDlg::OnInitDialog()
@@ -50,6 +51,7 @@ BOOL CNewMailDlg::OnInitDialog()
 
 BEGIN_MESSAGE_MAP(CNewMailDlg, CDHtmlDialog)
 	ON_BN_CLICKED(IDOK, &CNewMailDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_BUTTON_ADDFILE, &CNewMailDlg::OnBnClickedButtonAddfile)
 END_MESSAGE_MAP()
 
 BEGIN_DHTML_EVENT_MAP(CNewMailDlg)
@@ -92,7 +94,19 @@ void CNewMailDlg::OnBnClickedOk()
 
 
 		CMimeMessage msgmime;
-		//msgmime.SetMailMime(from,to,Cc,subject,filePath,textBody);
+
+		if (m_lstFileList.GetCount() == 0)
+			msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,"",msg.TextBody);
+		else
+		{
+			for (int i=0; i<m_lstFileList.GetCount() - 1;i++)
+			{
+				CString _tempPath;
+				m_lstFileList.GetDlgItemText(i,_tempPath);
+				msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,_tempPath,msg.TextBody);
+			}
+		}
+		//msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,filePath,msg.TextBody);
 		//su dung ham nay de tao mime
 		
 		/*CMimeEnvironment::SetAutoFolding(true); 
@@ -130,4 +144,26 @@ INT_PTR CNewMailDlg::DoModal(MailHeader* mailHdr,CString prefixSubject)
 INT_PTR CNewMailDlg::DoModal()
 {
 	return CDHtmlDialog::DoModal();
+}
+
+void CNewMailDlg::OnBnClickedButtonAddfile()
+{
+	CFileDialog fOpenDlg(TRUE, "*", "All Files", OFN_HIDEREADONLY|OFN_FILEMUSTEXIST, 
+		"All Files (*.*)|*.*||", this);
+
+	CString fileName;
+	fOpenDlg.GetOFN().lpstrFile = fileName.GetBuffer(_MAX_PATH);
+	fOpenDlg.GetOFN().nMaxFile = _MAX_PATH;
+	fOpenDlg.m_pOFN->lpstrTitle="Attach File";
+	fOpenDlg.m_pOFN->lpstrInitialDir="c:";
+
+	INT_PTR nResult = fOpenDlg.DoModal();
+
+	if(nResult == IDOK)
+	{
+		if (!m_lstFileList.FindString(0,fileName))
+			AfxMessageBox(_T("File is already in list"),MB_OK);
+		else
+			m_lstFileList.AddString(fileName);
+	}
 }
