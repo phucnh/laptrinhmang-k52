@@ -45,7 +45,6 @@ CClientSocket::~CClientSocket()
 
 void CClientSocket::OnReceive(int nErrorCode)
 {
-	// TODO: Add your specialized code here and/or call the base class
 	int nBytesRead = Receive(m_Buffer, MAX_POP3_BUFFER_SIZE-1);
 	if (nBytesRead == SOCKET_ERROR) return;
 

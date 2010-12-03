@@ -11,6 +11,8 @@
 CSMTPClient::CSMTPClient()
 {
 	this->smtpProcessId = -1;
+	
+	Initialize();
 }
 
 CSMTPClient::CSMTPClient( CMFCMailServerDlg* dialog)
@@ -81,7 +83,7 @@ void CSMTPClient::OnClose(int nErrorCode)
 
 INT CSMTPClient::GetSMTPCommand( CString* requestMessage )
 {
-	CString sTemp;
+	/*CString sTemp;
 	CString	sRequestTemp = *requestMessage;
 
 	if (requestMessage->GetLength() < 4) return SMTP_ERROR_CMD;
@@ -127,6 +129,22 @@ INT CSMTPClient::GetSMTPCommand( CString* requestMessage )
 			return SMTP_CMD[i].cmd_code;
 		}
 	}	
+	return SMTP_ERROR_CMD;*/
+	if (requestMessage->GetLength() < 4) return CMDERROR;	
+	requestMessage->TrimLeft();
+	requestMessage->TrimRight();
+
+	CString sCmd;
+	sCmd = requestMessage->Left(5);	
+	sCmd.TrimRight();
+
+	if ((requestMessage->Left(9)).CompareNoCase("mail from") == 0) return 2;
+	if ((requestMessage->Left(7)).CompareNoCase("rcpt to") == 0) return 3;
+
+	for (int i=1; i<10; i++)
+	{
+		if (sCmd.CompareNoCase(SMTP_CMD[i].cmd_name) == 0) return i;
+	}
 	return SMTP_ERROR_CMD;
 }
 
@@ -215,7 +233,9 @@ void CSMTPClient::Initialize()
 {
 	this->m_ClientRequest = "";
 	this->m_ClientAddress = "";
-	this->m_mailHdr = NULL;
+	//phuc add 20101203
+	m_mailHdr = new MailHeader();
+	//end phuc add 20101203
 
 }
 //long add
@@ -223,8 +243,10 @@ void CSMTPClient::GetMailFrom()
 {
 	CString temp;
 	temp = m_ClientRequest;
-	temp.Delete(0,11);
-	temp.Delete(temp.GetLength()-1, 1);
+	temp.Delete(0,10);
+	//temp.Delete(temp.GetLength()-1, 1);
+	temp.TrimLeft();
+	temp.TrimRight();
 	m_mailHdr->From = temp;
 
 }
@@ -232,8 +254,10 @@ void CSMTPClient::GetRCPTTo()
 {
 	CString temp;
 	temp = m_ClientRequest;
-	temp.Delete(0,9);
-	temp.Delete(temp.GetLength()-1, 1);
+	temp.Delete(0,8);
+	//temp.Delete(temp.GetLength()-1, 1);
+	temp.TrimLeft();
+	temp.TrimRight();
 	m_mailHdr->To = temp;
 }
 void CSMTPClient::GetDATA()
