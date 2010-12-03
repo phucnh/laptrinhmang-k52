@@ -8,9 +8,7 @@
 #include "Mime.h"
 #include "MimeCode.h"
 #include "EntitiesServices.h"
-//
-#include "iostream"
-#include "fstream"
+
 
 
 // CNewMailDlg dialog
@@ -96,18 +94,10 @@ void CNewMailDlg::OnBnClickedOk()
 		msg.Subject = m_Subject;	
 		//long 20101108
 
-
+		//long 20101204
 		CMimeMessage msgmime;
 		msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,&m_lstFileList,m_TextBody);
-		msg.TextBody = msgmime.ConvertToString();
-		
-		m_lstFileList.GetCount();
-		
-		//
-		fstream myfile("C:\\mimemail_test.eml",ios::out|ios::binary|ios::app);
-		myfile.write(msg.TextBody ,msg.TextBody .GetLength());
-		myfile.close();
-		
+		msg.TextBody = msgmime.ConvertToString();		
 		
 		_smtp.SendMessage(&msg);
 
