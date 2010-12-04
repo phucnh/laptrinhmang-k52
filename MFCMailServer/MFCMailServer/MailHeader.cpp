@@ -63,14 +63,35 @@ CRecordset* MailHeader::getAllMail(CString username)
 CRecordset* MailHeader::getAllInboxMailByUser(CString username)
 {
 	sql.Format(_T("Select * from MailHeader where [To] like '%'%s'%' ;"),username);
-	return dal->GetRecordSet(sql);
+	CRecordset* dataset;
+	try
+	{
+		 dataset = dal->GetRecordSet(sql);
+		 if(dataset==NULL) return NULL;
+		 return dataset;
+	}
+	catch(CException* e)
+	{
+		throw;
+		e->Delete();
+	}
 
 }
 CRecordset* MailHeader::getAllSentMailByUser(CString  username)
 {
 	sql.Format(_T("Select * from MailHeader where [From]='%s'"),username);
-	return dal->GetRecordSet(sql);
-
+	CRecordset* dataset;
+	try
+	{
+		dataset = dal->GetRecordSet(sql);
+		if(dataset==NULL) return NULL;
+		return dataset;
+	}
+	catch(CException* e)
+	{
+		throw;
+		e->Delete();
+	}
 }
 
 MailHeader* MailHeader::getMail(UINT mailID)
@@ -79,48 +100,73 @@ MailHeader* MailHeader::getMail(UINT mailID)
 	sql.Format(_T("Select * from MailHeader where MailID=%d"),mailID);
 	CString from, to, date, subject, cc, replyto, textbody, realattach;
 
-	dataset = dal->GetRecordSet(sql);
+	try
+		{
+			dataset = dal->GetRecordSet(sql);
+			if(dataset==NULL) return NULL;
+			else
+			{
 
-	dataset->GetFieldValue(_T("From"),from);
-	dataset->GetFieldValue(_T("To"),to);
-	dataset->GetFieldValue(_T("Date"),date);
-	dataset->GetFieldValue(_T("Subject"),subject);
-	dataset->GetFieldValue(_T("CC"),cc);
-	dataset->GetFieldValue(_T("ReplyTo"),replyto);
-	dataset->GetFieldValue(_T("TextBody"),textbody);
-	dataset->GetFieldValue(_T("RealAttach"),realattach);
+			
+			dataset->GetFieldValue(_T("From"),from);
+			dataset->GetFieldValue(_T("To"),to);
+			dataset->GetFieldValue(_T("Date"),date);
+			dataset->GetFieldValue(_T("Subject"),subject);
+			dataset->GetFieldValue(_T("CC"),cc);
+			dataset->GetFieldValue(_T("ReplyTo"),replyto);
+			dataset->GetFieldValue(_T("TextBody"),textbody);
+			dataset->GetFieldValue(_T("RealAttach"),realattach);
 
-	mailh->From = from;
-	mailh->Cc = cc;
-	mailh->To = to;
-	mailh->Date = date;
-	mailh->ReplyTo = replyto;
-	mailh->TextBody = textbody;
-	mailh->Subject = subject;
-	mailh->RealAttach = atoi(realattach);
+			mailh->From = from;
+			mailh->Cc = cc;
+			mailh->To = to;
+			mailh->Date = date;
+			mailh->ReplyTo = replyto;
+			mailh->TextBody = textbody;
+			mailh->Subject = subject;
+			mailh->RealAttach = atoi(realattach);
 
-	return mailh;
-}
+			return mailh;
+			}
+		}
+			catch(CException* ee)
+			{
+				throw;
+				ee->Delete();
+			}
+
+	}
 
 
 
 bool MailHeader::deleteMail(UINT mailID)
 {
 	sql.Format(_T("Delete MailHeader where MailID=%d"),mailID);
-	return dal->ExecuteSQL(sql);
+	try
+	{
+		if(dal->ExecuteSQL(sql))
+			return true;
+		else 
+			return false;
+	}
+	catch(CException* e)
+	{
+		throw;
+		e->Delete();
+	}
 }
 
-bool MailHeader::InsertMail(MailHeader* mailHeader )
+bool MailHeader::InsertMail(MailHeader* mailH)
 {
-	sql.Format(_T("Insert into MailHeader values('%s','%s','%s','%s','%s','%s','%s','%s')"),
-		mailHeader->From,
-		mailHeader->To,
-		mailHeader->Date,
-		mailHeader->Subject,
-		mailHeader->Cc,
-		mailHeader->ReplyTo,
-		mailHeader->TextBody,
-		mailHeader->RealAttach
+	sql.Format("Insert into MailHeader values('%s','%s','%s','%s','%s','%s','%s','%s') ;",
+		mailH->From,
+		mailH->To,
+		mailH->Date,
+		mailH->Subject,
+		mailH->Cc,
+		mailH->ReplyTo,
+		mailH->TextBody,
+		mailH->RealAttach
 		);
 
 	try

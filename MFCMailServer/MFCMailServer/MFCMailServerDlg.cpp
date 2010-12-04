@@ -109,6 +109,7 @@ BEGIN_MESSAGE_MAP(CMFCMailServerDlg, CDialog)
 	ON_BN_CLICKED(IDOK, &CMFCMailServerDlg::OnBnClickedOk)
 	ON_COMMAND(ID_ACCOUNTS_MANAGEACCOUNTS, &CMFCMailServerDlg::OnAccountsManageaccounts)
 	ON_COMMAND(ID_ACCOUNTS_NEWACCOUNT, &CMFCMailServerDlg::OnAccountsNewaccount)
+	ON_BN_CLICKED(IDC_BUTTON1, &CMFCMailServerDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -352,4 +353,14 @@ void CMFCMailServerDlg::OnAccountsNewaccount()
 {
 	CNewUserDlg newUserDlg;
 	newUserDlg.DoModal();
+}
+
+void CMFCMailServerDlg::OnBnClickedButton1()
+{
+	testInsertNewMail();
+	
+}
+void  CMFCMailServerDlg::testInsertNewMail()
+{
+ AfxMessageBox("Hello");
 }

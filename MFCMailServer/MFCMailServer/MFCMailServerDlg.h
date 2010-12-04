@@ -65,4 +65,6 @@ public:
 	void SBPartsSetting(int cxParent, int cyParent);
 	afx_msg void OnAccountsManageaccounts();
 	afx_msg void OnAccountsNewaccount();
+	afx_msg void OnBnClickedButton1();
+	 void testInsertNewMail();
 };
