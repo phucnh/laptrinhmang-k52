@@ -36,27 +36,31 @@ BEGIN_MESSAGE_MAP(CUserDlg, CDialog)
 	ON_LBN_DBLCLK(IDC_LIST1, &CUserDlg::OnLbnDblclkList1)
 END_MESSAGE_MAP()
 
-CArray<MailUser,MailUser>* CUserDlg::GetAllUser()
-{
-	CArray<MailUser,MailUser>* mailUsers = new CArray<MailUser,MailUser>();
-	MailUser* _mailUser = new MailUser();
-	// TODO: implement more code in here
-
-	return mailUsers;
-}
+//CArray<MailUser,MailUser>* CUserDlg::GetAllUser()
+//{
+//	CArray<MailUser,MailUser>* mailUsers = new CArray<MailUser,MailUser>();
+//	MailUser* _mailUser = new MailUser();
+//	// TODO: implement more code in here
+//
+//	return mailUsers;
+//}
 
 void CUserDlg::BindAllUserToListBox()
 {
 	UpdateData(TRUE);
-	CArray<MailUser,MailUser>* mailUsers = GetAllUser();
-
-	if ((mailUsers != NULL) &&
-		!mailUsers->GetCount())
-	{
-		for (int i=0;i<mailUsers->GetCount();i++)
+	MailUser* mailU=new MailUser();
+	CString userStr;
+	CArray<MailUser,MailUser>* mailUsers =mailU->GetAllUsers();
+	int numberUser=mailUsers->GetSize();
+	if ((mailUsers != NULL) &&numberUser!=NULL)
 		{
-			CString userStr;
-			userStr.Format("Username: %s	Password: %s",mailUsers->GetAt(i)._username,mailUsers->GetAt(i)._password);
+
+			//CString result;
+			//result=mailUsers->GetAt(1)._username;
+		for (int i=0;i<numberUser;i++)
+		{
+		
+			userStr.Format("Username: %s	  Password: %s",mailUsers->GetAt(1)._username,mailUsers->GetAt(1)._password);
 			m_lsbUserList.AddString(userStr);
 		}
 	}

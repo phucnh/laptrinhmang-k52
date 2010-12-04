@@ -13,7 +13,7 @@ public:
 	MailUser(CString name,CString pass);
 	MailUser();
 	virtual ~MailUser();
-	CArray<MailUser,MailUser&>* GetAllUsers();
+	CArray<MailUser,MailUser>* GetAllUsers();
 	bool InsertNewUser(MailUser *mailuser);
 	//bool SignIn(CString username,CString password);
 	MailUser* GetUserByID(UINT userID);
@@ -23,6 +23,7 @@ public:
 	//bool ChangePassword(CString username,CString password);
 	bool UpdateUserByID(UINT userID,CString name,CString password);
 	bool UpdateUserByUsername(CString oldUsername,MailUser* user);
+	
 
 };
 
