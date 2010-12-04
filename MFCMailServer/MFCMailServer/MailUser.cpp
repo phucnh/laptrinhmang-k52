@@ -196,9 +196,9 @@ bool MailUser::UpdateUserByID(UINT userID,CString name,CString password)
 	}		
 }
 
-CArray<MailUser,MailUser>* MailUser::GetAllUsers()
+CArray<MailUser,MailUser&>* MailUser::GetAllUsers()
 {
-	CArray<MailUser,MailUser>* listMailUser=new CArray<MailUser,MailUser>();
+	CArray<MailUser,MailUser&>* listMailUser=new CArray<MailUser,MailUser&>();
 	CString username,password;
 	MailUser* mailuser;
 	sqlMailUser.Format("Select * from MailUser ;");
