@@ -437,6 +437,8 @@ public:
 	void SetVersion();
 	void SetMailMime(const char* pszFrom, const char* pszTo, const char* pszCc, const char* pszSubject, CListBox* listFilePath, const char* textBody);
 	CString ConvertToString();
+	bool DownloadFile(CString* fileName, CString* filePath);
+	void ReadMIMEMail(char* pBuff);
 };
 
 inline void CMimeMessage::SetFrom(const char* pszAddr, const char* pszCharset)

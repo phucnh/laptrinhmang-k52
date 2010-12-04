@@ -965,3 +965,57 @@ CString CMimeMessage::ConvertToString()
 	return pBuff;
 	//textBody = pBuff;
 }
+bool CMimeMessage::DownloadFile(CString* fileName, CString* filePath)
+{
+	bool _t = false;
+	CMimeBody::CBodyList bodies;
+	int nCount = this->GetBodyPartList(bodies);
+	CMimeBody::CBodyList::const_iterator i;
+	for(i = bodies.begin(); i != bodies.end(); i++)
+	{
+		CMimeBody* pBP = *i;
+		CBodyList aList;
+		if (pBP->IsAttachment())
+		{
+			CString aName(pBP->GetName().c_str());
+			CString sPath = filePath->GetString();
+			if(fileName->CompareNoCase(aName)==0)
+			{
+				CString _tpath = sPath + aName;
+				CT2CA pszConvertedAnsiString  (_tpath);
+				std::string path(pszConvertedAnsiString);
+				_t = pBP->WriteToFile(path.c_str());
+			}			
+		}
+
+	}
+	return _t;
+}
+void CMimeMessage::ReadMIMEMail(char* pBuff)
+{	
+	this->DeleteAll();
+	this->Load(pBuff, strlen(pBuff));
+
+	//Get header
+
+	/*this->GetFrom();
+	this->GetTo();
+	this->GetCc();
+	this->GetSubject();*/
+
+	//Get body part
+
+	//CMimeBody::CBodyList bodies;
+	//int nCount = this->GetBodyPartList(bodies);
+	//CMimeBody::CBodyList::const_iterator i;
+	//for(i = bodies.begin(); i != bodies.end(); i++)
+	//{
+	//	CMimeBody* pBP = *i;
+	//	CBodyList aList;
+
+	//	if (pBP->IsText())
+	//	{
+	//	}
+	//}
+
+}
