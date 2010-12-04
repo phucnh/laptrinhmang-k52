@@ -40,11 +40,14 @@ END_MESSAGE_MAP()
 
 void CNewUserDlg::OnBnClickedOk()
 {
+	UpdateData();
 	MailUser* mailUser = new MailUser();
 
 	mailUser->_username = m_sUsername;
 	mailUser->_password = m_sPassword;
 
-	mailUser->InsertNewUser(mailUser);
+	if(mailUser->InsertNewUser(mailUser))
+		AfxMessageBox("Inserted new User Successfully");
+	UpdateData(FALSE);
 	OnOK();
 }

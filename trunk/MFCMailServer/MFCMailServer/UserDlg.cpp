@@ -72,7 +72,7 @@ void CUserDlg::OnBnClickedButton1()
 
 	MailUser* mailUser = new MailUser();
 
-	if (!mailUser->UpdateUserByUsername(m_sOldUsername,m_sUsername,m_sPassword))	return;
+//	if (!mailUser->UpdateUserByUsername(m_sOldUsername,m_sUsername,m_sPassword))	return;
 
 	/*if (isInsertMode)
 	{
