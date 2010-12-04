@@ -50,7 +50,7 @@ void CUserDlg::BindAllUserToListBox()
 	UpdateData(TRUE);
 	MailUser* mailU=new MailUser();
 	CString userStr;
-	CArray<MailUser,MailUser>* mailUsers =mailU->GetAllUsers();
+	CArray<MailUser,MailUser&>* mailUsers =mailU->GetAllUsers();
 	int numberUser=mailUsers->GetSize();
 	if ((mailUsers != NULL) &&numberUser!=NULL)
 		{
