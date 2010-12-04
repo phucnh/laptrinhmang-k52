@@ -362,5 +362,15 @@ void CMFCMailServerDlg::OnBnClickedButton1()
 }
 void  CMFCMailServerDlg::testInsertNewMail()
 {
- AfxMessageBox("Hello");
+ MailUser* mail=new MailUser();
+ mail->_username="dangbka";
+ mail->_password="123456";
+ try
+ {
+	  mail->InsertNewUser(mail);
+ 
+ }
+ catch (CException* e)
+ {
+ }
 }
