@@ -9,7 +9,12 @@
 #include "AccountDlg.h"
 
 #include "MailMessage.h"
+
 #include "EntitiesServices.h"
+#include "User.h"
+
+#include "EntitiesServices.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -18,7 +23,7 @@
 
 // CAboutDlg dialog used for App About
 
-class CAboutDlg : public CDialog
+public class CAboutDlg : public CDialog
 {
 public:
 	CAboutDlg();
@@ -541,22 +546,246 @@ void CMFCMailClientDlg::ForwardMessage()
 
 void CMFCMailClientDlg::OnBnClickedButton4()
 {
-	//ForwardMessage();
-	Dang_TestInsertNewMail();
+
+
+		//	ForwardMessage();	
+	// Loi : Moi khi thuc hien cac thao tac insert hay delete no cu hien ra cai bang thong bao chon DNS mac du
+	//em da thay duong dan trong phan chuoi ket noi roi :-?
+		//testLogin();			//OK
+		//testInsertNewUser();	//OK
+		testGetUserById();
+		//testGetUserByUsername();  //OK
+		//testDeleteUserById();  //OK
+		//testUpdateUserById(); //OK
+		//testUpdateUserByUsername();//OK
+		//testChangePassword();//OK
+			//testGetAllMail(); //Ok
+			//testInsertNewMail();//Ok
+			//testGetByMailId();//OK
+		//testGetMailByUserId();//OK
+		//testGetMailByGroupId();//OK
+
+		//ForwardMessage();
+		
+
 }
 
-void CMFCMailClientDlg::Dang_TestInsertNewMail()
+
+void CMFCMailClientDlg::testLogin()
 {
-	CUserEntitiesServices* service = new CUserEntitiesServices();
-	CMailHeaderServices* mailService = new CMailHeaderServices();
-	CUser* user = new CUser();
-	user->Username(_T("abc"));
-	user->Password(_T("12345"));
 
-	CArray<MailHeader,MailHeader&>* testMailArray = mailService->GetAllMail();
-
-	/*if (service->Login(user->Username(),user->Password()))
-		AfxMessageBox(_T("OK"));
-	else
-		AfxMessageBox(_T("Can not login"));*/
+	 CUserEntitiesServices* sc=new CUserEntitiesServices();
+	 if(sc->Login("dabk","12345"))
+		  AfxMessageBox("OK");
+	 else
+		 AfxMessageBox("Error");
+		  
 }
+
+void CMFCMailClientDlg::testInsertNewUser()
+{
+ CUser* user=new CUser();
+ CUserEntitiesServices* sc=new CUserEntitiesServices();
+		 user->Username("phucv");
+		 user->Password("1234567");
+		 user->EmailAddress("phucv@dang.com");
+		 user->DisplayName("Tran Van Phuc");
+
+		 try
+		 {
+			if (sc->InsertNewUser(user)!=NULL)
+				AfxMessageBox("OK");
+			else
+				 AfxMessageBox("Can't insert");
+		 }
+		 catch(CException* e)
+		 {
+			//throw;
+		 }
+
+
+
+
+
+}
+
+void CMFCMailClientDlg::testDeleteUserById()
+{
+	CUser* user=new CUser();
+	CUserEntitiesServices* sc=new CUserEntitiesServices();
+	user=sc->DeleteUserById(3);
+	CString result;
+	if(user!=NULL)
+	{
+
+	
+	result.Format("User Name :%s\r\nPassword :%s\r\nEmailAddress:%s\r\nDisplayName :%s",user->Username(),user->Password(),user->EmailAddress(),user->DisplayName());
+	AfxMessageBox(result);
+	}
+	else
+		 AfxMessageBox("UserId not exist");
+}
+
+void CMFCMailClientDlg::testGetUserById()
+{	
+	CUser* user=new CUser();
+	CUserEntitiesServices* sc=new CUserEntitiesServices();
+	user=sc->GetByUserId(11);
+	CString result;
+		result.Format("User Name :%s\r\nPassword :%s\r\nEmailAddress:%s\r\nDisplayName :%s",user->Username(),user->Password(),user->EmailAddress(),user->DisplayName());
+	
+		AfxMessageBox(result);
+}
+
+void CMFCMailClientDlg::testGetUserByUsername()
+{
+	CUser* user=new CUser();
+	CUserEntitiesServices* sc=new CUserEntitiesServices();
+	user=sc->GetByUsername("dangbk");
+	CString result;
+	result.Format("User Name :%s\r\nPassword :%s\r\nEmailAddress:%s\r\nDisplayName :%s",user->Username(),user->Password(),user->EmailAddress(),user->DisplayName());
+	AfxMessageBox(result);
+}
+
+void CMFCMailClientDlg::testUpdateUserById()
+{	
+	CUser* user=new CUser();
+	CUserEntitiesServices* sc=new CUserEntitiesServices();
+		user->Username("phucbk");
+		user->Password("123456");
+		user->EmailAddress("phucbk@dang.com");
+		user->DisplayName("Tran Van Phuc");
+	if(sc->UpdateUserById(6,user))
+	
+		AfxMessageBox("Updated successFully");
+	else
+		AfxMessageBox("Can't Updated");
+
+
+}
+
+void CMFCMailClientDlg::testUpdateUserByUsername()
+{	
+		CUser* user=new CUser();
+	CUserEntitiesServices* sc=new CUserEntitiesServices();
+	user->Username("phucb");
+	user->Password("123456");
+	user->EmailAddress("phucb@dang.com");
+	user->DisplayName("Tran Van Phuc");
+	if(sc->UpdateUserByUsername("phucbk",user))
+
+		AfxMessageBox("Updated successFully");
+	else
+		AfxMessageBox("Can't Updated");
+		
+}
+
+void CMFCMailClientDlg::testChangePassword()
+{
+	CUser* user=new CUser();
+	CUserEntitiesServices* sc=new CUserEntitiesServices();
+	
+	if(sc->ChangePassWord(6,"anhyeuem"))
+
+		AfxMessageBox("Change Password successFully");
+	else
+		AfxMessageBox("Can't Change Password");
+}
+
+
+void CMFCMailClientDlg::testGetAllMail()
+{
+	CMailHeaderServices* sc=new CMailHeaderServices();
+	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
+	listMailHeader=sc->GetAllMail();
+	  UINT numberRecord=listMailHeader->GetSize();
+	CString result;
+	result.Format("Tong So Mail la :%d",numberRecord);
+	 AfxMessageBox(result);
+
+
+
+
+}
+
+void CMFCMailClientDlg::testGetByMailId()
+{	
+	CMailHeaderServices* sc=new CMailHeaderServices();
+	MailHeader* mail=sc->GetByMailId(6);
+	 CString result;
+	 result.Format("From :%s",mail->From);
+	 AfxMessageBox(result);
+	
+
+}
+
+void CMFCMailClientDlg::testGetMailByUserId()
+{
+	CMailHeaderServices* sc=new CMailHeaderServices();
+	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
+	 listMailHeader=sc->GetByUserId(6);
+	 UINT numberRecord=listMailHeader->GetSize();
+	 CString result;
+	 result.Format("Tong So Mail cua User co ma nay la :%d",numberRecord);
+	 AfxMessageBox(result);
+
+}
+
+void CMFCMailClientDlg::testGetMailByGroupId()
+{
+	CMailHeaderServices* sc=new CMailHeaderServices();
+	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
+	listMailHeader=sc->GetByGroupId(1);
+	UINT numberRecord=listMailHeader->GetSize();
+	CString result;
+	result.Format("Tong So Mail cua Gruop nay la :%d",numberRecord);
+	AfxMessageBox(result);
+}
+
+void CMFCMailClientDlg::testGetByUserIdGroupId()
+{
+	CMailHeaderServices* sc=new CMailHeaderServices();
+	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
+	listMailHeader=sc->GetByUserIdGroupId(1,6);
+	UINT numberRecord=listMailHeader->GetSize();
+	CString result;
+	result.Format("Tong So Mail cua USer trong Group nay la :%d",numberRecord);
+	AfxMessageBox(result);
+		
+}
+
+
+
+void CMFCMailClientDlg::testInsertNewMail()
+{
+	CMailHeaderServices* sc=new CMailHeaderServices();
+	MailHeader* mail=new MailHeader();
+	mail->MessageID="214AAA";
+	mail->From="dang@dang.com";
+	mail->To="phuc@dang.com";
+	mail->ContentType="AAAa";
+	mail->Date="12/1/2010";
+	mail->Subject="Hello";
+	mail->GroupId=2;
+	//mail->MimeVersion=2;
+	mail->RealAttach=1;
+	mail->TextBody="Are u OK?";
+	mail->ReplyTo="dang@dang.com";
+	mail->Cc="phucnv@dang.com";
+	mail->ContentType="comeon";
+	mail->UserId=6;
+	try
+	{
+		sc->InsertNewMail(mail);
+		AfxMessageBox("inserted OK");
+
+	}
+	catch(CException* e)
+	{
+		throw;
+	}
+
+
+}
+
+

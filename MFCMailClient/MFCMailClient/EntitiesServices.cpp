@@ -140,7 +140,7 @@ CUser* CUserEntitiesServices::DeleteUserById( INT userID )
 	CString userid,username,password,emailaddress,displayname;
 
 	sqlCommand1.Format(_T("SELECT * From User where UserId=%d ;"),userID);
-	sqlCommand2.Format(_T("Delete from User where UserId=%d"),userID);
+	sqlCommand2.Format(_T("Delete From User where UserId=%d  ; "),userID);
 
 	try
 	{
@@ -158,7 +158,7 @@ CUser* CUserEntitiesServices::DeleteUserById( INT userID )
 	{
 
 
-		dataUser=dal->GetRecordSet(sqlCommand1);
+		//dataUser=dal->GetRecordSet(sqlCommand1);
 		dataUser->GetFieldValue(_T("UserId"),userid);
 		dataUser->GetFieldValue(_T("Username"),username);
 		dataUser->GetFieldValue(_T("Password"),password);
@@ -227,7 +227,7 @@ CUser* CUserEntitiesServices::DeleteUserByUsername( CString username )
 BOOL CUserEntitiesServices::UpdateUserById(INT userId,CUser* user )
 {
 
-	sqlCommand1.Format(_T("Update [User] set Username='%s' , Password='%s', EmailAddess='%s' , DisplayName='%s' where UserID=%d ;"),
+	sqlCommand1.Format(_T("Update [User] Set Username='%s' , Password='%s', EmailAddress='%s' , DisplayName='%s' where UserId=%d ;"),
 		user->Username(),
 		user->Password(),
 		user->EmailAddress(),
@@ -253,7 +253,7 @@ BOOL CUserEntitiesServices::UpdateUserById(INT userId,CUser* user )
 
 BOOL CUserEntitiesServices::UpdateUserByUsername(CString username,CUser* user )
 {
-	sqlCommand1.Format(_T("Update [User] set Password='%s', EmailAddess='%s' , DisplayName='%s' where Username='%s'; "),
+	sqlCommand1.Format(_T("Update [User] set Password='%s', EmailAddress='%s' , DisplayName='%s' where Username='%s'  ; "),
 		user->Username(),
 		user->Password(),
 		user->EmailAddress(),
@@ -351,13 +351,21 @@ CString CUserEntitiesServices::ChangePassWord( INT userId,CString newpass )
 
 CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetAllMail()
 {
-	CArray<MailHeader,MailHeader&>* listMailHeader = new CArray<MailHeader,MailHeader&>();
+
+	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
+
+	
+
 	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString;
 	BYTE RealAttach;
 	INT UserId,GroupId,MailId,MessageId;
-	MailHeader* mailheader = new MailHeader();
+	MailHeader* mailheader;
+
+
+	sqlCommand1.Format(_T("SELECT * FROM MailHeader ;"));
 
 	sqlCommand1.Format(_T("SELECT * FROM MailHeader;"));
+
 	try
 	{
 		dataMail=dal->GetRecordSet(sqlCommand1);
@@ -428,9 +436,9 @@ MailHeader* CMailHeaderServices::GetByMailId( INT mailId )
 	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,RealAttachString;
 	BYTE RealAttach;
 	
-	MailHeader* mailheader;
+	MailHeader* mailheader=new MailHeader();
 
-	sqlCommand1.Format(_T("SELECT * FROM Mail WHERE MailID=%d;"),mailId);
+	sqlCommand1.Format(_T("SELECT * FROM MailHeader WHERE MailId=%d;"),mailId);
 	dataMail=dal->GetRecordSet(sqlCommand1);
 	if(dataMail==NULL) return NULL;
 	else
@@ -439,7 +447,7 @@ MailHeader* CMailHeaderServices::GetByMailId( INT mailId )
 		dataMail->GetFieldValue(_T("To"),To);
 		dataMail->GetFieldValue(_T("Subject"),Subject);
 		dataMail->GetFieldValue(_T("Cc"),Cc);
-		dataMail->GetFieldValue(_T("Date"),Date);
+		dataMail->GetFieldValue(_T("SentDate"),Date);
 		dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
 		dataMail->GetFieldValue(_T("TextBody"),TextBody);
 	/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
@@ -464,13 +472,13 @@ MailHeader* CMailHeaderServices::GetByMailId( INT mailId )
 
 CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByUserId( INT userId )
 {
-	CArray<MailHeader,MailHeader&>* listMailHeader;
+	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString;
 	BYTE RealAttach;
 	INT UserId,GroupId,MailId,MessageId;
 	MailHeader* mailheader;
 
-	sqlCommand1.Format(_T("SELECT * FROM Mail where UserId=%d ;"),userId);
+	sqlCommand1.Format(_T("SELECT * FROM MailHeader where UserId=%d ;"),userId);
 	
 	try
 	{
@@ -531,13 +539,13 @@ CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByUserId( INT userId )
 
 CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByGroupId( INT groupId )
 {
-	CArray<MailHeader,MailHeader&>* listMailHeader;
+	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString;
 	BYTE RealAttach;
 	INT UserId,GroupId,MailId,MessageId;
 	MailHeader* mailheader;
 
-	sqlCommand1.Format(_T("Select * From Mail where GroupId=%d;"),groupId);
+	sqlCommand1.Format(_T("Select * From MailHeader where GroupId=%d;"),groupId);
 	
 	try
 	{
@@ -600,14 +608,14 @@ CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByGroupId( INT groupId )
 
 CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByUserIdGroupId( INT userId, INT groupId )
 {
-	CArray<MailHeader,MailHeader&>* listMailHeader;
+	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 
-	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString;
+	CString  MessageId,From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString;
 	BYTE RealAttach;
-	INT UserId,GroupId,MailId,MessageId;
+	INT UserId,GroupId,MailId;
 	MailHeader* mailheader;
 
-	sqlCommand1.Format(_T("Select * From Mail where GroupId=%d and UserId=%d ;"),groupId,userId);
+	sqlCommand1.Format(_T("Select * From MailHeader where GroupId=%d and UserId=%d ;"),groupId,userId);
 	
 	try
 	{
@@ -669,7 +677,7 @@ MailHeader* CMailHeaderServices::InsertNewMail( MailHeader* mailHeader )
 	MailHeader* _returnMailHeader = new MailHeader();
 	mailHeader->GroupId = 1;
 
-	sqlCommand1.Format(_T("INSERT INTO MailHeader (MessageID, [From], To, SentDate,Subject,Cc,ReplyTo,TextBody,MimeVersion,ContentType,RealAttach,UserId,GroupId) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%d,%d,%d);"),
+	sqlCommand1.Format(_T("INSERT INTO MailHeader (MessageID, [From], [To], SentDate,Subject,Cc,ReplyTo,TextBody,MimeVersion,ContentType,RealAttach,UserId,GroupId) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%d,%d,%d);"),
 		mailHeader->MessageID,
 		mailHeader->From,
 		mailHeader->To,

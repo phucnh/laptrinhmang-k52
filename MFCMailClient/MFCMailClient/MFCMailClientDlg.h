@@ -68,5 +68,20 @@ public:
 	afx_msg void OnMessageForwardmessage();
 	afx_msg void OnBnClickedButton4();
 
-	void Dang_TestInsertNewMail();
+
+	void testLogin();
+	void testInsertNewUser();
+	void testDeleteUserById();	
+	void testGetUserById();
+	void testGetUserByUsername();
+	void testUpdateUserById();
+	void testUpdateUserByUsername();
+	void testChangePassword();
+	void testGetAllMail();
+	void testGetByMailId();
+	void testGetMailByUserId();
+	void testGetMailByGroupId();
+	void testGetByUserIdGroupId();
+	void testInsertNewMail();
+	
 };
