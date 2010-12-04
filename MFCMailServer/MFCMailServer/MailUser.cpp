@@ -39,30 +39,61 @@ bool MailUser::InsertNewUser(MailUser *mailuser)
 	CString name,pass;
 	name=mailuser->_username;
 	pass=mailuser->_password;
-	sqlMailUser.Format(_T("Insert into MailUser values ('%s','%s')"),name,pass);
+	sqlMailUser.Format(_T("Insert into MailUser(Username,Password) values('%s','%s') ;"),name,pass);
 
-	return dal->ExecuteSQL(sqlMailUser);
+	try
+	{
+		if(dal->ExecuteSQL(sqlMailUser)) 
+			return true;
+		else
+			 return false;
+	}
+	catch(CException* e)
+	{
+		return false;
+	}
 }
 bool SignIn(CString username,CString password)
 {
-	sqlMailUser.Format(_T("Select * from MailUser where Username='%s' and Password='%s'"),username,password);
+	sqlMailUser.Format(_T("Select * from MailUser where Username='%s' and Password='%s' ;"),username,password);
 
 	datasetMailUser=dal->GetRecordSet(sqlMailUser);
-	LONG a=datasetMailUser->GetRecordCount();
-	if(a==1)
-		return true;
-	else 
-		return false;
+	int numberRecord=0;
+
+	while (!datasetMailUser->IsEOF())
+	{
+		numberRecord += 1;
+		datasetMailUser->MoveNext();
+	}
+
+	if(numberRecord==1)
+		return TRUE;
+	else
+		return FALSE;
 }
 
 MailUser* MailUser::GetUserByID(UINT userID )
 {
 	sqlMailUser.Format(_T("Select * from MailUser where UserID=%d"),userID);
-	datasetMailUser = dal->GetRecordSet(sqlMailUser);
-	CString name,pass;
-	datasetMailUser->GetFieldValue(_T("Name"),name);
-	datasetMailUser->GetFieldValue(_T("Password"),pass);
-	return new MailUser(name,pass);
+	
+	try
+		{
+			datasetMailUser = dal->GetRecordSet(sqlMailUser);
+		CString name,pass;
+		if(datasetMailUser==NULL) return NULL;
+		else
+		{
+			datasetMailUser->GetFieldValue(_T("Username"),name);
+			datasetMailUser->GetFieldValue(_T("Password"),pass);
+			return new MailUser(name,pass);
+		}	
+		
+		}
+	catch(CException* e)
+	{
+		throw;
+		e->Delete();
+	}
 
 
 
@@ -70,12 +101,26 @@ MailUser* MailUser::GetUserByID(UINT userID )
 
 MailUser* MailUser::GetUserByUsername(CString username)
 {
-	sqlMailUser.Format(_T("Select * from MailUser where UserName='%s'"),username);
-	datasetMailUser  = dal->GetRecordSet(sqlMailUser);
+	sqlMailUser.Format(_T("Select * from MailUser where Username='%s'  ;"),username);
 	CString name,pass;
-	datasetMailUser->GetFieldValue(_T("Name"),name);
-	datasetMailUser->GetFieldValue(_T("Password"),pass);
-	return new MailUser(name,pass);
+
+	try
+	{
+		datasetMailUser  = dal->GetRecordSet(sqlMailUser);
+	
+		if(datasetMailUser==NULL) return NULL;
+		else
+		{
+ 			datasetMailUser->GetFieldValue(_T("Username"),name);
+			datasetMailUser->GetFieldValue(_T("Password"),pass);
+			return new MailUser(name,pass);
+		}
+	}
+	catch(CException* ee)
+	{
+		throw;
+		ee->Delete();
+	}
 }
 
 bool MailUser::DeleteUser(MailUser *mailuser)
@@ -83,45 +128,138 @@ bool MailUser::DeleteUser(MailUser *mailuser)
 	CString name;
 	name=mailuser->_username;
 	sqlMailUser.Format(_T("Delete From MailUser where UserName='%s'"),name);
-	return dal->ExecuteSQL(sqlMailUser);
+	try
+	{
+		if(dal->ExecuteSQL(sqlMailUser))
+			return true;
+		else return false;
+			
+	}
+	catch(CException* e)
+	{
+		throw;
+		e->Delete();
+	}
 }
 bool MailUser::DeleteUserByID(UINT userid)
 {
 	sqlMailUser.Format(_T("Delete From MailUser where UserID=%d; "),userid);
 
-	return dal->ExecuteSQL(sqlMailUser);
+		try
+		{
+		
+		 if(dal->ExecuteSQL(sqlMailUser))
+			 return true;
+		 else return false;
+		}
+		catch(CException* e)
+		{
+			throw;
+			e->Delete();
+		}
 
 }
 //Used to change Password
 bool MailUser::ChangePassword(CString username,CString password)
 {
-	sqlMailUser.Format(_T("Update MailUser set Password='%s' where UserName='%s'"),password,username);
+	sqlMailUser.Format(_T("Update MailUser set Password='%s' where Username='%s'"),password,username);
 
-	return dal->ExecuteSQL(sqlMailUser);
+	try
+		{
+			if(dal->ExecuteSQL(sqlMailUser))
+				return true;
+			else
+				 return false;
+		}
+	catch(CException* e)
+		{
+		throw;
+		e->Delete();
+		}
 }
 
 bool MailUser::UpdateUserByID(UINT userID,CString name,CString password)
 {
-	sqlMailUser.Format(_T("Update MailUser set UserName='%s' , Password='%s'  where UserID=%d"),password,name,userID);
+	sqlMailUser.Format(_T("Update MailUser set Username='%s' , Password='%s'  where UserId=%d"),password,name,userID);
 
-	return dal->ExecuteSQL(sqlMailUser);
+	try
+		{
+			if(dal->ExecuteSQL(sqlMailUser))
+				return true;
+			else
+				return false;
+	}
+	catch(CException* e)
+	{
+		throw;
+		e->Delete();
+	}		
 }
 
-CArray<MailUser,MailUser>* MailUser::GetAllUsers()
+CArray<MailUser,MailUser&>* MailUser::GetAllUsers()
 {
-	CArray<MailUser,MailUser>* mailUsers;
+	CArray<MailUser,MailUser&>* listMailUser=new CArray<MailUser,MailUser&>();
+	CString username,password;
+	MailUser* mailuser;
+	sqlMailUser.Format("Select * from MailUser ;");
+	try
+				{
+						
+					datasetMailUser=dal->GetRecordSet(sqlMailUser);
 
-	// TODO : Implement GetAllUser in here
+					if(datasetMailUser==NULL) return NULL;
 
-	return mailUsers;
+					else
+					{
+						int numberRecord=0;
+
+						while (!datasetMailUser->IsEOF())
+						{
+							numberRecord += 1;
+							datasetMailUser->MoveNext();
+						}
+
+						listMailUser->SetSize(numberRecord);
+
+						while(!datasetMailUser->IsEOF())
+						{
+
+							//datasetMailUser->GetFieldValue(_T("MessageId",MessageId);
+							datasetMailUser->GetFieldValue(_T("username"),username);
+							datasetMailUser->GetFieldValue(_T("Password"),password);
+
+							mailuser= new MailUser(username,password);
+							listMailUser->Add(*mailuser);
+							datasetMailUser->MoveNext();
+						}
+						return listMailUser;
+					}
+				}
+			catch(CException* ee)
+				{
+					throw;
+					ee->Delete();
+				}
 }
 
-bool MailUser::UpdateUserByUsername( CString oldUsername, CString newUsername, CString newPassword )
+bool MailUser::UpdateUserByUsername(CString oldUsername,MailUser* mailUser)
 {
 	sqlMailUser.Format(_T("Update MailUser set UserName='%s' , Password='%s'  where UserName='%s'"),
-		newUsername,
-		newPassword,
+		mailUser->_username,
+		mailUser->_password,
+
 		oldUsername);
 
-	return dal->ExecuteSQL(sqlMailUser);
+	try
+	{
+			if(dal->ExecuteSQL(sqlMailUser))
+				return true;
+			else return false;
+	}
+	catch(CException* e)
+	{
+		throw;
+		e->Delete();
+
+	}
 }

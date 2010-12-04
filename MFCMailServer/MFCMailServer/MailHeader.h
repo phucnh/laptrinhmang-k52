@@ -5,7 +5,7 @@
 
 class MailHeader
 {
-private:
+public:
 	CString  sql;
 	CRecordset *dataset;
 
@@ -21,16 +21,25 @@ public:
 	CString  MimeVersion;
 	CString  ContentType;
 	BYTE     RealAttach;
-
+	MailHeader( 
+		CString _from,
+		CString _to,
+		CString _date,
+		CString _subject,
+		CString _cc,
+		CString _replyTo,
+		CString _textBody,
+		BYTE _realAttach 
+		);
 	MailHeader(void);
 	~MailHeader(void);
 
 	CRecordset* getAllMail(CString username);
 	CRecordset* getAllInboxMailByUser(CString username);
-	CRecordset* getAllSendedMailByUser(CString username);
+	CRecordset* getAllSentMailByUser(CString username);
 
 	MailHeader* getMail(UINT mailID);
-	bool InsertMail(CString from,CString to,CString date,CString subject,CString cc,CString replyto,CString textbody,CString realattach);
+	//bool InsertMail(CString from,CString to,CString date,CString subject,CString cc,CString replyto,CString textbody,CString realattach);
 	bool deleteMail(UINT mailID);
 
 	//phuc add 20101121

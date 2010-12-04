@@ -3,26 +3,26 @@
 #include <string>
 #include <cstring>
 
-//MailHeader::MailHeader( 
-//					   CString _from,
-//					   CString _to,
-//					   CString _date,
-//					   CString _subject,
-//					   CString _cc,
-//					   CString _replyTo,
-//					   CString _textBody,
-//					   BYTE _realAttach 
-//					   )
-//{
-//	this->From = _from;
-//	this->To = _to;
-//	this->Date = _date;
-//	this->Subject = _subject;
-//	this->Cc = _cc;
-//	this->ReplyTo = _replyTo;
-//	this->TextBody = _textBody;
-//	this->RealAttach = _realAttach;
-//}
+MailHeader::MailHeader( 
+					   CString _from,
+					   CString _to,
+					   CString _date,
+					   CString _subject,
+					   CString _cc,
+					   CString _replyTo,
+					   CString _textBody,
+					   BYTE _realAttach 
+					   )
+{
+	this->From = _from;
+	this->To = _to;
+	this->Date = _date;
+	this->Subject = _subject;
+	this->Cc = _cc;
+	this->ReplyTo = _replyTo;
+	this->TextBody = _textBody;
+	this->RealAttach = _realAttach;
+}
 
 
 MailHeader::MailHeader( void )
@@ -46,7 +46,18 @@ MailHeader::~MailHeader( void )
 CRecordset* MailHeader::getAllMail(CString username)
 {
 	sql.Format(_T("Select * from MailHeader where [From]='%s' or [To] like '%'%s'%' ;"),username,username);
-	return dal->GetRecordSet(sql);
+	try
+	{
+		dal->GetRecordSet(sql);
+		if(dal==NULL) return NULL;
+
+	}
+	catch (CException* e)
+	{
+		throw;
+		e->Delete();
+	}
+	
 
 }
 CRecordset* MailHeader::getAllInboxMailByUser(CString username)
@@ -55,7 +66,7 @@ CRecordset* MailHeader::getAllInboxMailByUser(CString username)
 	return dal->GetRecordSet(sql);
 
 }
-CRecordset* MailHeader::getAllSendedMailByUser(CString  username)
+CRecordset* MailHeader::getAllSentMailByUser(CString  username)
 {
 	sql.Format(_T("Select * from MailHeader where [From]='%s'"),username);
 	return dal->GetRecordSet(sql);
@@ -91,23 +102,7 @@ MailHeader* MailHeader::getMail(UINT mailID)
 	return mailh;
 }
 
-bool MailHeader::InsertMail(CString from,CString to,CString date,CString subject,CString cc,CString replyto,CString textbody,CString realattach)
-{
-	/*CString from,to,date,subject,cc,replyto,textbody,realattach;
 
-	from=mailheader->_from;
-	to=mailheader->_to;
-	date=mailheader->_date;
-	subject=mailheader->_subject;
-	cc=mailheader->_cc;
-	replyto=mailheader->_replyto;
-	textbody=mailheader->_textbody;
-	realattach=mailheader->_realattach;*/
-
-	sql.Format(_T("Insert Into MailHeader values('%s','%s','%s','%s','%s','%s','%s','%s')"),from,to,date,subject,cc,replyto,textbody,realattach);
-
-	return dal->ExecuteSQL(sql);
-}
 
 bool MailHeader::deleteMail(UINT mailID)
 {
@@ -115,7 +110,7 @@ bool MailHeader::deleteMail(UINT mailID)
 	return dal->ExecuteSQL(sql);
 }
 
-bool MailHeader::InsertMail( MailHeader* mailHeader )
+bool MailHeader::InsertMail(MailHeader* mailHeader )
 {
 	sql.Format(_T("Insert into MailHeader values('%s','%s','%s','%s','%s','%s','%s','%s')"),
 		mailHeader->From,
@@ -128,5 +123,17 @@ bool MailHeader::InsertMail( MailHeader* mailHeader )
 		mailHeader->RealAttach
 		);
 
-	return dal->ExecuteSQL(sql);
+	try
+	{
+		if(dal->ExecuteSQL(sql))
+			return true;
+		else
+			 return false;
+	}
+	catch(CException* e)	
+	{
+		throw;
+		e->Delete();
+
+	}
 }
