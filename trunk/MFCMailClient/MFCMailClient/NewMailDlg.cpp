@@ -107,7 +107,8 @@ void CNewMailDlg::OnBnClickedOk()
 		if (m_lstFileList.GetCount() != 0)
 			msg.RealAttach = TRUE;
 
-		_smtp.SendMessage(&msg);
+		if (_smtp.SendMessage(&msg))
+			AfxMessageBox("Success",MB_OK);
 
 		//CMailHeaderServices* mailHeaderService = new CMailHeaderServices();
 		//msg.GroupId = 3; //Group Sent mail
@@ -116,7 +117,6 @@ void CNewMailDlg::OnBnClickedOk()
 
 		//if (mailHeaderService != NULL)	delete mailHeaderService;
 
-		AfxMessageBox("Success",MB_OK);
 		UpdateData(FALSE);
 		//long add
 }

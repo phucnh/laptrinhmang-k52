@@ -41,7 +41,7 @@ MailHeader::MailHeader( void )
 
 MailHeader::~MailHeader( void )
 {
-	if (dal != NULL) delete dal;
+	if (dal->IsOpen()) dal->Close();
 }
 CRecordset* MailHeader::getAllMail(CString username)
 {
