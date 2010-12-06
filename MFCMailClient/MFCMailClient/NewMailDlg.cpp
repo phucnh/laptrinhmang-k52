@@ -8,6 +8,7 @@
 #include "Mime.h"
 #include "MimeCode.h"
 #include "EntitiesServices.h"
+#include "GlobalFunctions.h"
 
 //#include "fstream"
 
@@ -87,38 +88,40 @@ void CNewMailDlg::OnBnClickedOk()
 	CString _serverIP;
 	_serverIP.Format("%d",m_serverip);
 
-		CSMTP _smtp(_serverIP,25);
-		_smtp.Connect();
-		MailHeader msg;
-		msg.From = m_From;
-		msg.To = m_To;
-		msg.Cc = m_sCc;
-		msg.Subject = m_Subject;
-		msg.TextBody = m_TextBody;
-		//long 20101108
+	m_TextBody = EncodeToUTF8(_T(m_TextBody));
 
-		//long 20101204
-		CMimeMessage msgmime;
-		msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,&m_lstFileList,m_TextBody);
-		msg.TextBody = msgmime.ConvertToString();		
+	CSMTP _smtp(_serverIP,25);
+	_smtp.Connect();
+	MailHeader msg;
+	msg.From = m_From;
+	msg.To = m_To;
+	msg.Cc = m_sCc;
+	msg.Subject = m_Subject;
+	msg.TextBody = m_TextBody;
+	m_TextBody = DecodeFromUTF8(_T(m_TextBody));
+	//long 20101108
+	//long 20101204
+	CMimeMessage msgmime;
+	msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,&m_lstFileList,m_TextBody);
+	msg.TextBody = msgmime.ConvertToString();		
 	/*	fstream myfile("C:\\mimemail_test.eml",ios::out|ios::binary|ios::app);
-			myfile.write(msg.TextBody,msg.TextBody.GetLength());
-			myfile.close();*/
-		if (m_lstFileList.GetCount() != 0)
-			msg.RealAttach = TRUE;
+		myfile.write(msg.TextBody,msg.TextBody.GetLength());
+		myfile.close();*/
+	if (m_lstFileList.GetCount() != 0)
+		msg.RealAttach = TRUE;
 
-		if (_smtp.SendMessage(&msg))
-			AfxMessageBox("Success",MB_OK);
+	if (_smtp.SendMessage(&msg))
+		AfxMessageBox("Success",MB_OK);
 
-		//CMailHeaderServices* mailHeaderService = new CMailHeaderServices();
-		//msg.GroupId = 3; //Group Sent mail
-		//msg.UserId = globalUser.UserId();
-		//mailHeaderService->InsertNewMail(&msg);
+	//CMailHeaderServices* mailHeaderService = new CMailHeaderServices();
+	//msg.GroupId = 3; //Group Sent mail
+	//msg.UserId = globalUser.UserId();
+	//mailHeaderService->InsertNewMail(&msg);
 
-		//if (mailHeaderService != NULL)	delete mailHeaderService;
+	//if (mailHeaderService != NULL)	delete mailHeaderService;
 
-		UpdateData(FALSE);
-		//long add
+	UpdateData(FALSE);
+	//long add
 }
 
 INT_PTR CNewMailDlg::DoModal(MailHeader* mailHdr,CString prefixSubject)

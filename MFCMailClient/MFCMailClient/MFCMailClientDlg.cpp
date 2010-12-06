@@ -315,20 +315,20 @@ void CMFCMailClientDlg::OnAcountAccount()
 void CMFCMailClientDlg::CreateGroupTree()
 {
 
-	/*m_GroupTree.ModifyStyle(m_GroupTree.GetStyle(),WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER
-		| TVS_HASBUTTONS | TVS_LINESATROOT | TVS_HASLINES
-		| TVS_DISABLEDRAGDROP);*/
-
 	m_GroupTree.ModifyStyle(m_GroupTree.GetStyle(),WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER
+		| TVS_HASBUTTONS | TVS_LINESATROOT | TVS_HASLINES
 		| TVS_DISABLEDRAGDROP);
 
-	//CImageList m_ImageList;
-	//m_ImageList.Create(IDB_BITMAP_MAILBOX,16,0,RGB(0,128,128));
-	//m_GroupTree.SetImageList(&m_ImageList, TVSIL_NORMAL);
+	/*m_GroupTree.ModifyStyle(m_GroupTree.GetStyle(),WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER
+		| TVS_DISABLEDRAGDROP);*/
+
+	/*CImageList m_ImageList;
+	m_ImageList.Create(IDB_BITMAP_MAILBOX,16,0,RGB(0,128,128));
+	m_GroupTree.SetImageList(&m_ImageList, TVSIL_NORMAL);*/
 
 	CImageList m_ImageList;
-	m_ImageList.Create(10, 10, ILC_COLOR8, 0, 6);
-	m_ImageList.Add(theApp.LoadIcon(IDI_ICON_INBOX));
+	m_ImageList.Create(16, 16, ILC_COLOR8, 0, 6);
+	m_ImageList.Add(theApp.LoadIcon(IDI_ICON_NEWMAIL));
 	m_GroupTree.SetImageList(&m_ImageList,TVSIL_NORMAL);
 
 	HTREEITEM item;
