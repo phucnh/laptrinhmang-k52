@@ -109,7 +109,7 @@ CUser* CUserEntitiesServices::GetByUsername( CString username )
 		delete e;
 	}
 
-	if(dataUser==NULL) return NULL;	
+	if((dataUser==NULL) || (dataUser->GetRecordCount() == 0)) return NULL;	
 	else
 	{
 

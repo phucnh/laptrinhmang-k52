@@ -101,6 +101,8 @@ void CAccountDlg::OnBnClickedOk()
 
 	if (user == NULL)
 	{
+		user = new CUser();
+
 		user->Username(globalUsername);
 		user->Password(globalPassword);
 		globalUser = *userService.InsertNewUser(user);

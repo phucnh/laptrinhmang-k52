@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 #ifndef CLASS_H_
 #define CLASS_H_

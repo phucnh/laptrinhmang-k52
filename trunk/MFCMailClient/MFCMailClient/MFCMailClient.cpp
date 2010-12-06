@@ -38,6 +38,7 @@ CMFCMailClientApp theApp;
 
 BOOL CMFCMailClientApp::InitInstance()
 {
+//TODO: call AfxInitRichEdit2() to initialize richedit2 library.
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
 	// visual styles.  Otherwise, any window creation will fail.
@@ -53,6 +54,12 @@ BOOL CMFCMailClientApp::InitInstance()
 	if (!AfxSocketInit())
 	{
 		AfxMessageBox(IDP_SOCKETS_INIT_FAILED);
+		return FALSE;
+	}
+
+	if (!AfxInitRichEdit2())
+	{
+		AfxMessageBox(IDP_RICH_INIT_FAILED);
 		return FALSE;
 	}
 
