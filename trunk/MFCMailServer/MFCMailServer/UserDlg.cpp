@@ -75,8 +75,11 @@ void CUserDlg::OnBnClickedButton1()
 	UpdateData(TRUE);
 
 	MailUser* mailUser = new MailUser();
+	mailUser->_username = m_sUsername;
+	mailUser->_password = m_sPassword;
 
-//	if (!mailUser->UpdateUserByUsername(m_sOldUsername,m_sUsername,m_sPassword))	return;
+
+	if (!mailUser->UpdateUserByUsername(m_sOldUsername,mailUser))	return;
 
 	/*if (isInsertMode)
 	{
@@ -98,5 +101,6 @@ void CUserDlg::OnBnClickedButton1()
 void CUserDlg::OnLbnDblclkList1()
 {
 //	POSITION pos = m_lsbUserList;
+	//int m_lsbUserList.GetCurSel();
 	// TODO : Implement listbox double click in here
 }

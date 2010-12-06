@@ -44,13 +44,14 @@ bool MailUser::InsertNewUser(MailUser *mailuser)
 	try
 	{
 		if(dal->ExecuteSQL(sqlMailUser)) 
-			return true;
+			return TRUE;
 		else
 			 return false;
 	}
-	catch(CException* e)
+	catch(CDBException* e)
 	{
-		return false;
+		AfxMessageBox(e->m_strError);
+		return FALSE;
 	}
 }
 //bool SignIn(CString username,CString password)
