@@ -463,6 +463,10 @@
 				RelativePath=".\IMAGES\Trashcan_full.ico"
 				>
 			</File>
+			<File
+				RelativePath=".\IMAGES\Treeview.bmp"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\AccountDlg.htm"

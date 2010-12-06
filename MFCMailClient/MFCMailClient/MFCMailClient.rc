@@ -85,8 +85,9 @@ IDI_ICON12              ICON                    "IMAGES\\1286463015_Settings.ico
 IDI_ICON13              ICON                    "IMAGES\\1286463047_address_book.ico"
 IDI_ICON14              ICON                    "IMAGES\\1286463089_button_cancel.ico"
 IDI_ICON_DELETE         ICON                    "IMAGES\\1286463095_DeleteRed.ico"
-IDI_ICON_REPLY          ICON                    "IMAGES\\1286463148_mail_send.ico"
-IDI_ICON17              ICON                    "IMAGES\\1286463158_mail_send.ico"
+IDI_ICON_REPLY          ICON                    "IMAGES\\1286463158_mail_send.ico"
+IDI_ICON_SEND           ICON                    "images\\icon_sen.ico"
+
 IDI_ICON18              ICON                    "IMAGES\\email.ico"
 IDI_ICON19              ICON                    "IMAGES\\mail_check_new.ico"
 IDI_ICON_NEWMAIL        ICON                    "IMAGES\\mail_new.ico"
@@ -143,7 +144,6 @@ BEGIN
     LTEXT           "To",IDC_STATIC,18,86,9,8
     EDITTEXT        IDC_EDIT3,61,143,144,14,ES_AUTOHSCROLL
     LTEXT           "Subject",IDC_STATIC,17,145,25,8
-    EDITTEXT        IDC_EDIT4,61,252,287,132,ES_MULTILINE | ES_AUTOHSCROLL
     LTEXT           "Text Body",IDC_STATIC,17,252,34,8
     EDITTEXT        IDC_EDIT5,61,113,144,14,ES_AUTOHSCROLL
     LTEXT           "Cc",IDC_STATIC,17,116,9,8
@@ -151,6 +151,7 @@ BEGIN
     LISTBOX         IDC_LIST_FILELIST,61,176,203,60,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "Add File",IDC_BUTTON_ADDFILE,285,176,50,14
     PUSHBUTTON      "Remove",IDC_BUTTON_REMOVE,285,196,50,14
+    CONTROL         "",IDC_EDIT4,"RichEdit20A",ES_AUTOHSCROLL | WS_BORDER | WS_TABSTOP,61,252,284,132
 END
 
 IDD_ACCOUNT_DIALOG DIALOGEX 0, 0, 208, 147
@@ -315,6 +316,7 @@ IDS_ABOUTBOX            BITMAP                  "res\\bmp00001.bmp"
 IDR_TOOLBAR2            BITMAP                  "res\\toolbar2.bmp"
 IDB_BITMAP_EMAIL        BITMAP                  "IMAGES\\email.bmp"
 IDR_TOOLBAR_MAIN        BITMAP                  "IMAGES\\email.bmp"
+IDB_BITMAP_MAILBOX      BITMAP                  "IMAGES\\Treeview.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -324,6 +326,7 @@ IDR_TOOLBAR_MAIN        BITMAP                  "IMAGES\\email.bmp"
 STRINGTABLE 
 BEGIN
     IDS_ABOUTBOX            "&About MFCMailClient..."
+    IDP_RICH_INIT_FAILED    "Rich edit box initialization failed."
     IDP_SOCKETS_INIT_FAILED "Windows sockets initialization failed."
 END
 

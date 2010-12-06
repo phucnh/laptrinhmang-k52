@@ -70,6 +70,10 @@
 #endif
 #endif
 
+//add global struct in here
+struct _TREEITEM
+{};
+
 //add global funcion in here
 #define SB_HEIGHT 20
 

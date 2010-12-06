@@ -104,10 +104,11 @@ void CPop3::Disconnect()
 
 	quitStr.Format("QUIT\r\n");
 	serverSocket.Send(quitStr,quitStr.GetLength(),0);
-	if (!serverSocket.Receive(_receiveMessage,1024)||!this->ReceiveMessageIsOK(_receiveMessage)){
+	/*if (!serverSocket.Receive(_receiveMessage,1024)||!this->ReceiveMessageIsOK(_receiveMessage)){
 		isConnected = FALSE;
 		return;
-	}
+	}*/
+	// TODO : Co van de voi lenh quit
 
 	//serverSocket.Close();
 
@@ -351,12 +352,10 @@ MailHeader CPop3::ReadMail( INT _mailNumber )
 
 	mailHeader.UserId = globalUser.UserId();
 
-	/*CMailHeaderServices* mailHeaderService = new CMailHeaderServices();
+	CMailHeaderServices* mailHeaderService = new CMailHeaderServices();
 	mailHeaderService->InsertNewMail(&mailHeader);
 
-	if (mailHeaderService != NULL)	delete mailHeaderService;*/
-
-	// TODO : Fix InsertNewMail
+	if (mailHeaderService != NULL)	delete mailHeaderService;
 
 	return mailHeader;
 }

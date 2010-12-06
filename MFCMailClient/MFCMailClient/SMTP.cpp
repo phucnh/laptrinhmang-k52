@@ -260,7 +260,8 @@ BOOL CSMTP::transmit_message(MailHeader* msg)
 	// Send the header
 	Sleep(300);
 	CString _headerFormat;
-	_headerFormat.Format("From: %s\r\nTo: %s\r\nCc: %s\r\nSubject: %s\r\nMime-Version: %s\r\nContent-Type: %s\r\nMessage-ID: %s\r\n",
+	//phuc mod 20101204
+	/*_headerFormat.Format("From: %s\r\nTo: %s\r\nCc: %s\r\nSubject: %s\r\nMime-Version: %s\r\nContent-Type: %s\r\nMessage-ID: %s\r\n",
 		msg->From,
 		msg->To,
 		msg->Cc,
@@ -269,7 +270,8 @@ BOOL CSMTP::transmit_message(MailHeader* msg)
 		msg->ContentType,
 		msg->MessageID);
 	m_Server.Send(_headerFormat,_headerFormat.GetLength());
-	Sleep(300);
+	Sleep(300);*/
+	//end phuc mod 20101204
 	/*m_Server.Send( (LPCTSTR)msg->Subject, msg->Subject.GetLength() );*/
 	// Send the body
 	sTemp = prepare_body( msg );
@@ -285,15 +287,14 @@ BOOL CSMTP::transmit_message(MailHeader* msg)
 		return FALSE;
 	}
 
-	////phuc add 20101204
-	//CMailHeaderServices* mailHeadrService = new CMailHeaderServices();
-	//msg->UserId = globalUser.UserId();
-	//msg->GroupId = 3;
-	//mailHeadrService->InsertNewMail(msg);
+	//phuc add 20101204
+	CMailHeaderServices* mailHeadrService = new CMailHeaderServices();
+	msg->UserId = globalUser.UserId();
+	msg->GroupId = 3;
+	mailHeadrService->InsertNewMail(msg);
 
-	/*if (mailHeadrService != NULL) delete mailHeadrService;*/
-	////end phuc add 20101204
-	// TODO : Add insert new mail in here
+	if (mailHeadrService != NULL) delete mailHeadrService;
+	//end phuc add 20101204
 
 	return TRUE;
 }

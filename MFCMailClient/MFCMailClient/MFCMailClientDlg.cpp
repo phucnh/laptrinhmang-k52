@@ -1,6 +1,7 @@
 
 // MFCMailClientDlg.cpp : implementation file
 //
+#pragma unmanage
 
 #include "stdafx.h"
 #include "MFCMailClient.h"
@@ -314,13 +315,21 @@ void CMFCMailClientDlg::OnAcountAccount()
 void CMFCMailClientDlg::CreateGroupTree()
 {
 
-	m_GroupTree.ModifyStyle(m_GroupTree.GetStyle(),WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER
+	/*m_GroupTree.ModifyStyle(m_GroupTree.GetStyle(),WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER
 		| TVS_HASBUTTONS | TVS_LINESATROOT | TVS_HASLINES
+		| TVS_DISABLEDRAGDROP);*/
+
+	m_GroupTree.ModifyStyle(m_GroupTree.GetStyle(),WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER
 		| TVS_DISABLEDRAGDROP);
 
+	//CImageList m_ImageList;
+	//m_ImageList.Create(IDB_BITMAP_MAILBOX,16,0,RGB(0,128,128));
+	//m_GroupTree.SetImageList(&m_ImageList, TVSIL_NORMAL);
+
 	CImageList m_ImageList;
-	m_ImageList.Create(IDB_BITMAP_EMAIL,16,0,RGB(0,128,128));
-	m_GroupTree.SetImageList(&m_ImageList, TVSIL_NORMAL);
+	m_ImageList.Create(10, 10, ILC_COLOR8, 0, 6);
+	m_ImageList.Add(theApp.LoadIcon(IDI_ICON_INBOX));
+	m_GroupTree.SetImageList(&m_ImageList,TVSIL_NORMAL);
 
 	HTREEITEM item;
 	HTREEITEM childitem;
@@ -335,8 +344,8 @@ void CMFCMailClientDlg::CreateGroupTree()
 void CMFCMailClientDlg::Checkmail()
 {
 	globalMailList.RemoveAll();
-	globalPop3.GetAllMail(globalMailList);
-	//globalMailList.Add(globalPop3.ReadMail(7));
+	//globalPop3.GetAllMail(globalMailList);
+	globalMailList.Add(globalPop3.ReadMail(5));
 	
 	if (globalMailList.GetCount() == 0)
 	{
@@ -553,14 +562,14 @@ void CMFCMailClientDlg::OnBnClickedButton4()
 	//em da thay duong dan trong phan chuoi ket noi roi :-?
 		//testLogin();			//OK
 		//testInsertNewUser();	//OK
-		testGetUserById();
+		//testGetUserById();
 		//testGetUserByUsername();  //OK
 		//testDeleteUserById();  //OK
 		//testUpdateUserById(); //OK
 		//testUpdateUserByUsername();//OK
 		//testChangePassword();//OK
 			//testGetAllMail(); //Ok
-			//testInsertNewMail();//Ok
+			testInsertNewMail();//Ok
 			//testGetByMailId();//OK
 		//testGetMailByUserId();//OK
 		//testGetMailByGroupId();//OK
@@ -760,7 +769,7 @@ void CMFCMailClientDlg::testInsertNewMail()
 {
 	CMailHeaderServices* sc=new CMailHeaderServices();
 	MailHeader* mail=new MailHeader();
-	mail->MessageID="214AAA";
+	//mail->MessageID="214AAA";
 	mail->From="dang@dang.com";
 	mail->To="phuc@dang.com";
 	mail->ContentType="AAAa";
