@@ -248,7 +248,13 @@ void CClientSocket::ProcessLISTCommand()
 	currentStatus.Format("+OK %d messages (%d octets)", m_totalMail, m_totalSize);
 	m_parrent->WriteLog(currentStatus);
 	Reply(currentStatus);
-	for (i=0; i<m_totalMail; i++) Reply("%d %s", i+1, testArray->ElementAt(i).Subject);
+
+	//phuc mod 20100612
+	if (m_totalMail > 0)
+		for (i=0; i<m_totalMail; i++) 
+			Reply("%d %s", i+1, testArray->ElementAt(i).Subject);
+	//end phuc mod 20100612
+
 	Reply(".");
 }
 

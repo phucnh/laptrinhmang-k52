@@ -372,5 +372,6 @@ void  CMFCMailServerDlg::testInsertNewMail()
  }
  catch (CException* e)
  {
+	 throw;
  }
 }

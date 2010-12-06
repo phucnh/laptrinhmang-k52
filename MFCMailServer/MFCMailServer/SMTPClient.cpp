@@ -178,7 +178,7 @@ void CSMTPClient::ProcessHELOCommand()
 {
 	CString _returnMsg;
 
-	_returnMsg.Format("250 Welcome %s, Pleased to meet you.\r\n", m_ClientAddress); // TODO: May co the sua cho no pro hon :D
+	_returnMsg.Format("250 Welcome %s, Nice to meet you.\r\n", m_ClientAddress);
 	m_parrent->WriteLog(_returnMsg);
 	Reply(_returnMsg);
 }
@@ -209,7 +209,9 @@ void CSMTPClient::ProcessDATACommand()
 	GetDATA();
 	if (!m_mailHdr->TextBody.IsEmpty())
 	{
-		Reply("250 Message accepted for delivery.\r\n");		
+		CString _returnMsg("250 Message accepted for delivery.\r\n");
+		m_parrent->WriteLog(_returnMsg);
+		Reply(_returnMsg);		
 	}
 }
 
@@ -220,8 +222,10 @@ void CSMTPClient::ProcessQUITCommand()
 		ProcessERRORCommand();
 		return;
 	}
-	Reply("221 SMTP Mail Server quited.\r\n"); // TODO: May co the thay tu ngu khac cho no pro hon
-	// TODO: Add cac cau lenh dong socket vao cho nay nhe
+
+	CString _returnMsg("221 SMTP Mail Server quited.\r\n");
+	m_parrent->WriteLog(_returnMsg);
+	Reply(_returnMsg);
 	CloseSocket();
 }
 
