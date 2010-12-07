@@ -438,7 +438,7 @@ public:
 	void SetMailMime(const char* pszFrom, const char* pszTo, const char* pszCc, const char* pszSubject, CListBox* listFilePath, const char* textBody);
 	CString ConvertToString();
 	bool DownloadFile(CString* fileName, CString* filePath);
-	void ReadMIMEMail(char* pBuff);
+	void ReadMIMEMail(CString textBody);
 	CString GetTextBody();
 	CArray<CString,CString>* GetFileNameAttachmentList();
 };

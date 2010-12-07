@@ -991,8 +991,9 @@ bool CMimeMessage::DownloadFile(CString* fileName, CString* filePath)
 	}
 	return _t;
 }
-void CMimeMessage::ReadMIMEMail(char* pBuff)
+void CMimeMessage::ReadMIMEMail(CString textBody)
 {	
+	char* pBuff = (char *)(LPCTSTR)textBody;
 	this->DeleteAll();
 	this->Load(pBuff, strlen(pBuff));
 
