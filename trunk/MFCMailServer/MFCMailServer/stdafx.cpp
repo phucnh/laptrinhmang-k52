@@ -27,7 +27,7 @@ DAL* dal;
 
 CString GetCurrentTimeStr()
 {
-	CTime	tDateTime = CTime::GetCurrentTime();;
+	CTime	tDateTime = CTime::GetCurrentTime();
 	return	tDateTime.Format("%m/%d/%Y %H:%M:%S");
 }
 
