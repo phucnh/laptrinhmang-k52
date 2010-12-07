@@ -138,8 +138,29 @@ INT CSMTPClient::GetSMTPCommand( CString* requestMessage )
 	sCmd = requestMessage->Left(5);	
 	sCmd.TrimRight();
 
-	if ((requestMessage->Left(9)).CompareNoCase("mail from") == 0) return 2;
-	if ((requestMessage->Left(7)).CompareNoCase("rcpt to") == 0) return 3;
+	if ((requestMessage->Left(10)).CompareNoCase("mail from:") == 0) 
+	{
+		if (requestMessage->GetLength() < 17) 
+		{
+			return CMDERROR;
+		}
+		else
+		{
+			return 2;
+		}
+		
+	}
+	if ((requestMessage->Left(8)).CompareNoCase("rcpt to:") == 0) 
+	{
+		if (requestMessage->GetLength() < 17) 
+		{
+			return CMDERROR;
+		}
+		else
+		{
+			return 3;
+		}
+	}
 
 	for (int i=1; i<10; i++)
 	{
@@ -206,8 +227,12 @@ void CSMTPClient::ProcessDATACommand()
 {
 	//long add
 	Reply("354 Enter mail, end with "+"."+" on a line by itself\r\n");
-
+	m_Buffer[0] = '\0';
+	m_sQueue.Format("");
+	
 	GetDATA();
+
+
 	if (!m_mailHdr->TextBody.IsEmpty())
 	{
 		CString _returnMsg("250 Message accepted for delivery.\r\n");
@@ -252,7 +277,7 @@ void CSMTPClient::GetMailFrom()
 {
 	CString temp;
 	temp = m_ClientRequest;
-	temp.Delete(0,10);
+	temp.Delete(0,9);
 	//temp.Delete(temp.GetLength()-1, 1);
 	temp.TrimLeft();
 	temp.TrimRight();
@@ -263,7 +288,7 @@ void CSMTPClient::GetRCPTTo()
 {
 	CString temp;
 	temp = m_ClientRequest;
-	temp.Delete(0,8);
+	temp.Delete(0,7);
 	//temp.Delete(temp.GetLength()-1, 1);
 	temp.TrimLeft();
 	temp.TrimRight();
@@ -272,14 +297,24 @@ void CSMTPClient::GetRCPTTo()
 void CSMTPClient::GetDATA()
 {
 	CString temp;
+	int nBytesRead;
 	while (1)
-	{ 
-		if (m_ClientRequest == ".\r\n")
+	{
+		nBytesRead = Receive(m_Buffer, MAX_SMTP_BUFFER_SIZE-1);
+		m_Buffer[nBytesRead] = 0;
+		m_sQueue.Append(m_Buffer);// += m_Buffer;
+
+		if ((m_Buffer[nBytesRead-3]=='.') &&
+			(m_Buffer[nBytesRead-2]=='\r')&&
+			(m_Buffer[nBytesRead-1]=='\n'))
 		{
+			m_sQueue.Delete(nBytesRead-3,3);
 			break;
 		}
-		temp += m_ClientRequest;
 	}
-	m_mailHdr->TextBody = temp;
-	Reply("adfsdf");
+	m_ClientRequest = m_sQueue;
+	m_mailHdr->TextBody = m_ClientRequest;
+
+	return;
+	/*Reply("adfsdf");*/
 }
