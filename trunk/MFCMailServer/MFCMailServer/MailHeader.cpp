@@ -203,3 +203,23 @@ INT16 MailHeader::getSizeOfMail( MailHeader* mailHeader )
 		+ mailHeader->To.GetLength();
 	return m_nTotalSize;
 }
+
+INT16 MailHeader::getLinesOfTextBody( MailHeader* mailHeader )
+{
+	INT16 totalLines;
+	CString currentTextBody = mailHeader->TextBody;
+	INT16 i = 0;
+	INT16 lengthOfTextBody = currentTextBody.GetLength();
+	if (currentTextBody != "")
+	{
+		totalLines = 1;
+	}
+	for (i=0;i<=lengthOfTextBody;i++)
+	{
+		if (currentTextBody.GetAt(i) == '\n')
+		{
+			totalLines++;
+		}
+	}
+	return totalLines;
+}
