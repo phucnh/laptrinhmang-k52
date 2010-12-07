@@ -21,8 +21,8 @@ static CMailServerCommand SMTP_CMD[10] =
 {
 	{ NULL,	 SMTP_ERROR_CMD},
 	{"helo", SMTP_HELO_CMD},
-	{"mail", SMTP_MAIL_CMD},
-	{"rcpt", SMTP_RCPT_CMD},
+	{"mail from:", SMTP_MAIL_CMD},
+	{"rcpt to:", SMTP_RCPT_CMD},
 	{"data", SMTP_DATA_CMD},
 	{"rset", SMTP_RSET_CMD},
 	{"vrfy", SMTP_VRFY_CMD},
