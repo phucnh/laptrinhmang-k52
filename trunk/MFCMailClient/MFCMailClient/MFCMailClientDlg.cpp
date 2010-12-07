@@ -426,6 +426,12 @@ void CMFCMailClientDlg::OnLvnItemchangedList3(NMHDR *pNMHDR, LRESULT *pResult)
 			UINT _selectedItem = m_ListMail.GetNextSelectedItem(pos);
 			MailHeader _mailHeader = globalMailList.GetAt(_selectedItem);
 
+
+			CMimeMessage _mime;
+			_mime.ReadMIMEMail(_mailHeader.TextBody);
+			if (_mime.GetFileNameAttachmentList() != NULL)
+				BindToAttachmentList(&_mime);
+
 			CString _view;
 			_view.Format("From: %s\r\nTo: %s\r\nCc: %s\r\nDate: %s\r\nSubject: %s\r\n\r\n%s",
 				_mailHeader.From,
@@ -905,7 +911,6 @@ void CMFCMailClientDlg::BindMailToListBox( CArray<MailHeader,MailHeader&>* listM
 			nIndex = m_ListMail.InsertItem(i,listMail->GetAt(i).From,0);
 			m_ListMail.SetItemText(nIndex,1,"(*)" + listMail->GetAt(i).Subject);
 
-			CArray<CString,CString>* _attachFile = _mime.GetFileNameAttachmentList();
 		}
 
 

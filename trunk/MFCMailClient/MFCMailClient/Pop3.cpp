@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "Pop3.h"
 #include "EntitiesServices.h"
+#include <afx.h>
 
 
 // CPop3
@@ -335,7 +336,32 @@ MailHeader CPop3::ReadMail( INT _mailNumber )
 	strCommand.Format("RETR %d\r\n",_mailNumber);
 	serverSocket.Send(strCommand,strCommand.GetLength(),0);
 	Sleep(300);
-	INT _bytesRead = serverSocket.Receive(_receiveMessage,32768);
+	int _bytesRead = 0;
+
+	/*HINSTANCE hInst;
+
+	CString sDriver;
+	CString sExePath;
+
+	TCHAR szFullPath[_MAX_PATH];
+	TCHAR szDir[_MAX_DIR];
+	TCHAR szDrive[_MAX_DRIVE];
+
+	GetModuleFileName(hInst, szFullPath, MAX_PATH);
+	_splitpath(szFullPath, szDrive, szDir, NULL, NULL);
+	sExePath.Format("%s%s", szDrive, szDir);
+
+	CFile _tempFile;
+	_tempFile.Open(_T(sExePath + "\\TempFile\\temp.eml"),CFile::modeCreate|CFile::modeWrite);*/
+	do 
+	{
+		_bytesRead = serverSocket.Receive(_receiveMessage,sizeof(_receiveMessage));
+		//_tempFile.Write(_receiveMessage,sizeof(_receiveMessage));
+	} while (_bytesRead == DEFAULT_LENGTH_RECEIVE_MESSAGE);
+
+	//_tempFile.Write(CFile::end,sizeof(CFile::end));
+	//_tempFile.Close();
+	
 	_receiveMessage[_bytesRead] = '\0';
 	if(!ReceiveMessageIsOK(_receiveMessage))
 		return mailHeader;

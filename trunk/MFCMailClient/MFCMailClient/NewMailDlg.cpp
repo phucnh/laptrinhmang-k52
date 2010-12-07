@@ -9,6 +9,8 @@
 #include "MimeCode.h"
 #include "EntitiesServices.h"
 #include "GlobalFunctions.h"
+#include <iosfwd>
+#include <fstream>
 
 //#include "fstream"
 
@@ -103,10 +105,10 @@ void CNewMailDlg::OnBnClickedOk()
 	//long 20101204
 	CMimeMessage msgmime;
 	msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,&m_lstFileList,m_TextBody);
-	//msg.TextBody = msgmime.ConvertToString();		
-	/*	fstream myfile("C:\\mimemail_test.eml",ios::out|ios::binary|ios::app);
+	msg.TextBody = msgmime.ConvertToString();		
+		fstream myfile("C:\\mimemail_test.eml",ios::out|ios::binary|ios::app);
 		myfile.write(msg.TextBody,msg.TextBody.GetLength());
-		myfile.close();*/
+		myfile.close();
 	if (m_lstFileList.GetCount() != 0)
 	{
 		msg.RealAttach = TRUE;
