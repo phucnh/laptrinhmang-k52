@@ -212,21 +212,23 @@ CArray<MailUser,MailUser&>* MailUser::GetAllUsers()
 
 					else
 					{
-						int numberRecord=0;
+						//phuc mod 20101207
+						/*int numberRecord=0;
 
 						while (!datasetMailUser->IsEOF())
 						{
 							numberRecord += 1;
 							datasetMailUser->MoveNext();
-						}
+						}*/
+						//end phuc mod 20101207
 
-						listMailUser->SetSize(numberRecord);
+						//listMailUser->SetSize(numberRecord);
 
 						while(!datasetMailUser->IsEOF())
 						{
 
 							//datasetMailUser->GetFieldValue(_T("MessageId",MessageId);
-							datasetMailUser->GetFieldValue(_T("username"),username);
+							datasetMailUser->GetFieldValue(_T("Username"),username);
 							datasetMailUser->GetFieldValue(_T("Password"),password);
 
 							mailuser= new MailUser(username,password);

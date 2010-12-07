@@ -33,4 +33,7 @@ public:
 	void BindAllUserToListBox();
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnLbnDblclkList1();
+	virtual BOOL OnInitDialog();
+	
+	afx_msg void OnLbnSelchangeList2();
 };
