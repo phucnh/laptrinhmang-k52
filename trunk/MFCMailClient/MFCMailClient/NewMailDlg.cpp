@@ -89,7 +89,7 @@ void CNewMailDlg::OnBnClickedOk()
 	_serverIP.Format("%d",m_serverip);
 
 	m_TextBody = EncodeToUTF8(_T(m_TextBody));
-
+		
 	CSMTP _smtp(_serverIP,25);
 	_smtp.Connect();
 	MailHeader msg;

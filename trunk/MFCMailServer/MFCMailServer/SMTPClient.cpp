@@ -206,6 +206,7 @@ void CSMTPClient::ProcessDATACommand()
 {
 	//long add
 	Reply("354 Enter mail, end with "+"."+" on a line by itself\r\n");
+
 	GetDATA();
 	if (!m_mailHdr->TextBody.IsEmpty())
 	{
@@ -280,4 +281,5 @@ void CSMTPClient::GetDATA()
 		temp += m_ClientRequest;
 	}
 	m_mailHdr->TextBody = temp;
+	Reply("adfsdf");
 }

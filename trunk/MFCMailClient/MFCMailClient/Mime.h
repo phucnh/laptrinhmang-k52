@@ -439,6 +439,7 @@ public:
 	CString ConvertToString();
 	bool DownloadFile(CString* fileName, CString* filePath);
 	void ReadMIMEMail(char* pBuff);
+	CString GetTextBody();
 };
 
 inline void CMimeMessage::SetFrom(const char* pszAddr, const char* pszCharset)
