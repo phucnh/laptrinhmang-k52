@@ -28,6 +28,7 @@ class CMFCMailServerDlg : public CDialog
 public:
 	CMFCMailServerDlg(CWnd* pParent = NULL);	// standard constructor
 	CListBox	m_lstLog;
+	void SetIconToButton();
 
 // Dialog Data
 	enum { IDD = IDD_MFCMAILSERVER_DIALOG };
@@ -65,6 +66,12 @@ public:
 	void SBPartsSetting(int cxParent, int cyParent);
 	afx_msg void OnAccountsManageaccounts();
 	afx_msg void OnAccountsNewaccount();
+	CButton m_btnStartServer;
+	CButton m_btnStopServer;
+	CButton m_btnSettings;
+	CButton m_btnUsers;
+	CButton m_btnAddTaskbar;
+	CButton m_btnExit;
 	afx_msg void OnBnClickedButton1();
 	 void testInsertNewMail();
 };
