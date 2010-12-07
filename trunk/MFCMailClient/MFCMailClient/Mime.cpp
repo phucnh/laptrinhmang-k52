@@ -1021,6 +1021,7 @@ void CMimeMessage::ReadMIMEMail(CString textBody)
 	//}
 
 }
+
 CString CMimeMessage::GetTextBody()
 {
 	string temp;

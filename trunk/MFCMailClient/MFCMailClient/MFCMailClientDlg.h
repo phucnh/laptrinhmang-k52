@@ -5,6 +5,7 @@
 #pragma once
 #include "afxcmn.h"
 #include "afxwin.h"
+#include "Mime.h"
 
 
 // CMFCMailClientDlg dialog
@@ -36,11 +37,14 @@ protected:
 
 	void CreateGroupTree();
 	void CreateListMailColumn();
+	void CreateAttachListColumn();
 	DECLARE_MESSAGE_MAP()
 public:
 	HTREEITEM inboxTreeNode;
 	HTREEITEM sentTreeNode;
 	HTREEITEM trashTreeNode;
+
+	CMimeMessage* _curentMIME;
 
 	afx_msg void OnMessageNewmessage();
 	afx_msg void OnAcountAccount();
@@ -64,6 +68,7 @@ public:
 
 	void Checkmail();
 	void BindMailToListBox(CArray<MailHeader,MailHeader&>* listMail);
+	void BindToAttachmentList(CMimeMessage* _mime);
 	void ReplySelectedMail();
 	void ForwardMessage();
 	void UpdateStatusbar();
@@ -91,4 +96,7 @@ public:
 	void testInsertNewMail();
 	
 	afx_msg void OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult);
+	CListCtrl m_lstAttachControl;
+	afx_msg void OnHdnItemdblclickListAttachlist(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnLvnItemchangedListAttachlist(NMHDR *pNMHDR, LRESULT *pResult);
 };

@@ -80,6 +80,7 @@ void CMFCMailClientDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON4, m_btnForward);
 	DDX_Control(pDX, IDC_BUTTON5, m_btnInbox);
 	DDX_Control(pDX, IDC_BUTTON6, m_btnTrash);
+	DDX_Control(pDX, IDC_LIST_ATTACHLIST, m_lstAttachControl);
 }
 
 BEGIN_MESSAGE_MAP(CMFCMailClientDlg, CDialog)
@@ -99,6 +100,7 @@ BEGIN_MESSAGE_MAP(CMFCMailClientDlg, CDialog)
 	ON_COMMAND(ID_MESSAGE_FORWARDMESSAGE, &CMFCMailClientDlg::OnMessageForwardmessage)
 	ON_BN_CLICKED(IDC_BUTTON4, &CMFCMailClientDlg::OnBnClickedButton4)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, &CMFCMailClientDlg::OnTvnSelchangedTree1)
+	ON_NOTIFY(HDN_ITEMDBLCLICK, 0, &CMFCMailClientDlg::OnHdnItemdblclickListAttachlist)
 END_MESSAGE_MAP()
 
 
@@ -176,6 +178,7 @@ BOOL CMFCMailClientDlg::OnInitDialog()
 
 	CreateGroupTree();
 	CreateListMailColumn();
+	CreateAttachListColumn();
 	SetIconToMenuButton();
 
 	InitStatusbar();
@@ -346,8 +349,8 @@ void CMFCMailClientDlg::CreateGroupTree()
 void CMFCMailClientDlg::Checkmail()
 {
 	globalMailList.RemoveAll();
-	//globalPop3.GetAllMail(globalMailList);
-	globalMailList.Add(globalPop3.ReadMail(5));
+	globalPop3.GetAllMail(globalMailList);
+	//globalMailList.Add(globalPop3.ReadMail(5));
 	
 	if (globalMailList.GetCount() == 0)
 	{
@@ -375,10 +378,28 @@ void CMFCMailClientDlg::Checkmail()
 
 		int test = m_ImageList.GetImageCount();
 
+
+		CMimeMessage _mime;
+		_mime.ReadMIMEMail(globalMailList.GetAt(i).TextBody);
+
+
+		int nIndex;
+
+		if (_mime.GetFileNameAttachmentList() == NULL)
+		{
+			nIndex = m_ListMail.InsertItem(i,globalMailList.GetAt(i).From);
+			m_ListMail.SetItemText(nIndex,1,globalMailList.GetAt(i).Subject);
+		}
+		else
+		{
+			nIndex = m_ListMail.InsertItem(i,globalMailList.GetAt(i).From,0);
+			m_ListMail.SetItemText(nIndex,1,"(*)" + globalMailList.GetAt(i).Subject);
+		}
+
 		CString subject;
 		subject.Format("%s",globalMailList.GetAt(i).Subject);
-		int nIndex = m_ListMail.InsertItem(i,globalMailList[i].From,0);
-		m_ListMail.SetItemText(nIndex,1,globalMailList[i].Subject);
+		//int nIndex = m_ListMail.InsertItem(i,globalMailList[i].From,0);
+		/*m_ListMail.SetItemText(nIndex,1,globalMailList[i].Subject);*/
 		m_ListMail.SetItemText(nIndex,2,globalMailList[i].Date);
 	}
 	UpdateData(FALSE);
@@ -557,7 +578,7 @@ void CMFCMailClientDlg::ForwardMessage()
 
 void CMFCMailClientDlg::OnBnClickedButton4()
 {
-	//ForwardMessage();	
+	ForwardMessage();	
 	// Loi : Moi khi thuc hien cac thao tac insert hay delete no cu hien ra cai bang thong bao chon DNS mac du
 	//em da thay duong dan trong phan chuoi ket noi roi :-?
 		//testLogin();			//OK
@@ -868,9 +889,98 @@ void CMFCMailClientDlg::BindMailToListBox( CArray<MailHeader,MailHeader&>* listM
 
 		CString subject;
 		subject.Format("%s",listMail->GetAt(i).Subject);
-		int nIndex = m_ListMail.InsertItem(i,listMail->GetAt(i).From,0);
+
+		CMimeMessage _mime;
+		_mime.ReadMIMEMail(listMail->GetAt(i).TextBody);
+
+		int nIndex;
+
+		if (_mime.GetFileNameAttachmentList() == NULL)
+		{
+			nIndex = m_ListMail.InsertItem(i,listMail->GetAt(i).From);
+			m_ListMail.SetItemText(nIndex,1,listMail->GetAt(i).Subject);
+		}
+		else
+		{
+			nIndex = m_ListMail.InsertItem(i,listMail->GetAt(i).From,0);
+			m_ListMail.SetItemText(nIndex,1,"(*)" + listMail->GetAt(i).Subject);
+
+			CArray<CString,CString>* _attachFile = _mime.GetFileNameAttachmentList();
+		}
+
+
 		m_ListMail.SetItemText(nIndex,1,listMail->GetAt(i).Subject);
 		m_ListMail.SetItemText(nIndex,2,listMail->GetAt(i).Date);
 	}
 	UpdateData(FALSE);
+}
+
+void CMFCMailClientDlg::BindToAttachmentList(CMimeMessage* _mime)
+{
+	ASSERT(_mime);
+
+	_curentMIME = _mime;
+
+	CArray<CString,CString>* _attachFile = _mime->GetFileNameAttachmentList();
+
+	if (_attachFile == NULL)	return;
+
+	m_lstAttachControl.DeleteAllItems();
+
+	for (int i = 0; i<_attachFile->GetCount();i++)
+	{
+		m_lstAttachControl.InsertItem(i,_attachFile->GetAt(i));
+		// TODO: add getsize to here
+	}
+}
+
+void CMFCMailClientDlg::CreateAttachListColumn()
+{
+	m_lstAttachControl.ModifyStyle(m_ListMail.GetStyle(),WS_CHILD|WS_VISIBLE|WS_BORDER|LVS_REPORT|LVS_AUTOARRANGE);
+	m_lstAttachControl.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES|LVS_EX_CHECKBOXES);
+
+	LV_COLUMN	lvColumn;
+	lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_IMAGE;
+	lvColumn.fmt = LVCFMT_LEFT;
+	lvColumn.cx = 25;
+	lvColumn.iImage = 0;
+
+
+	m_lstAttachControl.InsertColumn(1, "File name",LVCFMT_LEFT, 120);
+	m_lstAttachControl.InsertColumn(2, "Size",LVCFMT_LEFT, 265);
+}
+
+void CMFCMailClientDlg::OnHdnItemdblclickListAttachlist(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
+	
+	*pResult = 0;
+
+	POSITION pos = m_lstAttachControl.GetFirstSelectedItemPosition();
+
+	if (pos != NULL)
+	{
+		while (pos)
+		{
+			UINT _selectedItem = m_lstAttachControl.GetNextSelectedItem(pos);
+			if (_curentMIME != NULL)
+			{
+				CFileDialog fOpenDlg(FALSE, "*", "All Files", OFN_HIDEREADONLY|OFN_FILEMUSTEXIST, 
+					"All Files (*.*)|*.*||", this);
+
+				CString fileName;
+				fOpenDlg.GetOFN().lpstrFile = fileName.GetBuffer(_MAX_PATH);
+				fOpenDlg.GetOFN().nMaxFile = _MAX_PATH;
+				fOpenDlg.m_pOFN->lpstrTitle="Attach File";
+				fOpenDlg.m_pOFN->lpstrInitialDir="c:";
+
+				INT_PTR nResult = fOpenDlg.DoModal();
+
+				if(nResult == IDOK)
+				{
+					
+				}
+			}
+		}
+	}
 }

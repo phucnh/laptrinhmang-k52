@@ -428,6 +428,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IMAGES\icon_sen.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\IMAGES\mail_check_new.ico"
 				>
 			</File>
