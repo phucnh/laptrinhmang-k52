@@ -34,6 +34,7 @@ void CUserDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CUserDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON1, &CUserDlg::OnBnClickedButton1)
 	ON_LBN_DBLCLK(IDC_LIST1, &CUserDlg::OnLbnDblclkList1)
+	ON_LBN_SELCHANGE(IDC_LIST1, &CUserDlg::OnLbnSelchangeList2)
 END_MESSAGE_MAP()
 
 //CArray<MailUser,MailUser>* CUserDlg::GetAllUser()
@@ -48,10 +49,15 @@ END_MESSAGE_MAP()
 void CUserDlg::BindAllUserToListBox()
 {
 	UpdateData(TRUE);
+
+	m_lsbUserList.ResetContent();
+
 	MailUser* mailU=new MailUser();
 	CString userStr;
 	CArray<MailUser,MailUser&>* mailUsers =mailU->GetAllUsers();
-	int numberUser=mailUsers->GetSize();
+
+	int numberUser=mailUsers->GetCount();
+
 	if ((mailUsers != NULL) &&numberUser!=NULL)
 		{
 
@@ -60,7 +66,7 @@ void CUserDlg::BindAllUserToListBox()
 		for (int i=0;i<numberUser;i++)
 		{
 		
-			userStr.Format("Username: %s	  Password: %s",mailUsers->GetAt(1)._username,mailUsers->GetAt(1)._password);
+			userStr.Format("%s",mailUsers->GetAt(i)._username);
 			m_lsbUserList.AddString(userStr);
 		}
 	}
@@ -101,6 +107,29 @@ void CUserDlg::OnBnClickedButton1()
 void CUserDlg::OnLbnDblclkList1()
 {
 //	POSITION pos = m_lsbUserList;
-	//int m_lsbUserList.GetCurSel();
+	int _index = m_lsbUserList.GetCurSel();
+	MailUser* mailUser = new MailUser();
+	m_lsbUserList.GetText(_index,m_sUsername);
 	// TODO : Implement listbox double click in here
+}
+
+BOOL CUserDlg::OnInitDialog()
+{
+	if (!CDialog::OnInitDialog())
+		return FALSE;
+
+	BindAllUserToListBox();
+
+	return TRUE;
+}
+
+void CUserDlg::OnLbnSelchangeList2()
+{
+	UpdateData(TRUE);
+	int _index = m_lsbUserList.GetCurSel();
+	MailUser* mailUser = new MailUser();
+	m_lsbUserList.GetText(_index,m_sUsername);
+	mailUser = mailUser->GetUserByUsername(m_sUsername);
+	m_sPassword = mailUser->_password;
+	UpdateData(FALSE);
 }
