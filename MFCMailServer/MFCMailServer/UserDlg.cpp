@@ -35,6 +35,7 @@ BEGIN_MESSAGE_MAP(CUserDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON1, &CUserDlg::OnBnClickedButton1)
 	ON_LBN_DBLCLK(IDC_LIST1, &CUserDlg::OnLbnDblclkList1)
 	ON_LBN_SELCHANGE(IDC_LIST1, &CUserDlg::OnLbnSelchangeList2)
+	ON_BN_CLICKED(IDC_BUTTON2, &CUserDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 //CArray<MailUser,MailUser>* CUserDlg::GetAllUser()
@@ -132,4 +133,28 @@ void CUserDlg::OnLbnSelchangeList2()
 	mailUser = mailUser->GetUserByUsername(m_sUsername);
 	m_sPassword = mailUser->_password;
 	UpdateData(FALSE);
+
+}
+
+void CUserDlg::OnBnClickedButton2()
+{
+  UpdateData();
+  MailUser* mailUser = new MailUser();
+  if(mailUser->CheckUsernameExist(m_sUsername))
+	  try
+		{
+			mailUser=new MailUser();
+			mailUser->_username=m_sUsername;
+			mailUser->_password=m_sPassword;
+			mailUser->DeleteUser(mailUser);
+			BindAllUserToListBox();
+			m_sUsername="";
+			m_sPassword="";
+			UpdateData(FALSE);
+		}
+	  catch (CException* e)
+	  {
+		  throw;
+		  e->Delete();
+	  }
 }

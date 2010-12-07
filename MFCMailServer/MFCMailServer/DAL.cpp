@@ -24,8 +24,8 @@ void DAL::Initialize()
 
 	sDriver = "MICROSOFT ACCESS DRIVER (*.mdb)";
 
-	sFile = "E:\\IT Documents\\Study [BK]\\20101\\Network Programming\\Project\\Lap Tring Mang 20101\\MFCMailServer\\MFCMailServer\\Database\\MFCMailServer.mdb";
-	//sFile = "C:\\Documents and Settings\\LUU VAN DANG\\Desktop\\laptrinhmang-k52\\MFCMailServer\\MFCMailServer\\Database\\MFCMailServer.mdb";
+	//sFile = "E:\\IT Documents\\Study [BK]\\20101\\Network Programming\\Project\\Lap Tring Mang 20101\\MFCMailServer\\MFCMailServer\\Database\\MFCMailServer.mdb";
+	sFile = "C:\\Documents and Settings\\LUU VAN DANG\\Desktop\\laptrinhmang-k52\\MFCMailServer\\MFCMailServer\\Database\\MFCMailServer.mdb";
 	//sFile = "D:\\Hoctap\\Laptrinhmang\\BTL\\svn\\laptrinhmang-k52\\MFCMailServer\\MFCMailServer\\Database\\MFCMailServer.mdb";
 	//sFile = "B:\\Tai Lieu\\Hoctap\\20101\\Course Project\\Network Programming\\Source\\MFCMailServer\\MFCMailServer\\Database\\MFCMailServer.mdb";
 
