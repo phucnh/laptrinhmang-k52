@@ -59,8 +59,6 @@ CRecordset* MailHeader::getAllMail(CString username)
 		throw;
 		e->Delete();
 	}
-	
-
 }
 CRecordset* MailHeader::getAllInboxMailByUser(CString username)
 {
