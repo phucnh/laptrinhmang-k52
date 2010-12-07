@@ -816,13 +816,14 @@ void CMFCMailClientDlg::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
 	HTREEITEM hItem = m_GroupTree.GetSelectedItem();
 
 
-	//if (globalUser.UserId() >= 1)
-	if(true)
+	if (globalUser.UserId() >= 1)
+	//if(true) //Dang test
 	{
 		CMailHeaderServices* _mailService = new CMailHeaderServices();
 
 		if (hItem == inboxTreeNode)
-			BindMailToListBox(_mailService->GetMailByUserIdGroupId(6,1));
+			//BindMailToListBox(_mailService->GetMailByUserIdGroupId(6,1));//Dang test
+			BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),1));
 		else if (hItem == sentTreeNode)
 			BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),3));
 		else if (hItem == trashTreeNode)
