@@ -38,6 +38,10 @@ protected:
 	void CreateListMailColumn();
 	DECLARE_MESSAGE_MAP()
 public:
+	HTREEITEM inboxTreeNode;
+	HTREEITEM sentTreeNode;
+	HTREEITEM trashTreeNode;
+
 	afx_msg void OnMessageNewmessage();
 	afx_msg void OnAcountAccount();
 	CTreeCtrl m_GroupTree;
@@ -84,4 +88,5 @@ public:
 	void testGetByUserIdGroupId();
 	void testInsertNewMail();
 	
+	afx_msg void OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult);
 };

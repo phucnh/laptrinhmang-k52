@@ -99,6 +99,7 @@ BEGIN_MESSAGE_MAP(CMFCMailClientDlg, CDialog)
 	ON_COMMAND(ID_MESSAGE_REPLYMESSAGE, &CMFCMailClientDlg::OnMessageReplymessage)
 	ON_COMMAND(ID_MESSAGE_FORWARDMESSAGE, &CMFCMailClientDlg::OnMessageForwardmessage)
 	ON_BN_CLICKED(IDC_BUTTON4, &CMFCMailClientDlg::OnBnClickedButton4)
+	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, &CMFCMailClientDlg::OnTvnSelchangedTree1)
 END_MESSAGE_MAP()
 
 
@@ -332,13 +333,15 @@ void CMFCMailClientDlg::CreateGroupTree()
 	m_GroupTree.SetImageList(&m_ImageList,TVSIL_NORMAL);
 
 	HTREEITEM item;
-	HTREEITEM childitem;
 
 	CString rootText;
 	//rootText.Format("%s Mail Box",CMFCMailClientApp::m_Username);
 	item = m_GroupTree.InsertItem("Mail",0,0);
-	childitem = m_GroupTree.InsertItem("Inbox",1,1,item);
-	childitem = m_GroupTree.InsertItem("Trash",3,3,item);
+	inboxTreeNode = m_GroupTree.InsertItem("Inbox",1,1,item);
+	sentTreeNode = m_GroupTree.InsertItem("Sented",2,2,item);
+	trashTreeNode = m_GroupTree.InsertItem("Trash",3,3,item);
+
+	m_GroupTree.SelectItem(inboxTreeNode);
 }
 
 void CMFCMailClientDlg::Checkmail()
@@ -555,9 +558,7 @@ void CMFCMailClientDlg::ForwardMessage()
 
 void CMFCMailClientDlg::OnBnClickedButton4()
 {
-
-
-		//	ForwardMessage();	
+	ForwardMessage();	
 	// Loi : Moi khi thuc hien cac thao tac insert hay delete no cu hien ra cai bang thong bao chon DNS mac du
 	//em da thay duong dan trong phan chuoi ket noi roi :-?
 		//testLogin();			//OK
@@ -569,7 +570,7 @@ void CMFCMailClientDlg::OnBnClickedButton4()
 		//testUpdateUserByUsername();//OK
 		//testChangePassword();//OK
 			//testGetAllMail(); //Ok
-			testInsertNewMail();//Ok
+			//testInsertNewMail();//Ok
 			//testGetByMailId();//OK
 		//testGetMailByUserId();//OK
 		//testGetMailByGroupId();//OK
@@ -798,3 +799,20 @@ void CMFCMailClientDlg::testInsertNewMail()
 }
 
 
+
+void CMFCMailClientDlg::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+	HTREEITEM hItem = m_GroupTree.GetSelectedItem();
+
+	CMailHeaderServices* _mailService = new CMailHeaderServices();
+
+	/*if (hItem == inboxTreeNode)
+		globalMailList = _mailService->GetByGroupId(1);
+	else if (hItem == sentTreeNode)
+		globalMailList = _mailService->GetByGroupId(3);
+	else if (hItem == trashTreeNode)
+		globalMailList = _mailService->GetByGroupId(2);*/
+
+	*pResult = 0;
+}
