@@ -69,12 +69,12 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllMail(CString username)
 					while(!dataMail->IsEOF())
 					{
 							
-						dataMail->GetFieldValue(_T("MessageId"),MessageId);
+						dataMail->GetFieldValue(_T("MessageID"),MessageId);
 						dataMail->GetFieldValue(_T("From"),From);
 						dataMail->GetFieldValue(_T("To"),To);
 						dataMail->GetFieldValue(_T("Subject"),Subject);
 						dataMail->GetFieldValue(_T("Cc"),Cc);
-						dataMail->GetFieldValue(_T("SentDate"),Date);
+						dataMail->GetFieldValue(_T("Date"),Date);
 						dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
 						dataMail->GetFieldValue(_T("TextBody"),TextBody);
 					/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
@@ -117,6 +117,8 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllMail(CString username)
 				e->Delete();
 
 		 }
+
+	 //Ket qua ko dung: lay het mail trong db (tat ca cac user luon)
 }
 CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString username)
 {
@@ -143,12 +145,12 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString userna
 					while(!dataMail->IsEOF())
 					{
 							
-						dataMail->GetFieldValue(_T("MessageId"),MessageId);
+						dataMail->GetFieldValue(_T("MessageID"),MessageId);
 						dataMail->GetFieldValue(_T("From"),From);
 						dataMail->GetFieldValue(_T("To"),To);
 						dataMail->GetFieldValue(_T("Subject"),Subject);
 						dataMail->GetFieldValue(_T("Cc"),Cc);
-						dataMail->GetFieldValue(_T("SentDate"),Date);
+						dataMail->GetFieldValue(_T("Date"),Date);
 						dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
 						dataMail->GetFieldValue(_T("TextBody"),TextBody);
 					/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
@@ -191,7 +193,8 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString userna
 				e->Delete();
 
 		 }
-
+	
+	//Loi cau lenh Sql: he thong dung luon
 }
 CArray<MailHeader,MailHeader&>* MailHeader::getAllSentMailByUser(CString  username)
 {
@@ -216,12 +219,12 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllSentMailByUser(CString  userna
 					while(!dataMail->IsEOF())
 					{
 							
-						dataMail->GetFieldValue(_T("MessageId"),MessageId);
+						dataMail->GetFieldValue(_T("MessageID"),MessageId);
 						dataMail->GetFieldValue(_T("From"),From);
 						dataMail->GetFieldValue(_T("To"),To);
 						dataMail->GetFieldValue(_T("Subject"),Subject);
 						dataMail->GetFieldValue(_T("Cc"),Cc);
-						dataMail->GetFieldValue(_T("SentDate"),Date);
+						dataMail->GetFieldValue(_T("Date"),Date);
 						dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
 						dataMail->GetFieldValue(_T("TextBody"),TextBody);
 					/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
@@ -264,6 +267,8 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllSentMailByUser(CString  userna
 				e->Delete();
 
 		 }
+
+	 //Loi lay du lieu tu db voi cau lenh sql: dataMail ko co du lieu nao
 }
 
 MailHeader* MailHeader::getMail(UINT mailID)
@@ -284,7 +289,7 @@ MailHeader* MailHeader::getMail(UINT mailID)
 			dataset->GetFieldValue(_T("To"),to);
 			dataset->GetFieldValue(_T("Date"),date);
 			dataset->GetFieldValue(_T("Subject"),subject);
-			dataset->GetFieldValue(_T("CC"),cc);
+			dataset->GetFieldValue(_T("Cc"),cc);
 			dataset->GetFieldValue(_T("ReplyTo"),replyto);
 			dataset->GetFieldValue(_T("TextBody"),textbody);
 			dataset->GetFieldValue(_T("RealAttach"),realattach);
@@ -301,19 +306,20 @@ MailHeader* MailHeader::getMail(UINT mailID)
 			return mailh;
 			}
 		}
-			catch(CException* ee)
-			{
-				throw;
-				ee->Delete();
-			}
-
-	}
+		catch(CException* ee)
+		{
+			throw;
+			ee->Delete();
+		}
+		
+		//Dung!
+}
 
 
 
 bool MailHeader::deleteMail(UINT mailID)
 {
-	sql.Format(_T("Delete MailHeader where MailID=%d"),mailID);
+	sql.Format(_T("Delete MailHeader where MailId=%d"),mailID);
 	try
 	{
 		if(dal->ExecuteSQL(sql))
@@ -326,6 +332,8 @@ bool MailHeader::deleteMail(UINT mailID)
 		throw;
 		e->Delete();
 	}
+
+	//Loi: cau lenh Sql sai -> bao loi
 }
 
 bool MailHeader::InsertMail(MailHeader* mailH)

@@ -103,7 +103,6 @@ void CMFCMailServerDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON2, m_btnStopServer);
 	DDX_Control(pDX, IDC_BUTTON3, m_btnSettings);
 	DDX_Control(pDX, IDC_BUTTON4, m_btnUsers);
-	DDX_Control(pDX, IDC_BUTTON5, m_btnAddTaskbar);
 	DDX_Control(pDX, IDC_BUTTON6, m_btnExit);
 }
 
@@ -119,7 +118,7 @@ BEGIN_MESSAGE_MAP(CMFCMailServerDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON2, &CMFCMailServerDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON4, &CMFCMailServerDlg::OnBnClickedButton4)
 	ON_BN_CLICKED(IDC_BUTTON3, &CMFCMailServerDlg::OnBnClickedButton3)
-	ON_BN_CLICKED(IDC_BUTTON5, &CMFCMailServerDlg::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON6, &CMFCMailServerDlg::OnBnClickedButton6)
 END_MESSAGE_MAP()
 
 
@@ -406,15 +405,6 @@ void CMFCMailServerDlg::SetIconToButton()
 
 	hIcn= (HICON)LoadImage(
 		AfxGetApp()->m_hInstance,
-		MAKEINTRESOURCE(IDI_ICON_ADDTASKBAR),
-		IMAGE_ICON,
-		32,32, // use actual size
-		LR_DEFAULTCOLOR
-		);
-	m_btnAddTaskbar.SetIcon(hIcn);
-
-	hIcn= (HICON)LoadImage(
-		AfxGetApp()->m_hInstance,
 		MAKEINTRESOURCE(IDI_ICON_EXIT),
 		IMAGE_ICON,
 		32,32, // use actual size
@@ -426,7 +416,9 @@ void CMFCMailServerDlg::SetIconToButton()
 void CMFCMailServerDlg::OnBnClickedButton1()
 {
 	StartMailServer();
-	
+	/*CWnd* pWnd = GetDlgItem(IDC_BUTTON2); 
+	pWnd->EnableWindow(TRUE);
+	this->EnableWindow(FALSE);*/
 }
 void CMFCMailServerDlg::testInsertNewMail()
 {
@@ -444,33 +436,12 @@ void CMFCMailServerDlg::testInsertNewMail()
  }
 }
 
-bool CMFCMailServerDlg::SystemTrayMessage(DWORD	dwMsg,CString aStrToolTip,int nResId, HWND m_hWnd)
-{
-	NOTIFYICONDATA tnd;
-	HICON hTrayIcon;
-	tnd.uID = IDI_ICON_TRAY; /* Unique ID to the Tray Icon */
-	/* Load the Icon from the Resource */
-	hTrayIcon = LoadIcon(AfxGetInstanceHandle(),
-		MAKEINTRESOURCE (nResId));
-	tnd.hIcon = hTrayIcon;
-	/* Fill the Notify Icon Structure */
-	tnd.cbSize = sizeof(NOTIFYICONDATA);
-	tnd.hWnd = m_hWnd;
-	/* User Defined Message to handle
-	windows messages from Tray Icon */
-	tnd.uCallbackMessage = 1;
-	tnd.uFlags = NIF_MESSAGE|NIF_ICON|NIF_TIP;
-	/* Supply the tool tip string */
-	lstrcpyn(tnd.szTip, (LPCTSTR)aStrToolTip, sizeof(tnd.szTip)/sizeof(tnd.szTip[0]) );
-	Shell_NotifyIcon(dwMsg, &tnd); /* Notify the Shell toadd the icon in the Tray */
-	if(hTrayIcon)
-		DestroyIcon(hTrayIcon);
-	return TRUE;
-}
-
 void CMFCMailServerDlg::OnBnClickedButton2()
 {
 	StopMailServer();
+	/*CWnd* pWnd = GetDlgItem(IDC_BUTTON1);
+	pWnd->EnableWindow(TRUE);
+	this->EnableWindow(FALSE);*/
 }
 
 void CMFCMailServerDlg::OnBnClickedButton4()
@@ -483,8 +454,13 @@ void CMFCMailServerDlg::OnBnClickedButton3()
 	OnAccountsManageaccounts();
 }
 
-
-void CMFCMailServerDlg::OnBnClickedButton5()
+void CMFCMailServerDlg::OnBnClickedButton6()
 {
-	//SystemTrayMessage(NIM_ADD,"Test",138,);
+	//this->OnDestroy();
+	CString username = "abc";
+	MailHeader* test = new MailHeader();
+	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
+	listMailHeader = test->getAllSentMailByUser(username);
+	int result = listMailHeader->GetCount();
+	bool isDeleted = test->deleteMail(3);
 }
