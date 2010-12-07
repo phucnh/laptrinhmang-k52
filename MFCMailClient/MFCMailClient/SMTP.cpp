@@ -203,25 +203,30 @@ void CSMTP::SetServerProperties( LPCTSTR sServerHostName, UINT nPort)
 
 BOOL CSMTP::prepare_header(MailHeader * msg)
 {
+	CTime currentDate = GetCurrentTime();
 	ASSERT( msg != NULL );
 	CString sTo;
 	CString sDate;
-	CString& sHeader = msg->Subject;	// Shorthand
+	CString sSubject = msg->Subject;	// Shorthand
+	CString sMessageId = "";
+	CString sSender = msg->From.Left(msg->From.Find("@"));
+	sMessageId.Format("<%s@%s>",currentDate.Format("%d%m%y.%H%M%S"),sSender);
 
-	sHeader = "";	// Clear it
-
-	CTime currentDate = GetCurrentTime();
+	CString sHeader = "";	// Clear it
+	
 	msg->Date = currentDate.Format("%a, %d %b %y %H:%M:%S %Z");
 	// Format: Mon, 01 Jun 98 01:10:30 GMT
 	sDate = msg->Date;
 	sHeader.Format( "Date: %s\r\n"\
 		"From: %s\r\n"\
 		"To: %s\r\n"\
-		"Subject: %s\r\n",
+		"Subject: %s\r\n"
+		"Message-ID: %s\r\n",
 		(LPCTSTR)sDate,
 		(LPCTSTR)msg->From,
 		(LPCTSTR)msg->To,
-		(LPCTSTR)sHeader);
+		(LPCTSTR)sSubject,
+		(LPCTSTR)sMessageId);
 	return TRUE;
 }
 

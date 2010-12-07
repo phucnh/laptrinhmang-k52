@@ -86,7 +86,7 @@ IDI_ICON13              ICON                    "IMAGES\\1286463047_address_book
 IDI_ICON14              ICON                    "IMAGES\\1286463089_button_cancel.ico"
 IDI_ICON_DELETE         ICON                    "IMAGES\\1286463095_DeleteRed.ico"
 IDI_ICON_REPLY          ICON                    "IMAGES\\1286463158_mail_send.ico"
-IDI_ICON_SEND           ICON                    "images\\icon_sen.ico"
+IDI_ICON_SEND           ICON                    "IMAGES\\icon_sen.ico"
 IDI_ICON18              ICON                    "IMAGES\\email.ico"
 IDI_ICON19              ICON                    "IMAGES\\mail_check_new.ico"
 IDI_ICON_NEWMAIL        ICON                    "IMAGES\\mail_new.ico"
