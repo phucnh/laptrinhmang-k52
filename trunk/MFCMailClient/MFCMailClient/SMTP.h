@@ -9,6 +9,7 @@
 #include <atltime.h> // MFC time extensions
 #include <afxtempl.h>
 #include "MailMessage.h"
+#include "Mime.h"
 
 #define SMTP_PORT 25		// Standard port for SMTP servers
 #define RESPONSE_BUFFER_SIZE 3
@@ -53,10 +54,12 @@ public:
 	CString GetLastError();
 	virtual BOOL FormatMailMessage( MailHeader* msg );
 	BOOL SendMessage( MailHeader* msg );
+	BOOL SendMessage(MailHeader* msg, CMimeMessage* mime);
 
 private:
 	BOOL get_response( UINT response_expected );
 	BOOL transmit_message( MailHeader* msg );
+	BOOL transmit_message(MailHeader* msg, CMimeMessage* mime);
 	CString prepare_body( MailHeader* msg );
 	BOOL prepare_header( MailHeader* msg);
 
