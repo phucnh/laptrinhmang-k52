@@ -82,9 +82,9 @@ void CDAL::Initialize()
 	sDbPath.Format("%s%s", sExePath + "\\Database\\", "MFCMailClient.mdb");
 
 	sDriver = "MICROSOFT ACCESS DRIVER (*.mdb)";
-	//sFile = "B:\\Tai Lieu\\Hoctap\\20101\\Course Project\\Network Programming\\Source\\MFCMailClient\\MFCMailClient\\Database\\MFCMailClient.mdb";
+	sFile = "B:\\Tai Lieu\\Hoctap\\20101\\Course Project\\Network Programming\\Source\\MFCMailClient\\MFCMailClient\\Database\\MFCMailClient.mdb";
 	//sFile = "D:\\Hoctap\\Laptrinhmang\\BTL\\svn\\laptrinhmang-k52\\MFCMailClient\\MFCMailClient\\Database\\MFCMailClient.mdb";
-	sFile = "C:\\Documents and Settings\\LUU VAN DANG\\Desktop\\laptrinhmang-k52\\MFCMailClient\\MFCMailClient\\Database\\MFCMailClient.mdb";
+	//sFile = "C:\\Documents and Settings\\LUU VAN DANG\\Desktop\\laptrinhmang-k52\\MFCMailClient\\MFCMailClient\\Database\\MFCMailClient.mdb";
 	sDsn.Format("ODBC;DRIVER={%s};DSN='';DBQ=%s",sDriver,sFile);
 	CDatabase::Open(NULL,false,false,sDsn);
 	pRecordSet = new CRecordset(this);
