@@ -328,11 +328,11 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath="D:\HAS\HAS-Software\HAS-Software\Icon HAS\ico-files\arrow_down_blue.ico"
+				RelativePath=".\IMAGES\arrow_down_blue.ico"
 				>
 			</File>
 			<File
-				RelativePath="D:\HAS\HAS-Software\HAS-Software\Icon HAS\ico-files\delete2.ico"
+				RelativePath=".\IMAGES\delete2.ico"
 				>
 			</File>
 			<File
@@ -348,19 +348,19 @@
 				>
 			</File>
 			<File
-				RelativePath="D:\HAS\HAS-Software\HAS-Software\Icon HAS\ico-files\server_delete.ico"
+				RelativePath=".\IMAGES\server_delete.ico"
 				>
 			</File>
 			<File
-				RelativePath="D:\HAS\HAS-Software\HAS-Software\Icon HAS\ico-files\server_into.ico"
+				RelativePath=".\IMAGES\server_into.ico"
 				>
 			</File>
 			<File
-				RelativePath="D:\HAS\HAS-Software\HAS-Software\Icon HAS\ico-files\users3.ico"
+				RelativePath=".\IMAGES\users3.ico"
 				>
 			</File>
 			<File
-				RelativePath="D:\HAS\HAS-Software\HAS-Software\Icon HAS\ico-files\wrench.ico"
+				RelativePath=".\IMAGES\wrench.ico"
 				>
 			</File>
 		</Filter>
