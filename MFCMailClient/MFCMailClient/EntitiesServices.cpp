@@ -743,5 +743,3 @@ CMailHeaderServices::CMailHeaderServices( void )
 	this->dal = new CDAL();
 
 }
-
-

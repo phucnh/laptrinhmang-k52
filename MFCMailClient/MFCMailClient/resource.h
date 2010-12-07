@@ -29,13 +29,13 @@
 #define IDI_ICON13                      147
 #define IDI_ICON14                      148
 #define IDI_ICON_DELETE                 149
-#define IDI_ICON_SEND                   158
 #define IDI_ICON_REPLY                  150
 #define IDI_ICON17                      151
 #define IDI_ICON18                      152
 #define IDI_ICON19                      153
 #define IDI_ICON_NEWMAIL                154
 #define IDR_TOOLBAR2                    157
+#define IDI_ICON_SEND                   158
 #define IDB_BITMAP_EMAIL                160
 #define IDR_TOOLBAR_MAIN                162
 #define IDB_BITMAP_MAILBOX              171
@@ -60,6 +60,8 @@
 #define IDC_BUTTON_ADDFILE              1013
 #define IDC_BUTTON_REMOVE               1014
 #define IDC_RICHEDIT21                  1015
+#define IDC_LIST4                       1016
+#define IDC_LIST_ATTACHLIST             1016
 #define ID_ACOUNT_ACCOUNT               32771
 #define ID_ACCOUNT_QUIT                 32772
 #define ID_GROUPS_INBOX                 32773
@@ -78,7 +80,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        172
 #define _APS_NEXT_COMMAND_VALUE         32782
-#define _APS_NEXT_CONTROL_VALUE         1016
+#define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           106
 #endif
 #endif
