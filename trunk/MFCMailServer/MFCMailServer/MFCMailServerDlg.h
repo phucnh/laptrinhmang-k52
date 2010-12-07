@@ -70,7 +70,6 @@ public:
 	CButton m_btnStopServer;
 	CButton m_btnSettings;
 	CButton m_btnUsers;
-	CButton m_btnAddTaskbar;
 	CButton m_btnExit;
 	afx_msg void OnBnClickedButton1();
 	 void testInsertNewMail();
@@ -78,5 +77,5 @@ public:
 	 afx_msg void OnBnClickedButton4();
 	 afx_msg void OnBnClickedButton3();
 	 bool SystemTrayMessage(DWORD dwMsg,CString aStrToolTip,int nResId, HWND m_hWnd);
-	 afx_msg void OnBnClickedButton5();
+	 afx_msg void OnBnClickedButton6();
 };

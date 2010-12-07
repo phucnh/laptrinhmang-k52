@@ -100,14 +100,11 @@ BEGIN
     PUSHBUTTON      "Stop Server",IDC_BUTTON2,65,14,48,34,BS_ICON
     PUSHBUTTON      "Settings",IDC_BUTTON3,124,14,49,34,BS_ICON
     PUSHBUTTON      "Users",IDC_BUTTON4,184,14,48,34,BS_ICON
-    PUSHBUTTON      "AddTaskbar",IDC_BUTTON5,242,14,49,34,BS_ICON
-    PUSHBUTTON      "Exit",IDC_BUTTON6,304,14,48,33,BS_ICON
+    PUSHBUTTON      "Exit",IDC_BUTTON6,245,14,48,33,BS_ICON
     PUSHBUTTON      "Start Server",IDC_BUTTON7,7,15,45,33,BS_ICON
     PUSHBUTTON      "Stop Server",IDC_BUTTON8,65,14,48,34,BS_ICON
     PUSHBUTTON      "Settings",IDC_BUTTON9,124,14,49,34,BS_ICON
     PUSHBUTTON      "Users",IDC_BUTTON10,184,14,48,34,BS_ICON
-    PUSHBUTTON      "AddTaskbar",IDC_BUTTON11,242,14,49,34,BS_ICON
-    PUSHBUTTON      "Exit",IDC_BUTTON12,304,14,48,33,BS_ICON
 END
 
 IDD_DIALOG_USER DIALOGEX 0, 0, 260, 235
@@ -290,7 +287,6 @@ IDI_ICON_STARTSERVER    ICON                    "IMAGES\\server_into.ico"
 IDI_ICON_STOPSERVER     ICON                    "IMAGES\\server_delete.ico"
 IDI_ICON_SETTINGS       ICON                    "IMAGES\\wrench.ico"
 IDI_ICON_USERS          ICON                    "IMAGES\\users3.ico"
-IDI_ICON_ADDTASKBAR     ICON                    "IMAGES\\arrow_down_blue.ico"
 IDI_ICON_EXIT           ICON                    "IMAGES\\delete2.ico"
 IDI_ICON_TRAY           ICON                    "IMAGES\\mail_server.ico"
 #endif    // Vietnamese resources
