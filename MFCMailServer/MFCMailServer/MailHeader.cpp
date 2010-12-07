@@ -69,7 +69,7 @@ CRecordset* MailHeader::getAllInboxMailByUser(CString username)
 	try
 	{
 		 dataset = dal->GetRecordSet(sql);
-		 if(dataset==NULL) return NULL;
+		 if(dataset == NULL) return NULL;
 		 return dataset;
 	}
 	catch(CException* e)
