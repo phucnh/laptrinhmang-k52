@@ -280,12 +280,12 @@ LANGUAGE LANG_VIETNAMESE, SUBLANG_DEFAULT
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON_STARTSERVER    ICON                    "D:\\HAS\\HAS-Software\\HAS-Software\\Icon HAS\\ico-files\\server_into.ico"
-IDI_ICON_STOPSERVER     ICON                    "D:\\HAS\\HAS-Software\\HAS-Software\\Icon HAS\\ico-files\\server_delete.ico"
-IDI_ICON_SETTINGS       ICON                    "D:\\HAS\\HAS-Software\\HAS-Software\\Icon HAS\\ico-files\\wrench.ico"
-IDI_ICON_USERS          ICON                    "D:\\HAS\\HAS-Software\\HAS-Software\\Icon HAS\\ico-files\\users3.ico"
-IDI_ICON_ADDTASKBAR     ICON                    "D:\\HAS\\HAS-Software\\HAS-Software\\Icon HAS\\ico-files\\arrow_down_blue.ico"
-IDI_ICON_EXIT           ICON                    "D:\\HAS\\HAS-Software\\HAS-Software\\Icon HAS\\ico-files\\delete2.ico"
+IDI_ICON_STARTSERVER    ICON                    "IMAGES\\server_into.ico"
+IDI_ICON_STOPSERVER     ICON                    "IMAGES\\server_delete.ico"
+IDI_ICON_SETTINGS       ICON                    "IMAGES\\wrench.ico"
+IDI_ICON_USERS          ICON                    "IMAGES\\users3.ico"
+IDI_ICON_ADDTASKBAR     ICON                    "IMAGES\\arrow_down_blue.ico"
+IDI_ICON_EXIT           ICON                    "IMAGES\\delete2.ico"
 #endif    // Vietnamese resources
 /////////////////////////////////////////////////////////////////////////////
 
