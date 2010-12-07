@@ -63,6 +63,7 @@ public:
 	afx_msg void OnBnClickedButton5();
 
 	void Checkmail();
+	void BindMailToListBox(CArray<MailHeader,MailHeader>* listMail);
 	void ReplySelectedMail();
 	void ForwardMessage();
 	void UpdateStatusbar();

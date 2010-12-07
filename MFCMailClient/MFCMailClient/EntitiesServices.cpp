@@ -606,24 +606,25 @@ CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByGroupId( INT groupId )
 
 
 
-CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByUserIdGroupId( INT userId, INT groupId )
+CArray<MailHeader,MailHeader>* CMailHeaderServices::GetByUserIdGroupId( INT userId, INT groupId )
 {
-	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
+	CArray<MailHeader,MailHeader>* listMailHeader=new CArray<MailHeader,MailHeader>();
 
 	CString  MessageId,From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString;
 	BYTE RealAttach;
-	INT UserId,GroupId,MailId;
+	CString UserId,GroupId,MailId;
 	MailHeader* mailheader;
 
 	sqlCommand1.Format(_T("Select * From MailHeader where GroupId=%d and UserId=%d ;"),groupId,userId);
 	
 	try
 	{
-				dataMail=dal->GetRecordSet(sqlCommand1);
-			if(dataMail==NULL) return NULL;
+			dataMail = dal->GetRecordSet(sqlCommand1);
+
+			if(dataMail == NULL) return NULL;
 			else
 			{
-				int numberRecord=0;
+				/*int numberRecord=0;
 
 				while (!dataMail->IsEOF())
 				{
@@ -631,7 +632,7 @@ CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByUserIdGroupId( INT use
 					dataMail->MoveNext();
 				}
 
-				listMailHeader->SetSize(numberRecord);
+				listMailHeader->SetSize(numberRecord);*/
 						
 						while(!dataMail->IsEOF())
 						{
@@ -641,21 +642,21 @@ CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetByUserIdGroupId( INT use
 							dataMail->GetFieldValue(_T("To"),To);
 							dataMail->GetFieldValue(_T("Subject"),Subject);
 							dataMail->GetFieldValue(_T("Cc"),Cc);
-							dataMail->GetFieldValue(_T("Date"),Date);
+							dataMail->GetFieldValue(_T("SentDate"),Date);
 							dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
 							dataMail->GetFieldValue(_T("TextBody"),TextBody);
-						/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
-							dataMail->GetFieldValue(_T("ContendType",ContendType);*/
+							dataMail->GetFieldValue(_T("MimeVersion"),MimeVersion);
+							dataMail->GetFieldValue(_T("ContentType"),ContendType);
 
 							dataMail->GetFieldValue(_T("RealAttach"),RealAttachString);
-						/*	dataMail->GetFieldValue(_T("GroupId",GroupId);
-							dataMail->GetFieldValue(_T("UserId",UserId);
-							dataMail->GetFieldValue(_T("MailId",MailId);*/
+							dataMail->GetFieldValue(_T("GroupId"),GroupId);
+							dataMail->GetFieldValue(_T("UserId"),UserId);
+							dataMail->GetFieldValue(_T("MailId"),MailId);
 
 							//convert String to BYTE
 							RealAttach=(BYTE)(LPSTR)(LPCTSTR)RealAttachString;
 
-							mailheader=new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,RealAttach);
+							mailheader = new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,RealAttach);
 
 							listMailHeader->Add(*mailheader);
 

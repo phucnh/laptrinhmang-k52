@@ -41,7 +41,7 @@ public:
 	MailHeader* GetByMailId(INT mailId);
 	CArray<MailHeader,MailHeader&>* GetByUserId(INT userId);
 	CArray<MailHeader,MailHeader&>* GetByGroupId(INT groupId);
-	CArray<MailHeader,MailHeader&>* GetByUserIdGroupId(INT userId, INT groupId);
+	CArray<MailHeader,MailHeader>* GetByUserIdGroupId(INT userId, INT groupId);
 	MailHeader* InsertNewMail(MailHeader* mailHeader);
 };
 

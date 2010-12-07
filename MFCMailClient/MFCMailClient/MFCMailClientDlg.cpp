@@ -1,7 +1,6 @@
 
 // MFCMailClientDlg.cpp : implementation file
 //
-#pragma unmanage
 
 #include "stdafx.h"
 #include "MFCMailClient.h"
@@ -743,19 +742,19 @@ void CMFCMailClientDlg::testGetMailByUserId()
 
 void CMFCMailClientDlg::testGetMailByGroupId()
 {
-	CMailHeaderServices* sc=new CMailHeaderServices();
+	/*CMailHeaderServices* sc=new CMailHeaderServices();
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 	listMailHeader=sc->GetByGroupId(1);
 	UINT numberRecord=listMailHeader->GetSize();
 	CString result;
 	result.Format("Tong So Mail cua Gruop nay la :%d",numberRecord);
-	AfxMessageBox(result);
+	AfxMessageBox(result);*/
 }
 
 void CMFCMailClientDlg::testGetByUserIdGroupId()
 {
 	CMailHeaderServices* sc=new CMailHeaderServices();
-	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
+	CArray<MailHeader,MailHeader>* listMailHeader=new CArray<MailHeader,MailHeader>();
 	listMailHeader=sc->GetByUserIdGroupId(1,6);
 	UINT numberRecord=listMailHeader->GetSize();
 	CString result;
@@ -805,14 +804,60 @@ void CMFCMailClientDlg::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 	HTREEITEM hItem = m_GroupTree.GetSelectedItem();
 
-	CMailHeaderServices* _mailService = new CMailHeaderServices();
 
-	/*if (hItem == inboxTreeNode)
-		globalMailList = _mailService->GetByGroupId(1);
-	else if (hItem == sentTreeNode)
-		globalMailList = _mailService->GetByGroupId(3);
-	else if (hItem == trashTreeNode)
-		globalMailList = _mailService->GetByGroupId(2);*/
+	if (globalUser.UserId() >= 1)
+	{
+		CMailHeaderServices* _mailService = new CMailHeaderServices();
+
+		if (hItem == inboxTreeNode)
+			BindMailToListBox(_mailService->GetByUserIdGroupId(globalUser.UserId(),1));
+		else if (hItem == sentTreeNode)
+			BindMailToListBox(_mailService->GetByUserIdGroupId(globalUser.UserId(),3));
+		else if (hItem == trashTreeNode)
+			BindMailToListBox(_mailService->GetByUserIdGroupId(globalUser.UserId(),2));
+	}
 
 	*pResult = 0;
+}
+
+void CMFCMailClientDlg::BindMailToListBox( CArray<MailHeader,MailHeader>* listMail )
+{
+	if (listMail == NULL)	return;
+
+	if (listMail->GetCount() == 0)	return;
+
+	globalMailList.RemoveAll();
+	
+	for (int i = 0; i< listMail->GetCount();i++)
+	{
+		globalMailList.Add(listMail->GetAt(i));
+	}
+
+	UpdateData(TRUE);
+	m_ListMail.DeleteAllItems();
+	
+
+	for (int i=0;i<listMail->GetCount();i++)
+	{
+		/*LVITEM _listMailItem;
+		_listMailItem.mask = LVIF_TEXT;
+		_listMailItem.iItem = i;
+		_listMailItem.iSubItem = 0;
+		_listMailItem.pszText = _mailArray.GetAt(i).Subject.GetBuffer(_mailArray.GetAt(i).Subject.GetLength());
+
+		m_ListMail.InsertItem(&_listMailItem);*/
+		CImageList m_ImageList;
+		m_ImageList.Create(10, 10, ILC_COLOR8, 0, 6);
+		m_ImageList.Add(theApp.LoadIcon(IDI_ICON_INBOX));
+		m_ListMail.SetImageList(&m_ImageList,LVSIL_SMALL);
+
+		int test = m_ImageList.GetImageCount();
+
+		CString subject;
+		subject.Format("%s",listMail->GetAt(i).Subject);
+		int nIndex = m_ListMail.InsertItem(i,listMail->GetAt(i).From,0);
+		m_ListMail.SetItemText(nIndex,1,listMail->GetAt(i).Subject);
+		m_ListMail.SetItemText(nIndex,2,listMail->GetAt(i).Date);
+	}
+	UpdateData(FALSE);
 }
