@@ -21,6 +21,7 @@ public:
 	CString  MimeVersion;
 	CString  ContentType;
 	BYTE     RealAttach;
+	BOOL	 IsDeleted;
 	MailHeader( 
 		CString _from,
 		CString _to,
@@ -29,7 +30,8 @@ public:
 		CString _cc,
 		CString _replyTo,
 		CString _textBody,
-		BYTE _realAttach 
+		BYTE _realAttach,
+		BOOL _isDeleted
 		);
 	MailHeader(void);
 	~MailHeader(void);
@@ -45,6 +47,8 @@ public:
 	//phuc add 20101121
 	bool InsertMail(MailHeader* mailHeader);
 	//end phuc add 20101121
+
+	INT16 getSizeOfMail(MailHeader* mailHeader);
 };
 
 #endif

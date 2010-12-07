@@ -79,6 +79,9 @@ public:
 	void ProcessSTATCommand();
 	void ProcessDELECommand();
 	void ProcessQUITCommand();
+	void ProcessNOOPCommand();
+	void ProcessRSETCommand();
+	void ProcessTOPCommand();
 
 
 	virtual void OnReceive(int nErrorCode);

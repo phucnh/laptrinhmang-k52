@@ -97,6 +97,9 @@ void CClientSocket::ProcessCommand( INT _cmdCode )
 	case STAT_CMD:	ProcessSTATCommand();	break;
 	case DELE_CMD:	ProcessDELECommand();	break;
 	case QUIT_CMD:	ProcessQUITCommand();	break;
+	case NOOP_CMD:  ProcessNOOPCommand();	break;
+	case RSET_CMD:	ProcessRSETCommand();	break;
+	case TOP_CMD:	ProcessTOPCommand();	break;
 	}
 }
 
@@ -203,6 +206,8 @@ void CClientSocket::ProcessLISTCommand()
 	CString currentStatus;
 	MailHeader* test1 = new MailHeader();
 	test1->Subject = "test1";
+	test1->From = "Phuc";
+	test1->TextBody = "test test test";
 	MailHeader* test2 = new MailHeader();
 	test2->Subject = "test2";
 	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
@@ -251,8 +256,14 @@ void CClientSocket::ProcessLISTCommand()
 
 	//phuc mod 20100612
 	if (m_totalMail > 0)
-		for (i=0; i<m_totalMail; i++) 
-			Reply("%d %s", i+1, testArray->ElementAt(i).Subject);
+		for (i=0; i<m_totalMail; i++)
+			if (&testArray->ElementAt(i) != NULL)
+			{
+				MailHeader* currentMailHeader = new MailHeader();
+				currentMailHeader = &testArray->ElementAt(i);
+				m_totalSize = currentMailHeader->getSizeOfMail(currentMailHeader);
+				Reply("\n %d %d", i+1, m_totalSize);
+			}
 	//end phuc mod 20100612
 
 	Reply(".");
@@ -266,6 +277,7 @@ void CClientSocket::ProcessRETRCommand()
 	test1->From = "Phuc";
 	test1->Subject = "Test Mail";
 	test1->TextBody = "test test test";
+	test1->IsDeleted = TRUE;
 	MailHeader* test2 = new MailHeader();
 	test2->Subject = "test2";
 	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
@@ -306,12 +318,17 @@ void CClientSocket::ProcessRETRCommand()
 		return;
 	}
 
-	if (testArray->GetCount() == 0)
+	if (&testArray->ElementAt(currentMailIndex-1) != NULL)
 	{
-		currentStatus.Format("-ERR Sorry, message %d already deleted.", nMailIndex);
-		m_parrent->WriteLog(currentStatus);
-		Reply(currentStatus);
-		return;
+		MailHeader* currentMailHeader = new MailHeader();
+		currentMailHeader = &testArray->ElementAt(currentMailIndex-1);
+		if (currentMailHeader->IsDeleted == TRUE)
+		{
+			currentStatus.Format("-ERR Sorry, message %d already deleted.", nMailIndex);
+			m_parrent->WriteLog(currentStatus);
+			Reply(currentStatus);
+			return;
+		}
 	}
 	currentStatus.Format("+OK %s octets", GetMessageInfo(nMailIndex, 2));
 	m_parrent->WriteLog(currentStatus);
@@ -359,6 +376,17 @@ void CClientSocket::ProcessSTATCommand()
 		Reply(currentStatus);
 		return;
 	}
+	
+	INT32 i = 0;
+	if (m_totalMail > 0)
+		for (i=0; i<m_totalMail; i++)
+			if (&testArray->ElementAt(i) != NULL)
+			{
+				MailHeader* currentMailHeader = new MailHeader();
+				currentMailHeader = &testArray->ElementAt(i);
+				m_totalSize = m_totalSize + currentMailHeader->getSizeOfMail(currentMailHeader);
+			}
+
 	currentStatus.Format("+OK %d %d", m_totalMail, m_totalSize);
 	m_parrent->WriteLog(currentStatus);
 	Reply(currentStatus);
@@ -425,6 +453,7 @@ void CClientSocket::ProcessDELECommand()
 	sTemp = m_MailboxInfo.GetAt(pos);
 	sTemp.SetAt(sTemp.GetLength()-2, '1');
 	m_MailboxInfo.SetAt(pos, sTemp);*/
+	testArray->ElementAt(currentMailIndex-1).IsDeleted = TRUE;
 	testArray->RemoveAt(currentMailIndex-1,1);
 	currentStatus.Format("+OK Message %d deleted.", currentMailIndex);
 	m_parrent->WriteLog(currentStatus);
@@ -436,6 +465,54 @@ void CClientSocket::ProcessQUITCommand()
 	Reply("+OK");
 	//	Close();
 	CloseSocket();
+}
+
+void CClientSocket::ProcessNOOPCommand()
+{
+	CString currentStatus;
+	currentStatus.Format("+OK");
+	m_parrent->WriteLog(currentStatus);
+	Reply(currentStatus);
+}
+
+void CClientSocket::ProcessRSETCommand()
+{
+	MailHeader* requestedMail = new MailHeader();
+	MailHeader* test1 = new MailHeader();
+	test1->Subject = "test1";
+	test1->From = "Phuc";
+	test1->Subject = "Test Mail";
+	test1->TextBody = "test test test";
+	MailHeader* test2 = new MailHeader();
+	test2->Subject = "test2";
+	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
+	testArray->Add(*test1);
+	testArray->Add(*test2);
+	m_totalMail = testArray->GetCount();
+
+	INT32 i = 0;
+	for (i=0;i<m_totalMail;i++)
+	{
+		if (&testArray->ElementAt(i) != NULL)
+		{
+			MailHeader* currentMailHeader = new MailHeader();
+			currentMailHeader = &testArray->ElementAt(i);
+			if (currentMailHeader->IsDeleted == TRUE)
+			{
+				currentMailHeader->IsDeleted = FALSE;
+			}
+			m_totalSize = m_totalSize + currentMailHeader->getSizeOfMail(currentMailHeader);
+		}
+	}
+	CString currentStatus;
+	currentStatus.Format("+OK Maildrop has %d messages (%d octets)",m_totalMail,m_totalSize);
+	m_parrent->WriteLog(currentStatus);
+	Reply(currentStatus);
+}
+
+void CClientSocket::ProcessTOPCommand()
+{
+
 }
 
 void CClientSocket::GetMailboxInfo(CString sMailbox)
@@ -543,3 +620,4 @@ MailUser* CClientSocket::GetUserByUsername( CString username )
 
 	return currentUser;
 }
+
