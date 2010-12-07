@@ -1039,3 +1039,26 @@ CString CMimeMessage::GetTextBody()
 	CString tempS(temp.c_str());
 	return tempS;
 }
+CArray<CString,CString>* CMimeMessage::GetFileNameAttachmentList()
+{
+	CArray<CString,CString>* FileNameList = new CArray<CString,CString>;
+	CString temp;
+	int j = 0;
+	CMimeBody::CBodyList bodies;
+	int nCount = this->GetBodyPartList(bodies);
+	CMimeBody::CBodyList::const_iterator i;
+	for(i = bodies.begin(); i != bodies.end(); i++)
+	{
+		CMimeBody* pBP = *i;
+		CBodyList aList;
+
+		if (pBP->IsAttachment())
+		{
+			temp = pBP->GetName().c_str();
+			FileNameList->Add(temp);
+			j++;
+		}		
+	}
+
+	return FileNameList;
+}

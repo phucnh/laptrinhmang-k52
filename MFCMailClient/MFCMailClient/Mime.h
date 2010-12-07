@@ -440,6 +440,7 @@ public:
 	bool DownloadFile(CString* fileName, CString* filePath);
 	void ReadMIMEMail(char* pBuff);
 	CString GetTextBody();
+	CArray<CString,CString>* GetFileNameAttachmentList();
 };
 
 inline void CMimeMessage::SetFrom(const char* pszAddr, const char* pszCharset)
