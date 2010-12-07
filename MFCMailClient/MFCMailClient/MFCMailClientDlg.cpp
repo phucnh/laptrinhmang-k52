@@ -434,7 +434,7 @@ void CMFCMailClientDlg::ReplySelectedMail()
 	POSITION pos = m_ListMail.GetFirstSelectedItemPosition();
 	if (pos == NULL)
 	{
-		AfxMessageBox("Choose one mail");
+		AfxMessageBox("Choose one mail",MB_OK|MB_ICONINFORMATION);
 	}
 	else
 	{
@@ -536,7 +536,7 @@ void CMFCMailClientDlg::ForwardMessage()
 	POSITION pos = m_ListMail.GetFirstSelectedItemPosition();
 	if (pos == NULL)
 	{
-		AfxMessageBox("Choose one mail");
+		AfxMessageBox("Choose one mail",MB_OK|MB_ICONINFORMATION);
 	}
 	else
 	{

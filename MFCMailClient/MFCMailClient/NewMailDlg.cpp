@@ -158,7 +158,7 @@ void CNewMailDlg::OnBnClickedButtonAddfile()
 	if(nResult == IDOK)
 	{
 		if (!m_lstFileList.FindString(0,fileName))
-			AfxMessageBox(_T("File is already in list"),MB_OK);
+			AfxMessageBox(_T("File is already in list"),MB_OK|MB_ICONWARNING);
 		else
 			m_lstFileList.AddString(fileName);
 	}
@@ -171,7 +171,7 @@ void CNewMailDlg::OnBnClickedButtonRemove()
 
 	if (pos < 0)
 	{
-		AfxMessageBox(_T("Select one path"));
+		AfxMessageBox(_T("Select one path"),MB_OK|MB_ICONINFORMATION);
 	}
 	else
 	{
