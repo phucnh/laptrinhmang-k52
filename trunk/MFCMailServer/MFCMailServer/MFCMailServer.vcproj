@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="MFCMailServer"
 	ProjectGUID="{D7A20D55-3719-47BE-BFA8-975C6CBA2A20}"
 	RootNamespace="MFCMailServer"
