@@ -160,24 +160,7 @@ bool MailUser::DeleteUserByID(UINT userid)
 		}
 
 }
-//Used to change Password
-//bool MailUser::ChangePassword(CString username,CString password)
-//{
-//	sqlMailUser.Format(_T("Update MailUser set Password='%s' where Username='%s'"),password,username);
-//
-//	try
-//		{
-//			if(dal->ExecuteSQL(sqlMailUser))
-//				return true;
-//			else
-//				 return false;
-//		}
-//	catch(CException* e)
-//		{
-//		throw;
-//		e->Delete();
-//		}
-//}
+
 
 bool MailUser::UpdateUserByID(UINT userID,CString name,CString password)
 {
@@ -259,4 +242,39 @@ bool MailUser::UpdateUserByUsername(CString oldUsername,MailUser* mailUser)
 		e->Delete();
 
 	}
+}
+
+bool MailUser::CheckUsernameExist( CString username )
+{
+
+	sqlMailUser.Format(_T("Select * from MailUser where Username='%s';"),username);
+	try
+	{
+
+		datasetMailUser=dal->GetRecordSet(sqlMailUser);
+
+		if(datasetMailUser==NULL) return true;
+		else
+		{
+			int numberRecord;
+			while(!datasetMailUser->IsEOF())
+			{
+				numberRecord++;
+
+				datasetMailUser->MoveNext();
+			}
+			 if(numberRecord>=1)
+				 return true;
+			 else 
+				 return false;
+			
+		}
+	}
+	catch(CException* e)
+	{
+		throw;
+		e->Delete();
+		return false;
+	}
+	
 }
