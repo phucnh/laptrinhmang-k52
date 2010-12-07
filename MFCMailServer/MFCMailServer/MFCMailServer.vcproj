@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="MFCMailServer"
 	ProjectGUID="{D7A20D55-3719-47BE-BFA8-975C6CBA2A20}"
 	RootNamespace="MFCMailServer"
@@ -328,6 +328,14 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
+				RelativePath="D:\HAS\HAS-Software\HAS-Software\Icon HAS\ico-files\arrow_down_blue.ico"
+				>
+			</File>
+			<File
+				RelativePath="D:\HAS\HAS-Software\HAS-Software\Icon HAS\ico-files\delete2.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\res\MFCMailServer.ico"
 				>
 			</File>
@@ -337,6 +345,22 @@
 			</File>
 			<File
 				RelativePath=".\res\MFCMailServer.rc2"
+				>
+			</File>
+			<File
+				RelativePath="D:\HAS\HAS-Software\HAS-Software\Icon HAS\ico-files\server_delete.ico"
+				>
+			</File>
+			<File
+				RelativePath="D:\HAS\HAS-Software\HAS-Software\Icon HAS\ico-files\server_into.ico"
+				>
+			</File>
+			<File
+				RelativePath="D:\HAS\HAS-Software\HAS-Software\Icon HAS\ico-files\users3.ico"
+				>
+			</File>
+			<File
+				RelativePath="D:\HAS\HAS-Software\HAS-Software\Icon HAS\ico-files\wrench.ico"
 				>
 			</File>
 		</Filter>

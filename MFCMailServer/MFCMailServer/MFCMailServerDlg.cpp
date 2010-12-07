@@ -99,6 +99,12 @@ void CMFCMailServerDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST1, m_listBoxCtrl);
 
 	//StartMailServer();
+	DDX_Control(pDX, IDC_BUTTON1, m_btnStartServer);
+	DDX_Control(pDX, IDC_BUTTON2, m_btnStopServer);
+	DDX_Control(pDX, IDC_BUTTON3, m_btnSettings);
+	DDX_Control(pDX, IDC_BUTTON4, m_btnUsers);
+	DDX_Control(pDX, IDC_BUTTON5, m_btnAddTaskbar);
+	DDX_Control(pDX, IDC_BUTTON6, m_btnExit);
 }
 
 BEGIN_MESSAGE_MAP(CMFCMailServerDlg, CDialog)
@@ -353,6 +359,63 @@ void CMFCMailServerDlg::OnAccountsNewaccount()
 {
 	CNewUserDlg newUserDlg;
 	newUserDlg.DoModal();
+}
+
+void CMFCMailServerDlg::SetIconToButton()
+{
+	HICON hIcn= (HICON)LoadImage(
+		AfxGetApp()->m_hInstance,
+		MAKEINTRESOURCE(IDI_ICON_STARTSERVER),
+		IMAGE_ICON,
+		32,32, // use actual size
+		LR_DEFAULTCOLOR
+		);
+	m_btnStartServer.SetIcon(hIcn);
+
+	hIcn= (HICON)LoadImage(
+		AfxGetApp()->m_hInstance,
+		MAKEINTRESOURCE(IDI_ICON_STOPSERVER),
+		IMAGE_ICON,
+		32,32, // use actual size
+		LR_DEFAULTCOLOR
+		);
+	m_btnStopServer.SetIcon(hIcn);
+
+	hIcn= (HICON)LoadImage(
+		AfxGetApp()->m_hInstance,
+		MAKEINTRESOURCE(IDI_ICON_SETTINGS),
+		IMAGE_ICON,
+		32,32, // use actual size
+		LR_DEFAULTCOLOR
+		);
+	m_btnSettings.SetIcon(hIcn);
+
+	hIcn= (HICON)LoadImage(
+		AfxGetApp()->m_hInstance,
+		MAKEINTRESOURCE(IDI_ICON_USERS),
+		IMAGE_ICON,
+		32,32, // use actual size
+		LR_DEFAULTCOLOR
+		);
+	m_btnUsers.SetIcon(hIcn);
+
+	hIcn= (HICON)LoadImage(
+		AfxGetApp()->m_hInstance,
+		MAKEINTRESOURCE(IDI_ICON_ADDTASKBAR),
+		IMAGE_ICON,
+		32,32, // use actual size
+		LR_DEFAULTCOLOR
+		);
+	m_btnAddTaskbar.SetIcon(hIcn);
+
+	hIcn= (HICON)LoadImage(
+		AfxGetApp()->m_hInstance,
+		MAKEINTRESOURCE(IDI_ICON_EXIT),
+		IMAGE_ICON,
+		32,32, // use actual size
+		LR_DEFAULTCOLOR
+		);
+	m_btnExit.SetIcon(hIcn);
 }
 
 void CMFCMailServerDlg::OnBnClickedButton1()

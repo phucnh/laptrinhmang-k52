@@ -12,10 +12,22 @@
 #define IDD_DIALOG_USER                 130
 #define IDD_DIALOG1                     131
 #define IDD_DIALOG_NEWUSER              131
+#define IDI_ICON_STARTSERVER            132
+#define IDI_ICON_STOPSERVER             133
+#define IDI_ICON_SETTINGS               134
+#define IDI_ICON_USERS                  135
+#define IDI_ICON_ADDTASKBAR             136
+#define IDI_ICON1                       137
+#define IDI_ICON_EXIT                   137
 #define IDC_LIST1                       1001
 #define IDC_BUTTON1                     1002
 #define IDC_EDIT1                       1003
 #define IDC_EDIT2                       1004
+#define IDC_BUTTON2                     1006
+#define IDC_BUTTON3                     1007
+#define IDC_BUTTON4                     1008
+#define IDC_BUTTON5                     1009
+#define IDC_BUTTON6                     1010
 #define ID_ACCOUNTS_NEWACCOUNT          32771
 #define ID_ACCOUNTS_MANAGEACCOUNTS      32772
 #define ID_SETTING_GENERAL              32773
@@ -27,9 +39,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        132
+#define _APS_NEXT_RESOURCE_VALUE        138
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1006
+#define _APS_NEXT_CONTROL_VALUE         1011
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

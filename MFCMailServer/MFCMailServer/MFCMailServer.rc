@@ -96,6 +96,12 @@ MENU IDR_MENU_MAIN
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     LISTBOX         IDC_LIST1,7,60,837,284,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Start Server",IDC_BUTTON1,7,15,45,33
+    PUSHBUTTON      "Stop Server",IDC_BUTTON2,65,14,48,34
+    PUSHBUTTON      "Settings",IDC_BUTTON3,124,14,49,34
+    PUSHBUTTON      "Users",IDC_BUTTON4,184,14,48,34
+    PUSHBUTTON      "AddTaskbar",IDC_BUTTON5,242,14,49,34
+    PUSHBUTTON      "Exit",IDC_BUTTON6,304,14,48,33
     PUSHBUTTON      "Test",IDC_BUTTON1,145,26,50,14
 END
 
@@ -186,7 +192,7 @@ BEGIN
     IDD_MFCMAILSERVER_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        TOPMARGIN, 7
+        TOPMARGIN, 5
         BOTTOMMARGIN, 344
     END
 
@@ -255,6 +261,32 @@ BEGIN
 END
 
 #endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Vietnamese resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_VIT)
+#ifdef _WIN32
+LANGUAGE LANG_VIETNAMESE, SUBLANG_DEFAULT
+#pragma code_page(1258)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_STARTSERVER    ICON                    "D:\\HAS\\HAS-Software\\HAS-Software\\Icon HAS\\ico-files\\server_into.ico"
+IDI_ICON_STOPSERVER     ICON                    "D:\\HAS\\HAS-Software\\HAS-Software\\Icon HAS\\ico-files\\server_delete.ico"
+IDI_ICON_SETTINGS       ICON                    "D:\\HAS\\HAS-Software\\HAS-Software\\Icon HAS\\ico-files\\wrench.ico"
+IDI_ICON_USERS          ICON                    "D:\\HAS\\HAS-Software\\HAS-Software\\Icon HAS\\ico-files\\users3.ico"
+IDI_ICON_ADDTASKBAR     ICON                    "D:\\HAS\\HAS-Software\\HAS-Software\\Icon HAS\\ico-files\\arrow_down_blue.ico"
+IDI_ICON_EXIT           ICON                    "D:\\HAS\\HAS-Software\\HAS-Software\\Icon HAS\\ico-files\\delete2.ico"
+#endif    // Vietnamese resources
 /////////////////////////////////////////////////////////////////////////////
 
 
