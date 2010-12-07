@@ -11,7 +11,8 @@ MailHeader::MailHeader(
 					   CString _cc,
 					   CString _replyTo,
 					   CString _textBody,
-					   BYTE _realAttach 
+					   BYTE _realAttach,
+					   BOOL _isDeleted
 					   )
 {
 	this->From = _from;
@@ -22,6 +23,7 @@ MailHeader::MailHeader(
 	this->ReplyTo = _replyTo;
 	this->TextBody = _textBody;
 	this->RealAttach = _realAttach;
+	this->IsDeleted = _isDeleted;
 }
 
 
@@ -158,7 +160,7 @@ bool MailHeader::deleteMail(UINT mailID)
 
 bool MailHeader::InsertMail(MailHeader* mailH)
 {
-	sql.Format("Insert into MailHeader values('%s','%s','%s','%s','%s','%s','%s','%s') ;",
+	sql.Format("Insert into MailHeader values('%s','%s','%s','%s','%s','%s','%s','%s','%s') ;",
 		mailH->From,
 		mailH->To,
 		mailH->Date,
@@ -166,7 +168,8 @@ bool MailHeader::InsertMail(MailHeader* mailH)
 		mailH->Cc,
 		mailH->ReplyTo,
 		mailH->TextBody,
-		mailH->RealAttach
+		mailH->RealAttach,
+		mailH->IsDeleted
 		);
 
 	try
@@ -182,4 +185,21 @@ bool MailHeader::InsertMail(MailHeader* mailH)
 		e->Delete();
 
 	}
+}
+
+INT16 MailHeader::getSizeOfMail( MailHeader* mailHeader )
+{
+	INT16 m_nTotalSize;
+	m_nTotalSize = mailHeader->Cc.GetLength()
+		+ mailHeader->ContentType.GetLength()
+		+ mailHeader->Date.GetLength()
+		+ mailHeader->From.GetLength()
+		+ mailHeader->MessageID.GetLength()
+		+ mailHeader->MimeVersion.GetLength()
+		+ mailHeader->RealAttach
+		+ mailHeader->ReplyTo.GetLength()
+		+ mailHeader->Subject.GetLength()
+		+ mailHeader->TextBody.GetLength()
+		+ mailHeader->To.GetLength();
+	return m_nTotalSize;
 }
