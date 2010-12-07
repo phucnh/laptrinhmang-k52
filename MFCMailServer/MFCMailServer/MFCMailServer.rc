@@ -292,6 +292,7 @@ IDI_ICON_SETTINGS       ICON                    "IMAGES\\wrench.ico"
 IDI_ICON_USERS          ICON                    "IMAGES\\users3.ico"
 IDI_ICON_ADDTASKBAR     ICON                    "IMAGES\\arrow_down_blue.ico"
 IDI_ICON_EXIT           ICON                    "IMAGES\\delete2.ico"
+IDI_ICON_TRAY           ICON                    "IMAGES\\mail_server.ico"
 #endif    // Vietnamese resources
 /////////////////////////////////////////////////////////////////////////////
 

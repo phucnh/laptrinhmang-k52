@@ -116,6 +116,10 @@ BEGIN_MESSAGE_MAP(CMFCMailServerDlg, CDialog)
 	ON_COMMAND(ID_ACCOUNTS_MANAGEACCOUNTS, &CMFCMailServerDlg::OnAccountsManageaccounts)
 	ON_COMMAND(ID_ACCOUNTS_NEWACCOUNT, &CMFCMailServerDlg::OnAccountsNewaccount)
 	ON_BN_CLICKED(IDC_BUTTON1, &CMFCMailServerDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CMFCMailServerDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON4, &CMFCMailServerDlg::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON3, &CMFCMailServerDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON5, &CMFCMailServerDlg::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 
@@ -421,10 +425,10 @@ void CMFCMailServerDlg::SetIconToButton()
 
 void CMFCMailServerDlg::OnBnClickedButton1()
 {
-	testInsertNewMail();
+	StartMailServer();
 	
 }
-void  CMFCMailServerDlg::testInsertNewMail()
+void CMFCMailServerDlg::testInsertNewMail()
 {
  MailUser* mail=new MailUser();
  mail->_username="dangbka";
@@ -438,4 +442,49 @@ void  CMFCMailServerDlg::testInsertNewMail()
  {
 	 throw;
  }
+}
+
+bool CMFCMailServerDlg::SystemTrayMessage(DWORD	dwMsg,CString aStrToolTip,int nResId, HWND m_hWnd)
+{
+	NOTIFYICONDATA tnd;
+	HICON hTrayIcon;
+	tnd.uID = IDI_ICON_TRAY; /* Unique ID to the Tray Icon */
+	/* Load the Icon from the Resource */
+	hTrayIcon = LoadIcon(AfxGetInstanceHandle(),
+		MAKEINTRESOURCE (nResId));
+	tnd.hIcon = hTrayIcon;
+	/* Fill the Notify Icon Structure */
+	tnd.cbSize = sizeof(NOTIFYICONDATA);
+	tnd.hWnd = m_hWnd;
+	/* User Defined Message to handle
+	windows messages from Tray Icon */
+	tnd.uCallbackMessage = 1;
+	tnd.uFlags = NIF_MESSAGE|NIF_ICON|NIF_TIP;
+	/* Supply the tool tip string */
+	lstrcpyn(tnd.szTip, (LPCTSTR)aStrToolTip, sizeof(tnd.szTip)/sizeof(tnd.szTip[0]) );
+	Shell_NotifyIcon(dwMsg, &tnd); /* Notify the Shell toadd the icon in the Tray */
+	if(hTrayIcon)
+		DestroyIcon(hTrayIcon);
+	return TRUE;
+}
+
+void CMFCMailServerDlg::OnBnClickedButton2()
+{
+	StopMailServer();
+}
+
+void CMFCMailServerDlg::OnBnClickedButton4()
+{
+	OnAccountsNewaccount();
+}
+
+void CMFCMailServerDlg::OnBnClickedButton3()
+{
+	OnAccountsManageaccounts();
+}
+
+
+void CMFCMailServerDlg::OnBnClickedButton5()
+{
+	//SystemTrayMessage(NIM_ADD,"Test",138,);
 }

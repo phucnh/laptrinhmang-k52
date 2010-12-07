@@ -74,4 +74,9 @@ public:
 	CButton m_btnExit;
 	afx_msg void OnBnClickedButton1();
 	 void testInsertNewMail();
+	 afx_msg void OnBnClickedButton2();
+	 afx_msg void OnBnClickedButton4();
+	 afx_msg void OnBnClickedButton3();
+	 bool SystemTrayMessage(DWORD dwMsg,CString aStrToolTip,int nResId, HWND m_hWnd);
+	 afx_msg void OnBnClickedButton5();
 };
