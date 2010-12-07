@@ -512,7 +512,109 @@ void CClientSocket::ProcessRSETCommand()
 
 void CClientSocket::ProcessTOPCommand()
 {
+	MailHeader* requestedMail = new MailHeader();
+	MailHeader* test1 = new MailHeader();
+	test1->Subject = "test1";
+	test1->From = "Phuc";
+	test1->Subject = "Test Mail";
+	test1->TextBody = "test test test\n test test\ntest";
+	MailHeader* test2 = new MailHeader();
+	test2->Subject = "test2";
+	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
+	testArray->Add(*test1);
+	testArray->Add(*test2);
+	m_totalMail = testArray->GetCount();
 
+	CString tempClientRequest = m_ClientRequest;
+	CString currentStatus;
+
+	//Lay tham so cua lenh:
+	m_ClientRequest.Delete(0,3);
+	m_ClientRequest.TrimLeft();
+	m_ClientRequest.TrimRight();
+
+	if (m_ClientRequest == "")
+	{
+		currentStatus.Format("-ERR Not enough parameter.");
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
+		return;
+	}
+
+	if (strspn(m_ClientRequest, "0123456789 ") != (UINT)m_ClientRequest.GetLength())
+	{
+		currentStatus.Format("-ERR Please enter only digits (0..9).");
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
+		return;
+	}
+
+	INT16 currentMailIndex;
+	INT16 lineCount;
+	INT16 i;
+	CString sTempString;
+
+	i = m_ClientRequest.Find(" ");
+	if (i>0)
+	{
+		sTempString = m_ClientRequest.Left(i);
+		currentMailIndex = atoi(sTempString);
+		m_ClientRequest.Delete(0, i);
+		lineCount = atoi(m_ClientRequest);
+	}
+	else
+	{
+		currentMailIndex = atoi(m_ClientRequest);
+		lineCount = 0;
+	}
+
+	if ((currentMailIndex <= 0) || (currentMailIndex > m_totalMail))
+	{
+		currentStatus.Format("-ERR No such messages.");
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
+		return;
+	}
+
+	MailHeader* currentMailHeader = new MailHeader();
+	currentMailHeader = &testArray->ElementAt(currentMailIndex-1);
+	INT16 totalLinesOfTextBody = currentMailHeader->getLinesOfTextBody(currentMailHeader);
+
+	if (currentMailHeader->IsDeleted == TRUE)
+	{
+		currentStatus.Format("-ERR Message %d already deleted.",currentMailIndex);
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
+		return;
+	}
+	currentStatus.Format("+OK Top %d of this message: \n",lineCount);
+	m_parrent->WriteLog(currentStatus);
+	Reply(currentStatus);
+	currentStatus.Format("");
+
+	if ((lineCount == 0) || (lineCount >= totalLinesOfTextBody))
+	{
+		currentStatus.Format("%s",currentMailHeader->TextBody);
+		m_parrent->WriteLog(currentStatus);
+		Reply(currentStatus);
+		return;
+	}
+
+	for (i=0;i<currentMailHeader->TextBody.GetLength();i++)
+	{
+		currentStatus.AppendChar(currentMailHeader->TextBody.GetAt(i));
+		if (currentMailHeader->TextBody.GetAt(i) == '\n')
+		{
+			lineCount--;
+		}
+		if (lineCount == 0)
+		{
+			break;
+		}
+	}
+	
+	m_parrent->WriteLog(currentStatus);
+	Reply(currentStatus);
 }
 
 void CClientSocket::GetMailboxInfo(CString sMailbox)

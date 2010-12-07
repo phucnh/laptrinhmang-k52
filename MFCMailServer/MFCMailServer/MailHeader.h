@@ -49,6 +49,7 @@ public:
 	//end phuc add 20101121
 
 	INT16 getSizeOfMail(MailHeader* mailHeader);
+	INT16 getLinesOfTextBody(MailHeader* mailHeader);
 };
 
 #endif
