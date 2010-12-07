@@ -45,53 +45,225 @@ MailHeader::~MailHeader( void )
 {
 	if (dal->IsOpen()) dal->Close();
 }
-CRecordset* MailHeader::getAllMail(CString username)
+CArray<MailHeader,MailHeader&>* MailHeader::getAllMail(CString username)
 {
-	sql.Format(_T("Select * from MailHeader where [From]='%s' or [To] like '%'%s'%' ;"),username,username);
+	sql.Format(_T("Select * from MailHeader ;"),username,username);
+	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
+	CRecordset *dataMail;
+	
+
+	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString,MessageId;
+	BYTE RealAttach;
+	INT UserId,GroupId,MailId;
+	MailHeader mailheader;
+		
 	try
 	{
-		dal->GetRecordSet(sql);
-		if(dal==NULL) return NULL;
+		dataMail=dal->GetRecordSet(sql);
+		if(dataMail==NULL) return NULL;
 
-	}
-	catch (CException* e)
-	{
-		throw;
-		e->Delete();
-	}
+	
+			else
+				{
+					
+					while(!dataMail->IsEOF())
+					{
+							
+						dataMail->GetFieldValue(_T("MessageId"),MessageId);
+						dataMail->GetFieldValue(_T("From"),From);
+						dataMail->GetFieldValue(_T("To"),To);
+						dataMail->GetFieldValue(_T("Subject"),Subject);
+						dataMail->GetFieldValue(_T("Cc"),Cc);
+						dataMail->GetFieldValue(_T("SentDate"),Date);
+						dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
+						dataMail->GetFieldValue(_T("TextBody"),TextBody);
+					/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
+						dataMail->GetFieldValue(_T("ContendType",ContendType);*/
+
+						dataMail->GetFieldValue(_T("RealAttach"),RealAttachString);
+					/*	dataMail->GetFieldValue(_T("GroupId",GroupId);
+						dataMail->GetFieldValue(_T("UserId",UserId);
+						dataMail->GetFieldValue(_T("MailId",MailId);*/
+
+						//convert String to BYTE
+						RealAttach=(BYTE)(LPSTR)(LPCTSTR)RealAttachString;
+
+						//mailheader=new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,RealAttach);
+						 mailheader.Cc=Cc;
+						 mailheader.From=From;
+						 mailheader.Date=Date;
+						 mailheader.Subject=Subject;
+						 mailheader.RealAttach=RealAttach;
+						 mailheader.ReplyTo=ReplyTo;
+						 mailheader.TextBody=TextBody;
+						 mailheader.To=To;
+
+						listMailHeader->Add(mailheader);
+
+
+						dataMail->MoveNext();
+
+						
+
+					}
+
+				return listMailHeader;
+				}
+
+		}
+	 catch(CException* e)
+		 {
+				throw;
+				e->Delete();
+
+		 }
 }
-CRecordset* MailHeader::getAllInboxMailByUser(CString username)
+CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString username)
 {
 	sql.Format(_T("Select * from MailHeader where [To] like '%'%s'%' ;"),username);
-	CRecordset* dataset;
+	sql.Format(_T("Select * from MailHeader ;"),username,username);
+	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
+	CRecordset *dataMail;
+	
+
+	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString,MessageId;
+	BYTE RealAttach;
+	INT UserId,GroupId,MailId;
+	MailHeader mailheader;
+		
 	try
 	{
-		 dataset = dal->GetRecordSet(sql);
-		 if(dataset == NULL) return NULL;
-		 return dataset;
-	}
-	catch(CException* e)
-	{
-		throw;
-		e->Delete();
-	}
+		dataMail=dal->GetRecordSet(sql);
+		if(dataMail==NULL) return NULL;
+
+	
+			else
+				{
+					
+					while(!dataMail->IsEOF())
+					{
+							
+						dataMail->GetFieldValue(_T("MessageId"),MessageId);
+						dataMail->GetFieldValue(_T("From"),From);
+						dataMail->GetFieldValue(_T("To"),To);
+						dataMail->GetFieldValue(_T("Subject"),Subject);
+						dataMail->GetFieldValue(_T("Cc"),Cc);
+						dataMail->GetFieldValue(_T("SentDate"),Date);
+						dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
+						dataMail->GetFieldValue(_T("TextBody"),TextBody);
+					/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
+						dataMail->GetFieldValue(_T("ContendType",ContendType);*/
+
+						dataMail->GetFieldValue(_T("RealAttach"),RealAttachString);
+					/*	dataMail->GetFieldValue(_T("GroupId",GroupId);
+						dataMail->GetFieldValue(_T("UserId",UserId);
+						dataMail->GetFieldValue(_T("MailId",MailId);*/
+
+						//convert String to BYTE
+						RealAttach=(BYTE)(LPSTR)(LPCTSTR)RealAttachString;
+
+						//mailheader=new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,RealAttach);
+						 mailheader.Cc=Cc;
+						 mailheader.From=From;
+						 mailheader.Date=Date;
+						 mailheader.Subject=Subject;
+						 mailheader.RealAttach=RealAttach;
+						 mailheader.ReplyTo=ReplyTo;
+						 mailheader.TextBody=TextBody;
+						 mailheader.To=To;
+
+						listMailHeader->Add(mailheader);
+
+
+						dataMail->MoveNext();
+
+						
+
+					}
+
+				return listMailHeader;
+				}
+
+		}
+	 catch(CException* e)
+		 {
+				throw;
+				e->Delete();
+
+		 }
 
 }
-CRecordset* MailHeader::getAllSentMailByUser(CString  username)
+CArray<MailHeader,MailHeader&>* MailHeader::getAllSentMailByUser(CString  username)
 {
 	sql.Format(_T("Select * from MailHeader where [From]='%s'"),username);
-	CRecordset* dataset;
+	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
+	CRecordset *dataMail;
+	
+
+	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString,MessageId;
+	BYTE RealAttach;
+	INT UserId,GroupId,MailId;
+	MailHeader mailheader;
+		
 	try
 	{
-		dataset = dal->GetRecordSet(sql);
-		if(dataset==NULL) return NULL;
-		return dataset;
-	}
-	catch(CException* e)
-	{
-		throw;
-		e->Delete();
-	}
+		dataMail=dal->GetRecordSet(sql);
+		if(dataMail==NULL) return NULL;
+	
+			else
+				{
+					
+					while(!dataMail->IsEOF())
+					{
+							
+						dataMail->GetFieldValue(_T("MessageId"),MessageId);
+						dataMail->GetFieldValue(_T("From"),From);
+						dataMail->GetFieldValue(_T("To"),To);
+						dataMail->GetFieldValue(_T("Subject"),Subject);
+						dataMail->GetFieldValue(_T("Cc"),Cc);
+						dataMail->GetFieldValue(_T("SentDate"),Date);
+						dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
+						dataMail->GetFieldValue(_T("TextBody"),TextBody);
+					/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
+						dataMail->GetFieldValue(_T("ContendType",ContendType);*/
+
+						dataMail->GetFieldValue(_T("RealAttach"),RealAttachString);
+					/*	dataMail->GetFieldValue(_T("GroupId",GroupId);
+						dataMail->GetFieldValue(_T("UserId",UserId);
+						dataMail->GetFieldValue(_T("MailId",MailId);*/
+
+						//convert String to BYTE
+						RealAttach=(BYTE)(LPSTR)(LPCTSTR)RealAttachString;
+
+						//mailheader=new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,RealAttach);
+						 mailheader.Cc=Cc;
+						 mailheader.From=From;
+						 mailheader.Date=Date;
+						 mailheader.Subject=Subject;
+						 mailheader.RealAttach=RealAttach;
+						 mailheader.ReplyTo=ReplyTo;
+						 mailheader.TextBody=TextBody;
+						 mailheader.To=To;
+
+						listMailHeader->Add(mailheader);
+
+
+						dataMail->MoveNext();
+
+						
+
+					}
+
+				return listMailHeader;
+				}
+
+		}
+	 catch(CException* e)
+		 {
+				throw;
+				e->Delete();
+
+		 }
 }
 
 MailHeader* MailHeader::getMail(UINT mailID)

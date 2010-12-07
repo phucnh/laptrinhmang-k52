@@ -201,7 +201,7 @@ CArray<MailUser,MailUser&>* MailUser::GetAllUsers()
 {
 	CArray<MailUser,MailUser&>* listMailUser=new CArray<MailUser,MailUser&>();
 	CString username,password;
-	MailUser* mailuser;
+	MailUser mailuser;
 	sqlMailUser.Format("Select * from MailUser ;");
 	try
 				{
@@ -212,27 +212,21 @@ CArray<MailUser,MailUser&>* MailUser::GetAllUsers()
 
 					else
 					{
-						//phuc mod 20101207
-						/*int numberRecord=0;
-
-						while (!datasetMailUser->IsEOF())
-						{
-							numberRecord += 1;
-							datasetMailUser->MoveNext();
-						}*/
-						//end phuc mod 20101207
-
-						//listMailUser->SetSize(numberRecord);
 
 						while(!datasetMailUser->IsEOF())
 						{
 
-							//datasetMailUser->GetFieldValue(_T("MessageId",MessageId);
+
+							
+							
 							datasetMailUser->GetFieldValue(_T("Username"),username);
+
 							datasetMailUser->GetFieldValue(_T("Password"),password);
 
-							mailuser= new MailUser(username,password);
-							listMailUser->Add(*mailuser);
+							mailuser._username=username;
+							mailuser._password=password;
+
+							listMailUser->Add(mailuser);
 							datasetMailUser->MoveNext();
 						}
 						return listMailUser;
