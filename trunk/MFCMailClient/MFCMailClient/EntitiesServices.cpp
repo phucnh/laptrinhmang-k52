@@ -628,7 +628,7 @@ CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetMailByUserIdGroupId( INT
 {
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 		
-	sqlCommand1.Format(_T("Select * from MailHeader where UserId=%d and GroupId=%d;",userId,groupId));
+	sqlCommand1.Format(_T("Select * from MailHeader where UserId=%d and GroupId=%d;"),userId,groupId);
 
 	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString,MessageId;
 	BYTE RealAttach;
@@ -668,7 +668,7 @@ CArray<MailHeader,MailHeader&>* CMailHeaderServices::GetMailByUserIdGroupId( INT
 
 						//mailheader=new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,RealAttach);
 						
-						mailheader.Cc=Cc;
+						 mailheader.Cc=Cc;
 						 mailheader.From=From;
 						 mailheader.Date=Date;
 						 mailheader.Subject=Subject;
@@ -744,7 +744,4 @@ CMailHeaderServices::CMailHeaderServices( void )
 
 }
 
-CArray<CAddressBook,CAddressBook&>* CAddressBookServices::GetByUserId( INT userId )
-{
 
-}

@@ -568,11 +568,11 @@ void CMFCMailClientDlg::OnBnClickedButton4()
 		//testUpdateUserById(); //OK
 		//testUpdateUserByUsername();//OK
 		//testChangePassword();//OK
-			testGetAllMail(); //Ok
+			//testGetAllMail(); //Ok
 			//testInsertNewMail();//Ok
 			//testGetMailByMailId();//OK
 		//testGetMailByUserId();//OK
-		//testGetMailByGroupId();//OK
+		testGetMailByUserIdGroupId();//OK
 
 		//ForwardMessage();
 		
@@ -710,7 +710,7 @@ void CMFCMailClientDlg::testGetAllMail()
 	  UINT numberRecord=listMailHeader->GetSize();
 	CString result,temp;
 	
-	result.Format("Tong So Mail la :%d",numberRecord);
+	result.Format("Tong So Mail la :%d\r\n",numberRecord);
 	 for(int i=0;i<numberRecord;i++)
 	 {
 		 temp.Format("%s\r\n",listMailHeader->GetAt(i).From);
@@ -761,10 +761,15 @@ void CMFCMailClientDlg::testGetMailByUserIdGroupId()
 {
 	CMailHeaderServices* sc=new CMailHeaderServices();
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
-	listMailHeader=sc->GetMailByUserIdGroupId(1,2);
+	listMailHeader=sc->GetMailByUserIdGroupId(6,1);
 	UINT numberRecord=listMailHeader->GetSize();
-	CString result;
-	result.Format("Tong So Mail cua USer trong Group nay la :%d",numberRecord);
+	CString result,temp;
+	result.Format("Tong So Mailtrong inbox cua userid 6  la :%d\r\n",numberRecord);
+	for(int i=0;i<numberRecord;i++)
+	{
+		temp.Format("%s\r\n",listMailHeader->GetAt(i).From);
+		result.Append(temp,temp.GetLength());
+	}
 	AfxMessageBox(result);
 		
 }
@@ -811,12 +816,13 @@ void CMFCMailClientDlg::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
 	HTREEITEM hItem = m_GroupTree.GetSelectedItem();
 
 
-	if (globalUser.UserId() >= 1)
+	//if (globalUser.UserId() >= 1)
+	if(true)
 	{
 		CMailHeaderServices* _mailService = new CMailHeaderServices();
 
 		if (hItem == inboxTreeNode)
-			BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),1));
+			BindMailToListBox(_mailService->GetMailByUserIdGroupId(6,1));
 		else if (hItem == sentTreeNode)
 			BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),3));
 		else if (hItem == trashTreeNode)
