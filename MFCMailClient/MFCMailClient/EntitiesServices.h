@@ -30,7 +30,7 @@ public class CMailHeaderServices
 {
 private:
 	CDAL *dal;
-	CRecordset *dataMail;
+	CRecordset* dataMail;
 	CString sqlCommand1;
 	CString sqlCommand2;
 
@@ -38,10 +38,10 @@ public:
 	CMailHeaderServices(void);
 
 	CArray<MailHeader,MailHeader&>* GetAllMail();
-	MailHeader* GetByMailId(INT mailId);
-	CArray<MailHeader,MailHeader&>* GetByUserId(INT userId);
-	CArray<MailHeader,MailHeader&>* GetByGroupId(INT groupId);
-	CArray<MailHeader,MailHeader>* GetByUserIdGroupId(INT userId, INT groupId);
+	MailHeader* GetMailByMailId(INT mailId);
+	CArray<MailHeader,MailHeader&>* GetMailByUserId(INT userId);
+	CArray<MailHeader,MailHeader&>* GetMailByGroupId(INT groupId);
+	CArray<MailHeader,MailHeader&>* GetMailByUserIdGroupId(INT userId, INT groupId);
 	MailHeader* InsertNewMail(MailHeader* mailHeader);
 };
 
