@@ -156,6 +156,7 @@ BOOL CMFCMailServerDlg::OnInitDialog()
 	m_isIconShow = FALSE;
 
 	InitStatusbar();
+	SetIconToButton();
 
 	StartMailServer();
 
