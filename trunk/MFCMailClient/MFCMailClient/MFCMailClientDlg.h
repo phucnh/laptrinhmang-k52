@@ -63,7 +63,7 @@ public:
 	afx_msg void OnBnClickedButton5();
 
 	void Checkmail();
-	void BindMailToListBox(CArray<MailHeader,MailHeader>* listMail);
+	void BindMailToListBox(CArray<MailHeader,MailHeader&>* listMail);
 	void ReplySelectedMail();
 	void ForwardMessage();
 	void UpdateStatusbar();
@@ -83,10 +83,11 @@ public:
 	void testUpdateUserByUsername();
 	void testChangePassword();
 	void testGetAllMail();
-	void testGetByMailId();
+	void testGetMailByMailId();
 	void testGetMailByUserId();
 	void testGetMailByGroupId();
 	void testGetByUserIdGroupId();
+	void testGetMailByUserIdGroupId();
 	void testInsertNewMail();
 	
 	afx_msg void OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult);

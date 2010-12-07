@@ -557,7 +557,7 @@ void CMFCMailClientDlg::ForwardMessage()
 
 void CMFCMailClientDlg::OnBnClickedButton4()
 {
-	ForwardMessage();	
+	//ForwardMessage();	
 	// Loi : Moi khi thuc hien cac thao tac insert hay delete no cu hien ra cai bang thong bao chon DNS mac du
 	//em da thay duong dan trong phan chuoi ket noi roi :-?
 		//testLogin();			//OK
@@ -568,9 +568,9 @@ void CMFCMailClientDlg::OnBnClickedButton4()
 		//testUpdateUserById(); //OK
 		//testUpdateUserByUsername();//OK
 		//testChangePassword();//OK
-			//testGetAllMail(); //Ok
+			testGetAllMail(); //Ok
 			//testInsertNewMail();//Ok
-			//testGetByMailId();//OK
+			//testGetMailByMailId();//OK
 		//testGetMailByUserId();//OK
 		//testGetMailByGroupId();//OK
 
@@ -708,8 +708,14 @@ void CMFCMailClientDlg::testGetAllMail()
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 	listMailHeader=sc->GetAllMail();
 	  UINT numberRecord=listMailHeader->GetSize();
-	CString result;
+	CString result,temp;
+	
 	result.Format("Tong So Mail la :%d",numberRecord);
+	 for(int i=0;i<numberRecord;i++)
+	 {
+		 temp.Format("%s\r\n",listMailHeader->GetAt(i).From);
+		result.Append(temp,temp.GetLength());
+	 }
 	 AfxMessageBox(result);
 
 
@@ -717,10 +723,10 @@ void CMFCMailClientDlg::testGetAllMail()
 
 }
 
-void CMFCMailClientDlg::testGetByMailId()
+void CMFCMailClientDlg::testGetMailByMailId()
 {	
 	CMailHeaderServices* sc=new CMailHeaderServices();
-	MailHeader* mail=sc->GetByMailId(6);
+	MailHeader* mail=sc->GetMailByMailId(6);
 	 CString result;
 	 result.Format("From :%s",mail->From);
 	 AfxMessageBox(result);
@@ -732,7 +738,7 @@ void CMFCMailClientDlg::testGetMailByUserId()
 {
 	CMailHeaderServices* sc=new CMailHeaderServices();
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
-	 listMailHeader=sc->GetByUserId(6);
+	 listMailHeader=sc->GetMailByUserId(6);
 	 UINT numberRecord=listMailHeader->GetSize();
 	 CString result;
 	 result.Format("Tong So Mail cua User co ma nay la :%d",numberRecord);
@@ -742,20 +748,20 @@ void CMFCMailClientDlg::testGetMailByUserId()
 
 void CMFCMailClientDlg::testGetMailByGroupId()
 {
-	/*CMailHeaderServices* sc=new CMailHeaderServices();
+	CMailHeaderServices* sc=new CMailHeaderServices();
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
-	listMailHeader=sc->GetByGroupId(1);
+	listMailHeader=sc->GetMailByGroupId(1);
 	UINT numberRecord=listMailHeader->GetSize();
 	CString result;
 	result.Format("Tong So Mail cua Gruop nay la :%d",numberRecord);
-	AfxMessageBox(result);*/
+	AfxMessageBox(result);
 }
 
-void CMFCMailClientDlg::testGetByUserIdGroupId()
+void CMFCMailClientDlg::testGetMailByUserIdGroupId()
 {
 	CMailHeaderServices* sc=new CMailHeaderServices();
-	CArray<MailHeader,MailHeader>* listMailHeader=new CArray<MailHeader,MailHeader>();
-	listMailHeader=sc->GetByUserIdGroupId(1,6);
+	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
+	listMailHeader=sc->GetMailByUserIdGroupId(1,2);
 	UINT numberRecord=listMailHeader->GetSize();
 	CString result;
 	result.Format("Tong So Mail cua USer trong Group nay la :%d",numberRecord);
@@ -810,17 +816,17 @@ void CMFCMailClientDlg::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
 		CMailHeaderServices* _mailService = new CMailHeaderServices();
 
 		if (hItem == inboxTreeNode)
-			BindMailToListBox(_mailService->GetByUserIdGroupId(globalUser.UserId(),1));
+			BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),1));
 		else if (hItem == sentTreeNode)
-			BindMailToListBox(_mailService->GetByUserIdGroupId(globalUser.UserId(),3));
+			BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),3));
 		else if (hItem == trashTreeNode)
-			BindMailToListBox(_mailService->GetByUserIdGroupId(globalUser.UserId(),2));
+			BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),2));
 	}
 
 	*pResult = 0;
 }
 
-void CMFCMailClientDlg::BindMailToListBox( CArray<MailHeader,MailHeader>* listMail )
+void CMFCMailClientDlg::BindMailToListBox( CArray<MailHeader,MailHeader&>* listMail )
 {
 	if (listMail == NULL)	return;
 
