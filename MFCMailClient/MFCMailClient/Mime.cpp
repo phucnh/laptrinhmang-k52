@@ -998,10 +998,11 @@ void CMimeMessage::ReadMIMEMail(char* pBuff)
 
 	//Get header
 
-	/*this->GetFrom();
-	this->GetTo();
-	this->GetCc();
-	this->GetSubject();*/
+	//this->GetFrom();
+	//this->GetTo();
+	//this->GetCc();
+	//this->GetSubject();
+	//this->GetText();
 
 	//Get body part
 
@@ -1018,4 +1019,23 @@ void CMimeMessage::ReadMIMEMail(char* pBuff)
 	//	}
 	//}
 
+}
+CString CMimeMessage::GetTextBody()
+{
+	string temp;
+	CMimeBody::CBodyList bodies;
+	int nCount = this->GetBodyPartList(bodies);
+	CMimeBody::CBodyList::const_iterator i;
+	for(i = bodies.begin(); i != bodies.end(); i++)
+	{
+		CMimeBody* pBP = *i;
+		CBodyList aList;
+
+		if (pBP->IsText())
+		{
+			pBP->GetText(temp);
+		}
+	}
+	CString tempS(temp.c_str());
+	return tempS;
 }
