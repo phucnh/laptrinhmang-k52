@@ -336,6 +336,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IMAGES\mail_server.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\res\MFCMailServer.ico"
 				>
 			</File>
