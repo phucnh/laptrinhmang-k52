@@ -23,6 +23,7 @@ public:
 	//bool ChangePassword(CString username,CString password);
 	bool UpdateUserByID(UINT userID,CString name,CString password);
 	bool UpdateUserByUsername(CString oldUsername,MailUser* user);
+	bool CheckUsernameExist(CString username);
 	
 
 };

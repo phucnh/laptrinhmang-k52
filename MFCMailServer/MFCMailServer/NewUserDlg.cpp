@@ -45,9 +45,20 @@ void CNewUserDlg::OnBnClickedOk()
 
 	mailUser->_username = m_sUsername;
 	mailUser->_password = m_sPassword;
-
-	if(mailUser->InsertNewUser(mailUser))
-		AfxMessageBox("Inserted new User Successfully");
-	UpdateData(FALSE);
-	OnOK();
+	if(mailUser->CheckUsernameExist(m_sUsername))
+		AfxMessageBox("Username have existed");
+	else
+	{
+		if(mailUser->InsertNewUser(mailUser))
+		{
+			AfxMessageBox("Inserted new User Successfully");
+			UpdateData(FALSE);
+			OnOK();
+		}
+	}
 }
+	
+
+	
+	
+
