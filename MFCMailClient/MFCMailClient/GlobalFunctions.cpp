@@ -299,3 +299,9 @@ BYTE MakeByte(TCHAR ch1, TCHAR ch2)
 	return  btFinal;  
 
 }
+
+CString GetCurrentTimeStr()
+{
+	CTime	tDateTime = CTime::GetCurrentTime();;
+	return	tDateTime.Format("%m/%d/%Y %H:%M:%S");
+}

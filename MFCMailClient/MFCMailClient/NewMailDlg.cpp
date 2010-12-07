@@ -27,7 +27,7 @@ CNewMailDlg::CNewMailDlg(CWnd* pParent /*=NULL*/)
 	, m_serverip(0)
 	, m_sCc(_T(""))
 {
-
+	m_From = globalUser.Username();
 }
 
 CNewMailDlg::~CNewMailDlg()
@@ -103,15 +103,22 @@ void CNewMailDlg::OnBnClickedOk()
 	//long 20101204
 	CMimeMessage msgmime;
 	msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,&m_lstFileList,m_TextBody);
-	msg.TextBody = msgmime.ConvertToString();		
+	//msg.TextBody = msgmime.ConvertToString();		
 	/*	fstream myfile("C:\\mimemail_test.eml",ios::out|ios::binary|ios::app);
 		myfile.write(msg.TextBody,msg.TextBody.GetLength());
 		myfile.close();*/
 	if (m_lstFileList.GetCount() != 0)
+	{
 		msg.RealAttach = TRUE;
-
-	if (_smtp.SendMessage(&msg))
-		AfxMessageBox("Success",MB_OK);
+		if (_smtp.SendMessage(&msg,&msgmime))
+			AfxMessageBox("Success",MB_OK);
+	}
+	else
+	{
+		msg.RealAttach = FALSE;
+		if (_smtp.SendMessage(&msg))
+			AfxMessageBox("Success",MB_OK);
+	}
 
 	//CMailHeaderServices* mailHeaderService = new CMailHeaderServices();
 	//msg.GroupId = 3; //Group Sent mail

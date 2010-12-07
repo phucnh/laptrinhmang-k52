@@ -2,6 +2,8 @@
 #include "SMTP.h"
 #include "string.h"
 #include "EntitiesServices.h"
+#include <afxstr.h>
+#include "GlobalFunctions.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -137,15 +139,18 @@ CString CSMTP::GetLastError()
 BOOL CSMTP::SendMessage(MailHeader * msg)
 {
 	ASSERT( msg != NULL );
+
+	msg->Date = GetCurrentTimeStr();
+
 	if( !m_Connected )
 	{
-		m_Error = _T( "Must be connected" );
+		m_Error = _T( "Must be connect" );
 		return FALSE;
 	}
-	if( FormatMailMessage( msg ) == FALSE )
+	/*if( FormatMailMessage( msg ) == FALSE )
 	{
 		return FALSE;
-	}
+	}*/
 	if( transmit_message( msg ) == FALSE )
 	{
 		return FALSE;
@@ -153,9 +158,29 @@ BOOL CSMTP::SendMessage(MailHeader * msg)
 	return TRUE;
 }
 
+BOOL CSMTP::SendMessage( MailHeader* msg, CMimeMessage* mime )
+{
+	ASSERT(msg != NULL);
+	ASSERT(mime!= NULL);
+
+	msg->Date = GetCurrentTimeStr();
+
+	if (!m_Connected)
+	{
+		m_Error = _T("Must be connect");
+		return FALSE;
+	}
+	if( transmit_message( msg, mime ) == FALSE )
+	{
+		return FALSE;
+	}
+
+	return TRUE;
+}
 BOOL CSMTP::FormatMailMessage( MailHeader * msg )
 {
 	ASSERT( msg != NULL );
+
 	if( prepare_header( msg ) == FALSE )
 	{
 		return FALSE;
@@ -259,23 +284,25 @@ BOOL CSMTP::transmit_message(MailHeader* msg)
 	}*/
 	// Send the header
 	Sleep(300);
-	CString _headerFormat;
+	CString _messageFormat;
 	//phuc mod 20101204
-	/*_headerFormat.Format("From: %s\r\nTo: %s\r\nCc: %s\r\nSubject: %s\r\nMime-Version: %s\r\nContent-Type: %s\r\nMessage-ID: %s\r\n",
+	_messageFormat.Format("Message-ID: %s\r\nFrom: %s\r\nTo: %s\r\nCc: %s\r\nDate: %s\r\nSubject: %s\r\nMime-Version: %s\r\nContent-Type: %s\r\n\n%s",
+		msg->MessageID,
 		msg->From,
 		msg->To,
 		msg->Cc,
+		msg->Date,
 		msg->Subject,
 		msg->MimeVersion,
 		msg->ContentType,
-		msg->MessageID);
-	m_Server.Send(_headerFormat,_headerFormat.GetLength());
-	Sleep(300);*/
+		msg->TextBody);
+	m_Server.Send(_messageFormat,_messageFormat.GetLength());
+	//Sleep(300);
 	//end phuc mod 20101204
-	/*m_Server.Send( (LPCTSTR)msg->Subject, msg->Subject.GetLength() );*/
+	//m_Server.Send( (LPCTSTR)msg->Subject, msg->Subject.GetLength() );
 	// Send the body
-	sTemp = prepare_body( msg );
-	m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
+	//sTemp = prepare_body( msg );
+	//m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
 
 	Sleep(300);
 
@@ -299,3 +326,70 @@ BOOL CSMTP::transmit_message(MailHeader* msg)
 	return TRUE;
 }
 
+BOOL CSMTP::transmit_message( MailHeader* msg, CMimeMessage* mime )
+{
+	CString sFrom;
+	CString sTo;
+	CString sTemp;
+	CString sEmail;
+
+	ASSERT( msg != NULL );
+	if( !m_Connected )
+	{
+		m_Error = _T( "Must be connected" );
+		return FALSE;
+	}
+
+	// Send the MAIL command
+	sFrom.Format( "MAIL From: <%s>\r\n", (LPCTSTR)msg->From );
+	m_Server.Send( (LPCTSTR)sFrom, sFrom.GetLength() );
+	Sleep(300);
+	if( !get_response( GENERIC_SUCCESS ) )
+		return FALSE;
+
+	sFrom.Format( "RCPT To: <%s>\r\n", (LPCTSTR)msg->To );
+	m_Server.Send( (LPCTSTR)sFrom, sFrom.GetLength() );
+	Sleep(300);
+		if( !get_response( GENERIC_SUCCESS ) )
+			return FALSE;
+
+	// Send the DATA command
+	sTemp = "DATA\r\n";
+	m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
+	/*if( !get_response( INPUT_DATA ) )
+	{
+		return FALSE;
+	}*/
+	// Send the header
+	Sleep(300);
+	//phuc mod 20101204
+	CString _mailMessage(mime->ConvertToString());
+	m_Server.Send(_mailMessage,_mailMessage.GetLength());
+	Sleep(300);
+	//end phuc mod 20101204
+	//m_Server.Send( (LPCTSTR)msg->Subject, msg->Subject.GetLength() );
+	// Send the body
+	//sTemp = prepare_body( msg );
+	//m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
+
+	Sleep(300);
+
+	// Signal end of data
+	sTemp = "\r\n.\r\n";
+	m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
+	if( !get_response( GENERIC_SUCCESS ) )
+	{
+		return FALSE;
+	}
+
+	//phuc add 20101204
+	CMailHeaderServices* mailHeadrService = new CMailHeaderServices();
+	msg->UserId = globalUser.UserId();
+	msg->GroupId = 3;
+	msg->TextBody = mime->GetTextBody();
+	mailHeadrService->InsertNewMail(msg);
+	if (mailHeadrService != NULL) delete mailHeadrService;
+	//end phuc add 20101204
+
+	return TRUE;
+}
