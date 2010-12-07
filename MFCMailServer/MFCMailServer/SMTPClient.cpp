@@ -314,7 +314,5 @@ void CSMTPClient::GetDATA()
 	}
 	m_ClientRequest = m_sQueue;
 	m_mailHdr->TextBody = m_ClientRequest;
-
 	return;
-	/*Reply("adfsdf");*/
 }
