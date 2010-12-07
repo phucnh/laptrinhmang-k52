@@ -330,7 +330,19 @@ bool MailHeader::deleteMail(UINT mailID)
 
 bool MailHeader::InsertMail(MailHeader* mailH)
 {
-	sql.Format("Insert into MailHeader values('%s','%s','%s','%s','%s','%s','%s','%s','%s') ;",
+	int _IsDeleted;
+
+	if (mailH->IsDeleted = TRUE)
+		_IsDeleted = 1;
+	else
+	{
+		if (mailH->IsDeleted = FALSE)
+		{
+			_IsDeleted = 0;
+		}
+	}
+	mailH->Date = GetCurrentTimeStr();
+	sql.Format("INSERT INTO MailHeader ([From],To,[Date],Subject,Cc,ReplyTo,TextBody,RealAttach,IsDeleted) VALUES('%s','%s',#%s#,'%s','%s','%s','%s',%d,%d);",
 		mailH->From,
 		mailH->To,
 		mailH->Date,
@@ -339,7 +351,7 @@ bool MailHeader::InsertMail(MailHeader* mailH)
 		mailH->ReplyTo,
 		mailH->TextBody,
 		mailH->RealAttach,
-		mailH->IsDeleted
+		_IsDeleted
 		);
 
 	try

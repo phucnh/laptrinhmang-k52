@@ -140,7 +140,7 @@ INT CSMTPClient::GetSMTPCommand( CString* requestMessage )
 
 	if ((requestMessage->Left(10)).CompareNoCase("mail from:") == 0) 
 	{
-		if (requestMessage->GetLength() < 17) 
+		if (requestMessage->GetLength() < 11) 
 		{
 			return CMDERROR;
 		}
@@ -152,7 +152,7 @@ INT CSMTPClient::GetSMTPCommand( CString* requestMessage )
 	}
 	if ((requestMessage->Left(8)).CompareNoCase("rcpt to:") == 0) 
 	{
-		if (requestMessage->GetLength() < 17) 
+		if (requestMessage->GetLength() < 9) 
 		{
 			return CMDERROR;
 		}
@@ -261,6 +261,8 @@ void CSMTPClient::CloseSocket()
 	message.Format("%s - SMTP connection (ID=%d) closed", GetCurrentTimeStr(), smtpProcessId);
 	this->m_parrent->WriteLog(message);
 	Close();
+
+	m_mailHdr->InsertMail(m_mailHdr);
 }
 
 void CSMTPClient::Initialize()
@@ -277,7 +279,7 @@ void CSMTPClient::GetMailFrom()
 {
 	CString temp;
 	temp = m_ClientRequest;
-	temp.Delete(0,9);
+	temp.Delete(0,10);
 	//temp.Delete(temp.GetLength()-1, 1);
 	temp.TrimLeft();
 	temp.TrimRight();
@@ -288,7 +290,7 @@ void CSMTPClient::GetRCPTTo()
 {
 	CString temp;
 	temp = m_ClientRequest;
-	temp.Delete(0,7);
+	temp.Delete(0,8);
 	//temp.Delete(temp.GetLength()-1, 1);
 	temp.TrimLeft();
 	temp.TrimRight();
@@ -299,17 +301,19 @@ void CSMTPClient::GetDATA()
 	CString temp;
 	int nBytesRead;
 	while (1)
-	{
+	{		
 		nBytesRead = Receive(m_Buffer, MAX_SMTP_BUFFER_SIZE-1);
 		m_Buffer[nBytesRead] = 0;
-		m_sQueue.Append(m_Buffer);// += m_Buffer;
-
-		if ((m_Buffer[nBytesRead-3]=='.') &&
-			(m_Buffer[nBytesRead-2]=='\r')&&
-			(m_Buffer[nBytesRead-1]=='\n'))
+		m_sQueue.Append(m_Buffer);
+		if(nBytesRead == 3)
 		{
-			m_sQueue.Delete(nBytesRead-3,3);
-			break;
+			if ((m_Buffer[nBytesRead-3]=='.') &&
+				(m_Buffer[nBytesRead-2]=='\r')&&
+				(m_Buffer[nBytesRead-1]=='\n'))
+			{
+				m_sQueue.Delete(nBytesRead-3,3);
+				break;
+			}
 		}
 	}
 	m_ClientRequest = m_sQueue;

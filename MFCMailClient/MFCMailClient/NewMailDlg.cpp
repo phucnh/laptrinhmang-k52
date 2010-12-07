@@ -12,7 +12,7 @@
 #include <iosfwd>
 #include <fstream>
 
-//#include "fstream"
+#include "fstream"
 
 
 
@@ -106,7 +106,7 @@ void CNewMailDlg::OnBnClickedOk()
 	CMimeMessage msgmime;
 	msgmime.SetMailMime(msg.From,msg.To,msg.Cc,msg.Subject,&m_lstFileList,m_TextBody);
 	msg.TextBody = msgmime.ConvertToString();		
-		fstream myfile("C:\\mimemail_test.eml",ios::out|ios::binary|ios::app);
+		fstream myfile("C:\\mimemail_test1.eml",ios::out|ios::binary|ios::app);
 		myfile.write(msg.TextBody,msg.TextBody.GetLength());
 		myfile.close();
 	if (m_lstFileList.GetCount() != 0)
