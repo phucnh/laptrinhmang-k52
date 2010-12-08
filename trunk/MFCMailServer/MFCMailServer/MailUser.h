@@ -17,6 +17,7 @@ public:
 	bool InsertNewUser(MailUser *mailuser);
 	//bool SignIn(CString username,CString password);
 	MailUser* GetUserByID(UINT userID);
+	INT getIdFromUsername(CString username);
 	MailUser* GetUserByUsername(CString username);
 	bool DeleteUser(MailUser *mailuser);
 	bool DeleteUserByID(UINT id);
