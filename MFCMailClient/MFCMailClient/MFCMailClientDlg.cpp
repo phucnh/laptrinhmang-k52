@@ -387,8 +387,8 @@ void CMFCMailClientDlg::Checkmail()
 		int nIndex;
 
 		CArray<CString,CString>* attachList = _mime.GetFileNameAttachmentList();
-		if ((attachList != NULL) ||
-			(attachList->GetCount() == 0))
+		if ((attachList != NULL) &&
+			(attachList->GetCount() != 0))
 		{
 			nIndex = m_ListMail.InsertItem(i,globalMailList.GetAt(i).From,0);
 			m_ListMail.SetItemText(nIndex,1,"(*)" + globalMailList.GetAt(i).Subject);
@@ -435,8 +435,8 @@ void CMFCMailClientDlg::OnLvnItemchangedList3(NMHDR *pNMHDR, LRESULT *pResult)
 
 			CArray<CString,CString>* attachList = _mime.GetFileNameAttachmentList();
 
-			if ((attachList != NULL) ||
-				(attachList->GetCount() == 0))
+			if ((attachList != NULL) &&
+				(attachList->GetCount() != 0))
 				BindToAttachmentList(&_mime);
 
 			CString _view;
@@ -907,18 +907,17 @@ void CMFCMailClientDlg::BindMailToListBox( CArray<MailHeader,MailHeader&>* listM
 
 		CArray<CString,CString>* attachList = _mime.GetFileNameAttachmentList();
 
-		if ((attachList == NULL) ||
-			(attachList->GetCount() == 0)
+		if ((attachList != NULL) &&
+			(attachList->GetCount() != 0)
 			)
-		{
-			nIndex = m_ListMail.InsertItem(i,listMail->GetAt(i).From);
-			m_ListMail.SetItemText(nIndex,1,listMail->GetAt(i).Subject);
-		}
-		else
 		{
 			nIndex = m_ListMail.InsertItem(i,listMail->GetAt(i).From,0);
 			m_ListMail.SetItemText(nIndex,1,"(*)" + listMail->GetAt(i).Subject);
-
+		}
+		else
+		{
+			nIndex = m_ListMail.InsertItem(i,listMail->GetAt(i).From);
+			m_ListMail.SetItemText(nIndex,1,listMail->GetAt(i).Subject);
 		}
 
 
