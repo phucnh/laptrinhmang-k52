@@ -14,6 +14,7 @@
 #include "User.h"
 
 #include "EntitiesServices.h"
+#include "GlobalFunctions.h"
 
 
 #ifdef _DEBUG
@@ -448,7 +449,7 @@ void CMFCMailClientDlg::OnLvnItemchangedList3(NMHDR *pNMHDR, LRESULT *pResult)
 				_mailHeader.Cc,
 				_mailHeader.Date,
 				_mailHeader.Subject,
-				_mime.GetTextBody());
+				DecodeFromUTF8(_T(_mime.GetTextBody())));
 
 			m_MailMessage = _view.GetString();
 		}
@@ -867,6 +868,8 @@ void CMFCMailClientDlg::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CMFCMailClientDlg::BindMailToListBox( CArray<MailHeader,MailHeader&>* listMail )
 {
+	m_ListMail.DeleteAllItems();
+
 	if (listMail == NULL)	return;
 
 	if (listMail->GetCount() == 0)	return;
@@ -931,7 +934,8 @@ void CMFCMailClientDlg::BindMailToListBox( CArray<MailHeader,MailHeader&>* listM
 
 void CMFCMailClientDlg::BindToAttachmentList(CMimeMessage* _mime)
 {
-	_curentMIME = _mime;
+	_currentMIME = new CMimeMessage();
+	_currentMIME->ReadMIMEMail(_mime->ConvertToString());
 
 	CArray<CString,CString>* _attachFile = _mime->GetFileNameAttachmentList();
 
@@ -975,7 +979,7 @@ void CMFCMailClientDlg::OnHdnItemdblclickListAttachlist(NMHDR *pNMHDR, LRESULT *
 		while (pos)
 		{
 			UINT _selectedItem = m_lstAttachControl.GetNextSelectedItem(pos);
-			if (_curentMIME != NULL)
+			if (_currentMIME != NULL)
 			{
 				CFileDialog fOpenDlg(FALSE, "*", "All Files", OFN_HIDEREADONLY|OFN_FILEMUSTEXIST, 
 					"All Files (*.*)|*.*||", this);
@@ -998,8 +1002,8 @@ void CMFCMailClientDlg::OnHdnItemdblclickListAttachlist(NMHDR *pNMHDR, LRESULT *
 }
 void CMFCMailClientDlg::OnLvnItemchangedListAttachlist(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	*pResult = 0;
+	/*LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	*pResult = 0;*/
 
 	POSITION pos = m_lstAttachControl.GetFirstSelectedItemPosition();
 
@@ -1010,7 +1014,7 @@ void CMFCMailClientDlg::OnLvnItemchangedListAttachlist(NMHDR *pNMHDR, LRESULT *p
 			UINT _selectedItem = m_lstAttachControl.GetNextSelectedItem(pos);
 			CString fileDownload = m_lstAttachControl.GetItemText(_selectedItem,0);
 
-			if (_curentMIME != NULL)
+			if (_currentMIME != NULL)
 			{
 				CFileDialog fOpenDlg(FALSE, "*", "All Files", OFN_HIDEREADONLY|OFN_FILEMUSTEXIST, 
 					"All Files (*.*)|*.*||", this);
@@ -1035,7 +1039,8 @@ void CMFCMailClientDlg::OnLvnItemchangedListAttachlist(NMHDR *pNMHDR, LRESULT *p
 						filePath.Delete(i,1);
 					}
 
-					_curentMIME->DownloadFile(&fileDownload,&filePath);
+					if(_currentMIME->DownloadFile(&fileDownload,&filePath))
+						AfxMessageBox(_T("Download file success"));
 				}				
 			}
 		}

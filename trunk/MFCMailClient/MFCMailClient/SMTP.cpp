@@ -217,7 +217,7 @@ BOOL CSMTP::prepare_header(MailHeader * msg)
 
 	CString sHeader = "";	
 	
-	msg->Date = currentDate.Format("%a, %d %b %y %H:%M:%S %Z");
+	msg->Date = GetCurrentTimeStr();//currentDate.Format("%a, %d %b %y %H:%M:%S %Z");
 	// Format: Mon, 01 Jun 2010 01:10:30 GMT
 	sDate = msg->Date;
 	sHeader.Format( "Date: %s\r\n"\
@@ -369,7 +369,7 @@ BOOL CSMTP::transmit_message( MailHeader* msg, CMimeMessage* mime )
 	Sleep(300);
 	CString _mailMessage(mime->ConvertToString());
 	m_Server.Send(_mailMessage,_mailMessage.GetLength());
-	AfxMessageBox(_T(_mailMessage));
+	//AfxMessageBox(_T(_mailMessage));
 	Sleep(300);
 	//m_Server.Send( (LPCTSTR)msg->Subject, msg->Subject.GetLength() );
 	// Send the body

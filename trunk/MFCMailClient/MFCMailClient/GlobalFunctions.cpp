@@ -302,6 +302,10 @@ BYTE MakeByte(TCHAR ch1, TCHAR ch2)
 
 CString GetCurrentTimeStr()
 {
-	CTime	tDateTime = CTime::GetCurrentTime();;
-	return	tDateTime.Format("%m/%d/%Y %H:%M:%S");
+	/*CTime	tDateTime = CTime::GetCurrentTime();
+	return	tDateTime.Format("%m/%d/%Y %H:%M:%S");*/
+	CMimeMessage _mime;
+	_mime.SetDate();
+
+	return _mime.GetDate();
 }

@@ -111,7 +111,7 @@ void CPop3::Disconnect()
 	}*/
 	// TODO : Co van de voi lenh quit
 
-	//serverSocket.Close();
+	serverSocket.Close();
 
 	isConnected = FALSE;
 }
@@ -376,8 +376,10 @@ MailHeader CPop3::ReadMail( INT _mailNumber )
 	mailHeader.Date = GetHeaderItem(_messageHeader,"Date");
 	mailHeader.Cc = GetHeaderItem(_messageHeader,"CC");
 	mailHeader.ReplyTo = GetHeaderItem(_messageHeader,"Reply-To");
-	//mailHeader.TextBody = ReadMessageBody(_messageHeader);
-	mailHeader.TextBody = _messageHeader;
+	mailHeader.TextBody = ReadMessageBody(_messageHeader);
+	//mailHeader.TextBody = CString(_messageHeader);
+
+	//AfxMessageBox(_T(mailHeader.TextBody));
 
 	mailHeader.UserId = globalUser.UserId();
 
@@ -419,29 +421,15 @@ INT64 CPop3::GetMailTotalSize()
 
 CString CPop3::ReadMessageBody( CString _header )
 {
-	CString _messageBody("");
-	INT count = _header.Find("Message-ID:");
+	INT count = _header.Find('\n');
 
 	if (!count)
-		return _messageBody;
+		return _header;
 
-	while(_header.GetAt(count)!= '\n')
-	{
-		count++;
-	}
+	CString _body = CString(_header);
+	_body.Delete(0,count);
 
-	count++;
-
-	while(_header.GetAt(count)!= '\0')
-	{
-		_messageBody += _header.GetAt(count);
-		count++;
-	}
-
-	//Remove '.' and 2 ' ' character
-	_messageBody.Delete(_messageBody.GetLength()-3,3);
-
-	return _messageBody;
+	return _body;
 }
 
 void CPop3::GetAllMail(CArray<MailHeader,MailHeader> &_mailArray)
