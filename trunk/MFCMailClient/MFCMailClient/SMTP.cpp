@@ -368,8 +368,7 @@ BOOL CSMTP::transmit_message( MailHeader* msg, CMimeMessage* mime )
 	// Send the header
 	Sleep(300);
 	//phuc mod 20101204
-	CString _mailMessage = "";
-	_mailMessage = mime->ConvertToString();
+	CString _mailMessage(mime->ConvertToString());
 	m_Server.Send(_mailMessage,_mailMessage.GetLength());
 	Sleep(300);
 	//end phuc mod 20101204

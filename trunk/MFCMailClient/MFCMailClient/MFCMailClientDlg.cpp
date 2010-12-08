@@ -101,7 +101,6 @@ BEGIN_MESSAGE_MAP(CMFCMailClientDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON4, &CMFCMailClientDlg::OnBnClickedButton4)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, &CMFCMailClientDlg::OnTvnSelchangedTree1)
 	ON_NOTIFY(HDN_ITEMDBLCLICK, 0, &CMFCMailClientDlg::OnHdnItemdblclickListAttachlist)
-	ON_BN_CLICKED(IDC_BUTTON6, &CMFCMailClientDlg::OnBnClickedButton6)
 END_MESSAGE_MAP()
 
 
@@ -112,17 +111,18 @@ void CMFCMailClientDlg::CreateListMailColumn()
 	m_ListMail.ModifyStyle(m_ListMail.GetStyle(),WS_CHILD|WS_VISIBLE|WS_BORDER|LVS_REPORT|LVS_AUTOARRANGE);
 	m_ListMail.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES|LVS_EX_CHECKBOXES);
 
-	LV_COLUMN	lvColumn;
+	/*LV_COLUMN	lvColumn;
 	lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_IMAGE;
 	lvColumn.fmt = LVCFMT_LEFT;
 	lvColumn.cx = 25;
-	lvColumn.iImage = 0;
+	lvColumn.iImage = 0;*/
 
 	
 	m_ListMail.InsertColumn(1, "From",LVCFMT_LEFT, 120);
 	m_ListMail.InsertColumn(2, "Subject",LVCFMT_LEFT, 265);
 	m_ListMail.InsertColumn(3, "Date",LVCFMT_LEFT, 85);
-	m_ListMail.InsertColumn(4, &lvColumn);
+	m_ListMail.InsertColumn(4, "Attach");
+	//m_ListMail.InsertColumn(4, &lvColumn);
 
 	//lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM | LVCF_IMAGE;
 	//lvColumn.cx = 30;
@@ -177,7 +177,7 @@ BOOL CMFCMailClientDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	//CreateGroupTree();
+	CreateGroupTree();
 	CreateListMailColumn();
 	CreateAttachListColumn();
 	SetIconToMenuButton();
@@ -386,15 +386,17 @@ void CMFCMailClientDlg::Checkmail()
 
 		int nIndex;
 
-		if (_mime.GetFileNameAttachmentList() == NULL)
-		{
-			nIndex = m_ListMail.InsertItem(i,globalMailList.GetAt(i).From);
-			m_ListMail.SetItemText(nIndex,1,globalMailList.GetAt(i).Subject);
-		}
-		else
+		CArray<CString,CString>* attachList = _mime.GetFileNameAttachmentList();
+		if ((attachList != NULL) ||
+			(attachList->GetCount() == 0))
 		{
 			nIndex = m_ListMail.InsertItem(i,globalMailList.GetAt(i).From,0);
 			m_ListMail.SetItemText(nIndex,1,"(*)" + globalMailList.GetAt(i).Subject);
+		}
+		else
+		{
+			nIndex = m_ListMail.InsertItem(i,globalMailList.GetAt(i).From);
+			m_ListMail.SetItemText(nIndex,1,globalMailList.GetAt(i).Subject);
 		}
 
 		CString subject;
@@ -430,7 +432,11 @@ void CMFCMailClientDlg::OnLvnItemchangedList3(NMHDR *pNMHDR, LRESULT *pResult)
 
 			CMimeMessage _mime;
 			_mime.ReadMIMEMail(_mailHeader.TextBody);
-			if (_mime.GetFileNameAttachmentList() != NULL)
+
+			CArray<CString,CString>* attachList = _mime.GetFileNameAttachmentList();
+
+			if ((attachList != NULL) ||
+				(attachList->GetCount() == 0))
 				BindToAttachmentList(&_mime);
 
 			CString _view;
@@ -585,7 +591,7 @@ void CMFCMailClientDlg::ForwardMessage()
 
 void CMFCMailClientDlg::OnBnClickedButton4()
 {
-		//ForwardMessage();	
+	ForwardMessage();	
 	// Loi : Moi khi thuc hien cac thao tac insert hay delete no cu hien ra cai bang thong bao chon DNS mac du
 	//em da thay duong dan trong phan chuoi ket noi roi :-?
 		//testLogin();			//OK
@@ -596,7 +602,7 @@ void CMFCMailClientDlg::OnBnClickedButton4()
 		//testUpdateUserById(); //OK
 		//testUpdateUserByUsername();//OK
 		//testChangePassword();//OK
-			testGetAllMail(); //Ok
+			//testGetAllMail(); //Ok
 			//testInsertNewMail();//Ok
 			//testGetMailByMailId();//OK
 		  //testGetMailByUserId();//OK
@@ -732,7 +738,7 @@ void CMFCMailClientDlg::testChangePassword()
 
 void CMFCMailClientDlg::testGetAllMail()
 {
-	CMailHeaderServices* sc=new CMailHeaderServices();
+	/*CMailHeaderServices* sc=new CMailHeaderServices();
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 	listMailHeader=sc->GetAllMail();
 	  UINT numberRecord=listMailHeader->GetSize();
@@ -746,7 +752,7 @@ void CMFCMailClientDlg::testGetAllMail()
 	 }
 	 AfxMessageBox(result);
 
-
+*/
 
 
 }
@@ -787,7 +793,7 @@ void CMFCMailClientDlg::testGetMailByGroupId()
 
 void CMFCMailClientDlg::testGetMailByUserIdGroupId()
 {
-	CMailHeaderServices* sc=new CMailHeaderServices();
+	/*CMailHeaderServices* sc=new CMailHeaderServices();
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 	listMailHeader=sc->GetMailByUserIdGroupId(6,1);
 	UINT numberRecord=listMailHeader->GetSize();
@@ -798,7 +804,7 @@ void CMFCMailClientDlg::testGetMailByUserIdGroupId()
 		temp.Format("%s\r\n",listMailHeader->GetAt(i).From);
 		result.Append(temp,temp.GetLength());
 	}
-	AfxMessageBox(result);
+	AfxMessageBox(result);*/
 		
 }
 
@@ -843,21 +849,17 @@ void CMFCMailClientDlg::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 	HTREEITEM hItem = m_GroupTree.GetSelectedItem();
 
+	CMailHeaderServices* _mailService = new CMailHeaderServices();
+	
+	if (globalUser.UserId() < 1)	return;
 
-	//if (globalUser.UserId() >= 1)
-	if(true) //Dang test
-	{
-		CMailHeaderServices* _mailService = new CMailHeaderServices();
-
-		if (hItem == inboxTreeNode)
-			BindMailToListBox(_mailService->GetMailByUserIdGroupId(6,1));//Dang test
-			//BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),1));
-		else if (hItem == sentTreeNode)
-			BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),3));
-		else if (hItem == trashTreeNode)
-			BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),2));
-	}
-
+	if (hItem == inboxTreeNode)
+		BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),1));
+	else if (hItem == sentTreeNode)
+		BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),3));
+	else if (hItem == trashTreeNode)
+		BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),2));
+	
 	*pResult = 0;
 }
 
@@ -902,7 +904,12 @@ void CMFCMailClientDlg::BindMailToListBox( CArray<MailHeader,MailHeader&>* listM
 
 		int nIndex;
 
-		if (_mime.GetFileNameAttachmentList() == NULL)
+
+		CArray<CString,CString>* attachList = _mime.GetFileNameAttachmentList();
+
+		if ((attachList == NULL) ||
+			(attachList->GetCount() == 0)
+			)
 		{
 			nIndex = m_ListMail.InsertItem(i,listMail->GetAt(i).From);
 			m_ListMail.SetItemText(nIndex,1,listMail->GetAt(i).Subject);
@@ -923,8 +930,6 @@ void CMFCMailClientDlg::BindMailToListBox( CArray<MailHeader,MailHeader&>* listM
 
 void CMFCMailClientDlg::BindToAttachmentList(CMimeMessage* _mime)
 {
-	ASSERT(_mime);
-
 	_curentMIME = _mime;
 
 	CArray<CString,CString>* _attachFile = _mime->GetFileNameAttachmentList();
@@ -989,9 +994,4 @@ void CMFCMailClientDlg::OnHdnItemdblclickListAttachlist(NMHDR *pNMHDR, LRESULT *
 			}
 		}
 	}
-}
-
-void CMFCMailClientDlg::OnBnClickedButton6()
-{
-	
 }

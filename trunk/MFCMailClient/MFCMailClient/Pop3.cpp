@@ -366,7 +366,9 @@ MailHeader CPop3::ReadMail( INT _mailNumber )
 	if(!ReceiveMessageIsOK(_receiveMessage))
 		return mailHeader;
 
-	CString _messageHeader(_receiveMessage);
+	CString _messageHeader = CString(_receiveMessage);
+	//AfxMessageBox(_messageHeader);
+	INT length = _messageHeader.GetLength();
 
 	mailHeader.To = GetHeaderItem(_messageHeader,"To");
 	mailHeader.From = GetHeaderItem(_messageHeader,"From");

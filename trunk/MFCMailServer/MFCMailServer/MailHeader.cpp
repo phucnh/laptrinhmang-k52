@@ -79,7 +79,7 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllMail()
 						dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
 						dataMail->GetFieldValue(_T("TextBody"),TextBody);
 					/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
-						dataMail->GetFieldValue(_T("ContendType",ContendType);*/
+						dataMail->GetFieldValue(_T("ContentType",ContendType);*/
 
 						dataMail->GetFieldValue(_T("RealAttach"),RealAttachString);
 					/*	dataMail->GetFieldValue(_T("GroupId",GroupId);
@@ -90,14 +90,14 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllMail()
 						RealAttach=(BYTE)(LPSTR)(LPCTSTR)RealAttachString;
 
 						//mailheader=new MailHeader(From,To,Date,Subject,Cc,ReplyTo,TextBody,RealAttach);
-						 mailheader.Cc=Cc;
-						 mailheader.From=From;
-						 mailheader.Date=Date;
-						 mailheader.Subject=Subject;
-						 mailheader.RealAttach=RealAttach;
-						 mailheader.ReplyTo=ReplyTo;
-						 mailheader.TextBody=TextBody;
-						 mailheader.To=To;
+						mailheader.Cc=Cc;
+						mailheader.From=From;
+						mailheader.Date=Date;
+						mailheader.Subject=Subject;
+						mailheader.RealAttach=RealAttach;
+						mailheader.ReplyTo=ReplyTo;
+						mailheader.TextBody=TextBody;
+						mailheader.To=To;
 
 						listMailHeader->Add(mailheader);
 
@@ -138,8 +138,8 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString userna
 	try
 	{
 		dataMail=dal->GetRecordSet(sql);
-		if(dataMail==NULL) return NULL;
 
+		if(dataMail==NULL) return NULL;
 	
 			else
 				{
@@ -156,7 +156,7 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString userna
 						dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
 						dataMail->GetFieldValue(_T("TextBody"),TextBody);
 					/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
-						dataMail->GetFieldValue(_T("ContendType",ContendType);*/
+						dataMail->GetFieldValue(_T("ContentType",ContendType);*/
 
 						dataMail->GetFieldValue(_T("RealAttach"),RealAttachString);
 					/*	dataMail->GetFieldValue(_T("GroupId",GroupId);
