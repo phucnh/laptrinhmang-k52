@@ -147,10 +147,10 @@ BOOL CSMTP::SendMessage(MailHeader * msg)
 		AfxMessageBox(_T(m_Error));
 		return FALSE;
 	}
-	/*if( FormatMailMessage( msg ) == FALSE )
+	if( FormatMailMessage( msg ) == FALSE )
 	{
 		return FALSE;
-	}*/
+	}
 	if( transmit_message( msg ) == FALSE )
 	{
 		return FALSE;
@@ -169,6 +169,10 @@ BOOL CSMTP::SendMessage( MailHeader* msg, CMimeMessage* mime )
 	{
 		m_Error = _T("Must be connect");
 		AfxMessageBox(_T(m_Error));
+		return FALSE;
+	}
+	if( FormatMailMessage( msg ) == FALSE )
+	{
 		return FALSE;
 	}
 	if( transmit_message( msg, mime ) == FALSE )
@@ -365,6 +369,7 @@ BOOL CSMTP::transmit_message( MailHeader* msg, CMimeMessage* mime )
 	Sleep(300);
 	CString _mailMessage(mime->ConvertToString());
 	m_Server.Send(_mailMessage,_mailMessage.GetLength());
+	AfxMessageBox(_T(_mailMessage));
 	Sleep(300);
 	//m_Server.Send( (LPCTSTR)msg->Subject, msg->Subject.GetLength() );
 	// Send the body

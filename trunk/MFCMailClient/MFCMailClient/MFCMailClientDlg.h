@@ -98,5 +98,6 @@ public:
 	afx_msg void OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult);
 	CListCtrl m_lstAttachControl;
 	afx_msg void OnHdnItemdblclickListAttachlist(NMHDR *pNMHDR, LRESULT *pResult);
+	//afx_msg void OnLvnItemchangedListAttachlist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchangedListAttachlist(NMHDR *pNMHDR, LRESULT *pResult);
 };

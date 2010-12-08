@@ -101,6 +101,7 @@ BEGIN_MESSAGE_MAP(CMFCMailClientDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON4, &CMFCMailClientDlg::OnBnClickedButton4)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, &CMFCMailClientDlg::OnTvnSelchangedTree1)
 	ON_NOTIFY(HDN_ITEMDBLCLICK, 0, &CMFCMailClientDlg::OnHdnItemdblclickListAttachlist)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_ATTACHLIST, &CMFCMailClientDlg::OnLvnItemchangedListAttachlist)
 END_MESSAGE_MAP()
 
 
@@ -948,7 +949,7 @@ void CMFCMailClientDlg::BindToAttachmentList(CMimeMessage* _mime)
 void CMFCMailClientDlg::CreateAttachListColumn()
 {
 	m_lstAttachControl.ModifyStyle(m_ListMail.GetStyle(),WS_CHILD|WS_VISIBLE|WS_BORDER|LVS_REPORT|LVS_AUTOARRANGE);
-	m_lstAttachControl.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES|LVS_EX_CHECKBOXES);
+	m_lstAttachControl.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES);
 
 	LV_COLUMN	lvColumn;
 	lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_IMAGE;
@@ -957,8 +958,8 @@ void CMFCMailClientDlg::CreateAttachListColumn()
 	lvColumn.iImage = 0;
 
 
-	m_lstAttachControl.InsertColumn(1, "File name",LVCFMT_LEFT, 120);
-	m_lstAttachControl.InsertColumn(2, "Size",LVCFMT_LEFT, 265);
+	m_lstAttachControl.InsertColumn(1, "File name",LVCFMT_LEFT, 240);
+	m_lstAttachControl.InsertColumn(2, "Size",LVCFMT_LEFT, 200);
 }
 
 void CMFCMailClientDlg::OnHdnItemdblclickListAttachlist(NMHDR *pNMHDR, LRESULT *pResult)
@@ -991,6 +992,51 @@ void CMFCMailClientDlg::OnHdnItemdblclickListAttachlist(NMHDR *pNMHDR, LRESULT *
 				{
 					
 				}
+			}
+		}
+	}
+}
+void CMFCMailClientDlg::OnLvnItemchangedListAttachlist(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	*pResult = 0;
+
+	POSITION pos = m_lstAttachControl.GetFirstSelectedItemPosition();
+
+	if (pos != NULL)
+	{
+		while (pos)
+		{
+			UINT _selectedItem = m_lstAttachControl.GetNextSelectedItem(pos);
+			CString fileDownload = m_lstAttachControl.GetItemText(_selectedItem,0);
+
+			if (_curentMIME != NULL)
+			{
+				CFileDialog fOpenDlg(FALSE, "*", "All Files", OFN_HIDEREADONLY|OFN_FILEMUSTEXIST, 
+					"All Files (*.*)|*.*||", this);
+
+				CString fileName;
+				fOpenDlg.GetOFN().lpstrFile = fileName.GetBuffer(_MAX_PATH);
+				fOpenDlg.GetOFN().nMaxFile = _MAX_PATH;
+				fOpenDlg.m_pOFN->lpstrTitle="Attach File";
+				fOpenDlg.m_pOFN->lpstrInitialDir="c:";
+
+				INT_PTR nResult = fOpenDlg.DoModal();
+
+				if(nResult == IDOK)
+				{
+					CString filePath = _T(fileName.GetString());
+					int i = filePath.GetLength();
+					for (i-1;i>=0;i--)
+					{
+						if ((filePath.GetAt(i) == '\\') ||
+						(filePath.GetAt(i) == '/'))
+							break;
+						filePath.Delete(i,1);
+					}
+
+					_curentMIME->DownloadFile(&fileDownload,&filePath);
+				}				
 			}
 		}
 	}
