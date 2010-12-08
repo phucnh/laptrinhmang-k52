@@ -16,6 +16,7 @@
 #define SMTP_NOOP_CMD	7
 #define SMTP_QUIT_CMD	8
 #define SMTP_HELP_CMD	9
+#define SMTP_WAITING_CMD 10
 
 static CMailServerCommand SMTP_CMD[10] = 
 {
@@ -45,6 +46,7 @@ private:
 	INT smtpProcessId;
 	
 	BOOL isLocked;
+	INT m_nStatus;
 
 public:
 
@@ -67,6 +69,8 @@ public:
 	void ProcessMAILFROMCommand();
 	void ProcessRCPTCommand(); //Long add
 	void ProcessDATACommand(); //Long add
+	void ProcessNOOPCommand();
+	void ProcessHELPCommand();
 	void ProcessQUITCommand();
 	//Add them ham de xu ly vao day nhe
 	void GetMailFrom();

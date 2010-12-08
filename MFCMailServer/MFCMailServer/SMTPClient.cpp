@@ -52,7 +52,7 @@ void CSMTPClient::OnReceive(int nErrorCode)
 	m_Buffer[nBytesRead] = '\0';
 	m_sQueue += m_Buffer;
 
-	while (1)
+	while (m_nStatus != SMTP_DATA_CMD)
 	{
 		int	iPos = m_sQueue.Find('\n');
 		if (iPos == -1) break;
@@ -61,8 +61,6 @@ void CSMTPClient::OnReceive(int nErrorCode)
 		INT code = GetSMTPCommand(&m_ClientRequest);
 		ProcessCommand(code);
 	}
-	CAsyncSocket::OnReceive(nErrorCode);
-
 	CAsyncSocket::OnReceive(nErrorCode);
 }
 
@@ -178,6 +176,8 @@ void CSMTPClient::ProcessCommand( INT cmdCode)
 	case SMTP_MAIL_CMD:		ProcessMAILFROMCommand();	break;
 	case SMTP_RCPT_CMD:		ProcessRCPTCommand();		break;
 	case SMTP_DATA_CMD:		ProcessDATACommand();		break;
+	case SMTP_NOOP_CMD:		ProcessNOOPCommand();		break;
+	case SMTP_HELP_CMD:		ProcessHELPCommand();		break;
 	case SMTP_QUIT_CMD:		ProcessQUITCommand();		break;
 		// TODO: Add them vao day
 	}
@@ -190,59 +190,82 @@ void CSMTPClient::Reply( CString msg )
 
 void CSMTPClient::ProcessERRORCommand()
 {
+	m_nStatus = SMTP_ERROR_CMD;
 	CString returnMsg(_T("502 Unknown command\r\n"));
 	m_parrent->WriteLog(returnMsg);
 	Reply(returnMsg);
+	m_nStatus = SMTP_WAITING_CMD;
 }
 
 void CSMTPClient::ProcessHELOCommand()
 {
+	m_nStatus = SMTP_HELO_CMD;
 	CString _returnMsg;
 
 	_returnMsg.Format("250 Welcome %s, Nice to meet you.\r\n", m_ClientAddress);
 	m_parrent->WriteLog(_returnMsg);
 	Reply(_returnMsg);
+	m_nStatus = SMTP_WAITING_CMD;
 }
 
 void CSMTPClient::ProcessMAILFROMCommand()
 {
 	//long add
+	m_nStatus = SMTP_MAIL_CMD;
 	CString _returnMsg;
 	GetMailFrom();
 	_returnMsg.Format("250 sender %s OK...\r\n", m_mailHdr->From);
 	m_parrent->WriteLog(_returnMsg);
 	Reply(_returnMsg);
+	m_nStatus = SMTP_WAITING_CMD;
 
 }
 void CSMTPClient::ProcessRCPTCommand()
 {
 //long add
+	m_nStatus = SMTP_RCPT_CMD;
 	CString _returnMsg;
 	GetRCPTTo();
 	_returnMsg.Format("250 Recipient %s OK...\r\n", m_mailHdr->To);
 	m_parrent->WriteLog(_returnMsg);
 	Reply(_returnMsg);
+	m_nStatus = SMTP_WAITING_CMD;
 }
 void CSMTPClient::ProcessDATACommand()
 {
 	//long add
+	m_nStatus = SMTP_DATA_CMD;
 	Reply("354 Enter mail, end with "+"."+" on a line by itself\r\n");
 	m_Buffer[0] = '\0';
 	m_sQueue.Format("");
-	
+	m_nStatus = SMTP_DATA_CMD;
 	GetDATA();
-
-
+	m_nStatus = SMTP_ERROR_CMD;
 	if (!m_mailHdr->TextBody.IsEmpty())
 	{
 		CString _returnMsg("250 Message accepted for delivery.\r\n");
 		m_parrent->WriteLog(_returnMsg);
 		Reply(_returnMsg);		
 	}
-}
+	m_nStatus = SMTP_WAITING_CMD;
 
+}
+void CSMTPClient::ProcessNOOPCommand()
+{
+	m_nStatus = SMTP_NOOP_CMD;
+	Reply("250 OK \r\n");
+	m_nStatus = SMTP_WAITING_CMD;
+
+}
+void CSMTPClient::ProcessHELPCommand()
+{
+	m_nStatus = SMTP_HELP_CMD;
+	Reply("214-This is SMTP server\r\n214-Following commands are suppported:\r\n214-HELO   MAIL   RCPT\r\n214-DATA   NOOP\r\n214-QUIT\r\n214-Nhom lap trinh mang 44\r\n214-End of HELP\r\n");
+	m_nStatus = SMTP_WAITING_CMD;
+}
 void CSMTPClient::ProcessQUITCommand()
 {
+	m_nStatus = SMTP_QUIT_CMD;
 	if (m_ClientRequest.CompareNoCase("quit") != 0)
 	{
 		ProcessERRORCommand();
@@ -262,7 +285,7 @@ void CSMTPClient::CloseSocket()
 	this->m_parrent->WriteLog(message);
 	Close();
 
-	m_mailHdr->InsertMail(m_mailHdr);
+	//m_mailHdr->InsertMail(m_mailHdr);
 }
 
 void CSMTPClient::Initialize()
@@ -272,6 +295,7 @@ void CSMTPClient::Initialize()
 	//phuc add 20101203
 	m_mailHdr = new MailHeader();
 	//end phuc add 20101203
+	m_nStatus = SMTP_WAITING_CMD;
 
 }
 //long add
@@ -302,19 +326,21 @@ void CSMTPClient::GetDATA()
 	int nBytesRead;
 	while (1)
 	{		
+		//Sleep(30);
 		nBytesRead = Receive(m_Buffer, MAX_SMTP_BUFFER_SIZE-1);
 		m_Buffer[nBytesRead] = 0;
 		m_sQueue.Append(m_Buffer);
-		if(nBytesRead == 3)
+
+		if(nBytesRead < 3) continue;
+
+		if ((m_Buffer[nBytesRead-3]=='.') &&
+			(m_Buffer[nBytesRead-2]=='\r')&&
+			(m_Buffer[nBytesRead-1]=='\n'))
 		{
-			if ((m_Buffer[nBytesRead-3]=='.') &&
-				(m_Buffer[nBytesRead-2]=='\r')&&
-				(m_Buffer[nBytesRead-1]=='\n'))
-			{
-				m_sQueue.Delete(nBytesRead-3,3);
-				break;
-			}
+			m_sQueue.Delete(nBytesRead-3,3);
+			break;
 		}
+		
 	}
 	m_ClientRequest = m_sQueue;
 	m_mailHdr->TextBody = m_ClientRequest;
