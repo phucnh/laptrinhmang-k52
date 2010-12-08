@@ -22,17 +22,15 @@ CSMTP::CSMTP( LPCTSTR szSMTPServerName, UINT nPort )
 	m_Error = _T( "OK" );
 }
 
-//phuc add 20101028
 CSMTP::CSMTP()
 {
 	AfxSocketInit();
 }
-//end phuc add 20101028
 
 BOOL CSMTP::Connect()
 {
 	CString sHello;
-	TCHAR local_host[ 80 ];	// Warning: arbitrary size
+	TCHAR local_host[ 80 ];	
 	if( m_Connected )
 		return TRUE;
 
@@ -70,12 +68,9 @@ BOOL CSMTP::Disconnect()
 	BOOL ret;
 	if( !m_Connected )
 		return TRUE;
-	// Disconnect gracefully from the server and close the socket
 	CString sQuit = _T( "QUIT\r\n" );
 	m_Server.Send( (LPCTSTR)sQuit, sQuit.GetLength() );
 
-	// No need to check return value here.
-	// If it fails, the message is available with GetLastError
 	ret = get_response( QUIT_SUCCESS );
 	m_Server.Close();
 
@@ -185,7 +180,6 @@ BOOL CSMTP::FormatMailMessage( MailHeader * msg )
 	{
 		return FALSE;
 	}
-	// Append a CR/LF to body if necessary.
 	if( msg->TextBody.Right( 2 ) != "\r\n" )
 		msg->TextBody += "\r\n";
 	return TRUE;
@@ -194,7 +188,6 @@ BOOL CSMTP::FormatMailMessage( MailHeader * msg )
 void CSMTP::SetServerProperties( LPCTSTR sServerHostName, UINT nPort)
 {
 	ASSERT( sServerHostName != NULL );
-	// Needs to be safe in non-debug too
 	if( sServerHostName == NULL )
 		return;
 	m_IpAddress = sServerHostName;
@@ -207,15 +200,15 @@ BOOL CSMTP::prepare_header(MailHeader * msg)
 	ASSERT( msg != NULL );
 	CString sTo;
 	CString sDate;
-	CString sSubject = msg->Subject;	// Shorthand
+	CString sSubject = msg->Subject;	
 	CString sMessageId = "";
 	CString sSender = msg->From.Left(msg->From.Find("@"));
 	sMessageId.Format("<%s@%s>",currentDate.Format("%d%m%y.%H%M%S"),sSender);
 
-	CString sHeader = "";	// Clear it
+	CString sHeader = "";	
 	
 	msg->Date = currentDate.Format("%a, %d %b %y %H:%M:%S %Z");
-	// Format: Mon, 01 Jun 98 01:10:30 GMT
+	// Format: Mon, 01 Jun 2010 01:10:30 GMT
 	sDate = msg->Date;
 	sHeader.Format( "Date: %s\r\n"\
 		"From: %s\r\n"\
@@ -267,20 +260,21 @@ BOOL CSMTP::transmit_message(MailHeader* msg)
 		return FALSE;
 	}
 
-	// Send the MAIL command
+	// gui MAIL 
 	sFrom.Format( "MAIL From: <%s>\r\n", (LPCTSTR)msg->From );
 	m_Server.Send( (LPCTSTR)sFrom, sFrom.GetLength() );
 	Sleep(300);
 	if( !get_response( GENERIC_SUCCESS ) )
 		return FALSE;
-
+	
+	// gui RCPT
 	sFrom.Format( "RCPT To: <%s>\r\n", (LPCTSTR)msg->To );
 	m_Server.Send( (LPCTSTR)sFrom, sFrom.GetLength() );
 	Sleep(300);
 		if( !get_response( GENERIC_SUCCESS ) )
 			return FALSE;
 
-	// Send the DATA command
+	// gui DATA 
 	sTemp = "DATA\r\n";
 	m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
 	/*if( !get_response( INPUT_DATA ) )
@@ -290,7 +284,6 @@ BOOL CSMTP::transmit_message(MailHeader* msg)
 	// Send the header
 	Sleep(300);
 	CString _messageFormat;
-	//phuc mod 20101204
 	_messageFormat.Format("Message-ID: %s\r\nFrom: %s\r\nTo: %s\r\nCc: %s\r\nDate: %s\r\nSubject: %s\r\nMime-Version: %s\r\nContent-Type: %s\r\n\n%s",
 		msg->MessageID,
 		msg->From,
@@ -303,7 +296,6 @@ BOOL CSMTP::transmit_message(MailHeader* msg)
 		msg->TextBody);
 	m_Server.Send(_messageFormat,_messageFormat.GetLength());
 	//Sleep(300);
-	//end phuc mod 20101204
 	//m_Server.Send( (LPCTSTR)msg->Subject, msg->Subject.GetLength() );
 	// Send the body
 	//sTemp = prepare_body( msg );
@@ -311,7 +303,7 @@ BOOL CSMTP::transmit_message(MailHeader* msg)
 
 	Sleep(300);
 
-	// Signal end of data
+	// Them dau . de ket thuc mail
 	sTemp = "\r\n.\r\n";
 	m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
 	if( !get_response( GENERIC_SUCCESS ) )
@@ -319,14 +311,12 @@ BOOL CSMTP::transmit_message(MailHeader* msg)
 		return FALSE;
 	}
 
-	//phuc add 20101204
 	CMailHeaderServices* mailHeadrService = new CMailHeaderServices();
 	msg->UserId = globalUser.UserId();
 	msg->GroupId = 3;
 	mailHeadrService->InsertNewMail(msg);
 
 	if (mailHeadrService != NULL) delete mailHeadrService;
-	//end phuc add 20101204
 
 	return TRUE;
 }
@@ -345,7 +335,6 @@ BOOL CSMTP::transmit_message( MailHeader* msg, CMimeMessage* mime )
 		return FALSE;
 	}
 
-	// Send the MAIL command
 	sFrom.Format( "MAIL From: <%s>\r\n", (LPCTSTR)msg->From );
 	m_Server.Send( (LPCTSTR)sFrom, sFrom.GetLength() );
 	Sleep(300);
@@ -358,7 +347,6 @@ BOOL CSMTP::transmit_message( MailHeader* msg, CMimeMessage* mime )
 		if( !get_response( GENERIC_SUCCESS ) )
 			return FALSE;
 
-	// Send the DATA command
 	sTemp = "DATA\r\n";
 	m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
 	/*if( !get_response( INPUT_DATA ) )
@@ -367,11 +355,9 @@ BOOL CSMTP::transmit_message( MailHeader* msg, CMimeMessage* mime )
 	}*/
 	// Send the header
 	Sleep(300);
-	//phuc mod 20101204
 	CString _mailMessage(mime->ConvertToString());
 	m_Server.Send(_mailMessage,_mailMessage.GetLength());
 	Sleep(300);
-	//end phuc mod 20101204
 	//m_Server.Send( (LPCTSTR)msg->Subject, msg->Subject.GetLength() );
 	// Send the body
 	//sTemp = prepare_body( msg );
@@ -379,7 +365,6 @@ BOOL CSMTP::transmit_message( MailHeader* msg, CMimeMessage* mime )
 
 	Sleep(300);
 
-	// Signal end of data
 	sTemp = "\r\n.\r\n";
 	m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
 	if( !get_response( GENERIC_SUCCESS ) )
@@ -387,14 +372,12 @@ BOOL CSMTP::transmit_message( MailHeader* msg, CMimeMessage* mime )
 		return FALSE;
 	}
 
-	//phuc add 20101204
 	CMailHeaderServices* mailHeadrService = new CMailHeaderServices();
 	msg->UserId = globalUser.UserId();
 	msg->GroupId = 3;
 	msg->TextBody = mime->GetTextBody();
 	mailHeadrService->InsertNewMail(msg);
 	if (mailHeadrService != NULL) delete mailHeadrService;
-	//end phuc add 20101204
 
 	return TRUE;
 }
