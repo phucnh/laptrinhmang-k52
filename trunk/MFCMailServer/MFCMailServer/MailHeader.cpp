@@ -124,7 +124,7 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllMail()
 CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString username)
 {
 //	sql.Format(_T("Select * FROM MailHeader  where [To] like '%'%s'%' ;"),username);
-	sql.Format(_T("Select * FROM MailHeader  where [To]= '%s' ;"),username);
+	sql.Format(_T("Select * FROM MailHeader  where [To] like '*%s*' ;"),username);
 	
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 	CRecordset *dataMail;
