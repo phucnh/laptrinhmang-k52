@@ -2,6 +2,7 @@
 #include "MailHeader.h"
 #include <string>
 #include <cstring>
+#include "MailUser.h"
 
 MailHeader::MailHeader( 
 					   CString _from,
@@ -45,9 +46,9 @@ MailHeader::~MailHeader( void )
 {
 	if (dal->IsOpen()) dal->Close();
 }
-CArray<MailHeader,MailHeader&>* MailHeader::getAllMail(CString username)
+CArray<MailHeader,MailHeader&>* MailHeader::getAllMail()
 {
-	sql.Format(_T("Select * from MailHeader ;"),username,username);
+	sql.Format(_T("Select * from MailHeader ;"));
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 	CRecordset *dataMail;
 	
@@ -118,12 +119,13 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllMail(CString username)
 
 		 }
 
-	 //Ket qua ko dung: lay het mail trong db (tat ca cac user luon)
+	 //Da sua lai dung, test o nut dong  Server
 }
 CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString username)
 {
-	sql.Format(_T("Select * from MailHeader where [To] like '%'%s'%' ;"),username);
-	sql.Format(_T("Select * from MailHeader ;"),username,username);
+//	sql.Format(_T("Select * FROM MailHeader  where [To] like '%'%s'%' ;"),username);
+	sql.Format(_T("Select * FROM MailHeader  where [To]= '%s' ;"),username);
+	
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 	CRecordset *dataMail;
 	
@@ -141,7 +143,7 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString userna
 	
 			else
 				{
-					
+					int number=dataMail->GetRecordCount();
 					while(!dataMail->IsEOF())
 					{
 							
@@ -198,7 +200,11 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString userna
 }
 CArray<MailHeader,MailHeader&>* MailHeader::getAllSentMailByUser(CString  username)
 {
-	sql.Format(_T("Select * from MailHeader where [From]='%s'"),username);
+	
+	 MailUser* mailU=new MailUser();
+	UINT UserId2=mailU->getIdFromUsername(username);
+	if(UserId2==NULL) return NULL;
+	sql.Format(_T("Select *  FROM MailHeader  where UserId= '%d'"),UserId2);
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 	CRecordset *dataMail;
 	
@@ -284,24 +290,24 @@ MailHeader* MailHeader::getMail(UINT mailID)
 			else
 			{
 
-			
-			dataset->GetFieldValue(_T("From"),from);
-			dataset->GetFieldValue(_T("To"),to);
-			dataset->GetFieldValue(_T("Date"),date);
-			dataset->GetFieldValue(_T("Subject"),subject);
-			dataset->GetFieldValue(_T("Cc"),cc);
-			dataset->GetFieldValue(_T("ReplyTo"),replyto);
-			dataset->GetFieldValue(_T("TextBody"),textbody);
-			dataset->GetFieldValue(_T("RealAttach"),realattach);
+				
+				dataset->GetFieldValue(_T("From"),from);
+				dataset->GetFieldValue(_T("To"),to);
+				dataset->GetFieldValue(_T("Date"),date);
+				dataset->GetFieldValue(_T("Subject"),subject);
+				dataset->GetFieldValue(_T("Cc"),cc);
+				dataset->GetFieldValue(_T("ReplyTo"),replyto);
+				dataset->GetFieldValue(_T("TextBody"),textbody);
+				dataset->GetFieldValue(_T("RealAttach"),realattach);
 
-			mailh->From = from;
-			mailh->Cc = cc;
-			mailh->To = to;
-			mailh->Date = date;
-			mailh->ReplyTo = replyto;
-			mailh->TextBody = textbody;
-			mailh->Subject = subject;
-			mailh->RealAttach = atoi(realattach);
+				mailh->From = from;
+				mailh->Cc = cc;
+				mailh->To = to;
+				mailh->Date = date;
+				mailh->ReplyTo = replyto;
+				mailh->TextBody = textbody;
+				mailh->Subject = subject;
+				mailh->RealAttach = atoi(realattach);
 
 			return mailh;
 			}
@@ -317,9 +323,9 @@ MailHeader* MailHeader::getMail(UINT mailID)
 
 
 
-bool MailHeader::deleteMail(UINT mailID)
+bool MailHeader::deleteMail(INT mailID)
 {
-	sql.Format(_T("Delete MailHeader where MailId=%d"),mailID);
+	sql.Format(_T("Delete * FROM MailHeader where MailId= %d ; "),mailID);
 	try
 	{
 		if(dal->ExecuteSQL(sql))
@@ -334,6 +340,7 @@ bool MailHeader::deleteMail(UINT mailID)
 	}
 
 	//Loi: cau lenh Sql sai -> bao loi
+	//DANG: Da sua lai  va test
 }
 
 bool MailHeader::InsertMail(MailHeader* mailH)

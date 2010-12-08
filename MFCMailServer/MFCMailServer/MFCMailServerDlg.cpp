@@ -457,10 +457,28 @@ void CMFCMailServerDlg::OnBnClickedButton3()
 void CMFCMailServerDlg::OnBnClickedButton6()
 {
 	//this->OnDestroy();
-	CString username = "abc";
+	/*CString username = "abc";
 	MailHeader* test = new MailHeader();
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
-	listMailHeader = test->getAllSentMailByUser(username);
-	int result = listMailHeader->GetCount();
-	bool isDeleted = test->deleteMail(3);
+	listMailHeader = test->getAllMail();
+	for(int i=0;i<listMailHeader->GetSize();i++)
+	{
+		m_listBoxCtrl.AddString(listMailHeader->GetAt(i).Cc);
+	}
+
+	CArray<MailHeader,MailHeader&>* listMailHeader2=new CArray<MailHeader,MailHeader&>();
+	 listMailHeader=test->getAllSentMailByUser("dang");
+	 for(int i=0;i<listMailHeader->GetSize();i++)
+	 {
+		 m_listBoxCtrl.AddString(listMailHeader2->GetAt(i).Cc);
+	 }
+	   
+	int result = listMailHeader->GetCount();*/
+	//bool isDeleted = test->deleteMail(3);
+
+MailHeader* mailH =new MailHeader();
+if(mailH->deleteMail(2))
+ AfxMessageBox("OK");
+else
+ AfxMessageBox("False");
 }

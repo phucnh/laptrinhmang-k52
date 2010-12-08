@@ -2,12 +2,12 @@
 //
 
 #include "stdafx.h"
-//#include "ODBC6.11.h"
+
 #include "MailUser.h"
 #include "DAL.h"
 // MailUser
 
-//DAL *dal=new DAL();
+
 CString  sqlMailUser;
 CRecordset *datasetMailUser;
 
@@ -54,24 +54,7 @@ bool MailUser::InsertNewUser(MailUser *mailuser)
 		return FALSE;
 	}
 }
-//bool SignIn(CString username,CString password)
-//{
-//	sqlMailUser.Format(_T("Select * from MailUser where Username='%s' and Password='%s' ;"),username,password);
-//
-//	datasetMailUser=dal->GetRecordSet(sqlMailUser);
-//	int numberRecord=0;
-//
-//	while (!datasetMailUser->IsEOF())
-//	{
-//		numberRecord += 1;
-//		datasetMailUser->MoveNext();
-//	}
-//
-//	if(numberRecord==1)
-//		return TRUE;
-//	else
-//		return FALSE;
-//}
+
 
 MailUser* MailUser::GetUserByID(UINT userID )
 {
@@ -277,4 +260,34 @@ bool MailUser::CheckUsernameExist( CString username )
 		return false;
 	}
 	
+}
+
+INT MailUser::getIdFromUsername( CString username )
+{
+	
+	INT UserId;
+	CString UserIDString;
+	sqlMailUser.Format(_T("Select * FROM MailUser where Username= '%s' ;"),username);
+	try
+	{
+
+		datasetMailUser=dal->GetRecordSet(sqlMailUser);
+
+		if(datasetMailUser==NULL)
+			return NULL;
+		else
+		{
+			datasetMailUser->GetFieldValue(_T("UserId"),UserIDString);
+				UserId=atoi(UserIDString.GetString());
+				return UserId;	
+			
+
+		}
+	}
+	catch(CException* e)
+	{
+		e->ReportError();
+		e->Delete();
+		
+	}
 }

@@ -36,13 +36,13 @@ public:
 	MailHeader(void);
 	~MailHeader(void);
 
-	CArray<MailHeader,MailHeader&>* getAllMail(CString username);
+	CArray<MailHeader,MailHeader&>* getAllMail();
 	CArray<MailHeader,MailHeader&>* getAllInboxMailByUser(CString username);
 	CArray<MailHeader,MailHeader&>* getAllSentMailByUser(CString username);
 
 	MailHeader* getMail(UINT mailID);
 	//bool InsertMail(CString from,CString to,CString date,CString subject,CString cc,CString replyto,CString textbody,CString realattach);
-	bool deleteMail(UINT mailID);
+	bool deleteMail(INT mailID);
 
 	//phuc add 20101121
 	bool InsertMail(MailHeader* mailHeader);
