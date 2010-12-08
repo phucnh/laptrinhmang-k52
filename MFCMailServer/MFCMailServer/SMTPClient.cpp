@@ -285,7 +285,7 @@ void CSMTPClient::CloseSocket()
 	this->m_parrent->WriteLog(message);
 	Close();
 
-	//m_mailHdr->InsertMail(m_mailHdr);
+	m_mailHdr->InsertMail(m_mailHdr);
 }
 
 void CSMTPClient::Initialize()
