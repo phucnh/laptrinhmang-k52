@@ -322,6 +322,49 @@ BOOL CSMTP::transmit_message(MailHeader* msg)
 		return FALSE;
 	}
 
+	//send mail to Cc
+	if (!msg->Cc.IsEmpty())
+	{
+		sFrom.Format( "MAIL From: <%s>\r\n", (LPCTSTR)msg->From );
+		m_Server.Send( (LPCTSTR)sFrom, sFrom.GetLength() );
+		Sleep(300);
+		if( !get_response( GENERIC_SUCCESS ) )
+			return FALSE;
+		
+		// gui RCPT
+		sFrom.Format( "RCPT To: <%s>\r\n", (LPCTSTR)msg->Cc );
+		m_Server.Send( (LPCTSTR)sFrom, sFrom.GetLength() );
+		Sleep(300);
+			if( !get_response( GENERIC_SUCCESS ) )
+				return FALSE;
+
+		// gui DATA 
+		sTemp = "DATA\r\n";
+		m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
+		/*if( !get_response( INPUT_DATA ) )
+		{
+			return FALSE;
+		}*/
+		// Send the header
+		Sleep(300);
+		m_Server.Send(_messageFormat,_messageFormat.GetLength());
+		//Sleep(300);
+		//m_Server.Send( (LPCTSTR)msg->Subject, msg->Subject.GetLength() );
+		// Send the body
+		//sTemp = prepare_body( msg );
+		//m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
+
+		Sleep(300);
+
+		// Them dau . de ket thuc mail
+		sTemp = "\r\n.\r\n";
+		m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
+		if( !get_response( GENERIC_SUCCESS ) )
+		{
+			return FALSE;
+		}
+	}
+
 	CMailHeaderServices* mailHeadrService = new CMailHeaderServices();
 	msg->UserId = globalUser.UserId();
 	msg->GroupId = 3;
@@ -370,7 +413,6 @@ BOOL CSMTP::transmit_message( MailHeader* msg, CMimeMessage* mime )
 	CString _mailMessage(mime->ConvertToString());
 	m_Server.Send(_mailMessage,_mailMessage.GetLength());
 	//AfxMessageBox(_T(_mailMessage));
-	Sleep(300);
 	//m_Server.Send( (LPCTSTR)msg->Subject, msg->Subject.GetLength() );
 	// Send the body
 	//sTemp = prepare_body( msg );
@@ -383,6 +425,47 @@ BOOL CSMTP::transmit_message( MailHeader* msg, CMimeMessage* mime )
 	if( !get_response( GENERIC_SUCCESS ) )
 	{
 		return FALSE;
+	}
+	if (!msg->Cc.IsEmpty())
+	{
+		sFrom.Format( "MAIL From: <%s>\r\n", (LPCTSTR)msg->From );
+		m_Server.Send( (LPCTSTR)sFrom, sFrom.GetLength() );
+		Sleep(300);
+		if( !get_response( GENERIC_SUCCESS ) )
+			return FALSE;
+		
+		// gui RCPT
+		sFrom.Format( "RCPT To: <%s>\r\n", (LPCTSTR)msg->Cc );
+		m_Server.Send( (LPCTSTR)sFrom, sFrom.GetLength() );
+		Sleep(300);
+			if( !get_response( GENERIC_SUCCESS ) )
+				return FALSE;
+
+		// gui DATA 
+		sTemp = "DATA\r\n";
+		m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
+		/*if( !get_response( INPUT_DATA ) )
+		{
+			return FALSE;
+		}*/
+		// Send the header
+		Sleep(300);
+		m_Server.Send(_mailMessage,_mailMessage.GetLength());
+		//Sleep(300);
+		//m_Server.Send( (LPCTSTR)msg->Subject, msg->Subject.GetLength() );
+		// Send the body
+		//sTemp = prepare_body( msg );
+		//m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
+
+		Sleep(300);
+
+		// Them dau . de ket thuc mail
+		sTemp = "\r\n.\r\n";
+		m_Server.Send( (LPCTSTR)sTemp, sTemp.GetLength() );
+		if( !get_response( GENERIC_SUCCESS ) )
+		{
+			return FALSE;
+		}
 	}
 
 	CMailHeaderServices* mailHeadrService = new CMailHeaderServices();
