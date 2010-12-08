@@ -504,7 +504,7 @@ inline void CMimeMessage::SetMailMime(const char *pszFrom, const char *pszTo,  c
 			}
 		
 			msg_body = this->CreatePart();
-			msg_body->SetDescription("attachment");
+			msg_body->SetDisposition("attachment");
 			msg_body->SetTransferEncoding("base64");
 			msg_body->ReadFromFile(_filePath);
 		}
