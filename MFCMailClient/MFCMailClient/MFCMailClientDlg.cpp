@@ -101,6 +101,7 @@ BEGIN_MESSAGE_MAP(CMFCMailClientDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON4, &CMFCMailClientDlg::OnBnClickedButton4)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, &CMFCMailClientDlg::OnTvnSelchangedTree1)
 	ON_NOTIFY(HDN_ITEMDBLCLICK, 0, &CMFCMailClientDlg::OnHdnItemdblclickListAttachlist)
+	ON_BN_CLICKED(IDC_BUTTON6, &CMFCMailClientDlg::OnBnClickedButton6)
 END_MESSAGE_MAP()
 
 
@@ -176,7 +177,7 @@ BOOL CMFCMailClientDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	CreateGroupTree();
+	//CreateGroupTree();
 	CreateListMailColumn();
 	CreateAttachListColumn();
 	SetIconToMenuButton();
@@ -584,22 +585,22 @@ void CMFCMailClientDlg::ForwardMessage()
 
 void CMFCMailClientDlg::OnBnClickedButton4()
 {
-	ForwardMessage();	
+		//ForwardMessage();	
 	// Loi : Moi khi thuc hien cac thao tac insert hay delete no cu hien ra cai bang thong bao chon DNS mac du
 	//em da thay duong dan trong phan chuoi ket noi roi :-?
 		//testLogin();			//OK
 		//testInsertNewUser();	//OK
-		//testGetUserById();
+	//	testGetUserById();
 		//testGetUserByUsername();  //OK
 		//testDeleteUserById();  //OK
 		//testUpdateUserById(); //OK
 		//testUpdateUserByUsername();//OK
 		//testChangePassword();//OK
-			//testGetAllMail(); //Ok
+			testGetAllMail(); //Ok
 			//testInsertNewMail();//Ok
 			//testGetMailByMailId();//OK
-		//testGetMailByUserId();//OK
-		testGetMailByUserIdGroupId();//OK
+		  //testGetMailByUserId();//OK
+	//	testGetMailByUserIdGroupId();//OK
 
 		//ForwardMessage();
 		
@@ -843,14 +844,14 @@ void CMFCMailClientDlg::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
 	HTREEITEM hItem = m_GroupTree.GetSelectedItem();
 
 
-	if (globalUser.UserId() >= 1)
-	//if(true) //Dang test
+	//if (globalUser.UserId() >= 1)
+	if(true) //Dang test
 	{
 		CMailHeaderServices* _mailService = new CMailHeaderServices();
 
 		if (hItem == inboxTreeNode)
-			//BindMailToListBox(_mailService->GetMailByUserIdGroupId(6,1));//Dang test
-			BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),1));
+			BindMailToListBox(_mailService->GetMailByUserIdGroupId(6,1));//Dang test
+			//BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),1));
 		else if (hItem == sentTreeNode)
 			BindMailToListBox(_mailService->GetMailByUserIdGroupId(globalUser.UserId(),3));
 		else if (hItem == trashTreeNode)
@@ -988,4 +989,9 @@ void CMFCMailClientDlg::OnHdnItemdblclickListAttachlist(NMHDR *pNMHDR, LRESULT *
 			}
 		}
 	}
+}
+
+void CMFCMailClientDlg::OnBnClickedButton6()
+{
+	
 }

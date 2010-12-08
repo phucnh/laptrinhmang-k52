@@ -99,4 +99,5 @@ public:
 	CListCtrl m_lstAttachControl;
 	afx_msg void OnHdnItemdblclickListAttachlist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchangedListAttachlist(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedButton6();
 };
