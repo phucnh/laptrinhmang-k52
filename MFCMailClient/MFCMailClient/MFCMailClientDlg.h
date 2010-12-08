@@ -44,7 +44,7 @@ public:
 	HTREEITEM sentTreeNode;
 	HTREEITEM trashTreeNode;
 
-	CMimeMessage* _curentMIME;
+	CMimeMessage* _currentMIME;
 
 	afx_msg void OnMessageNewmessage();
 	afx_msg void OnAcountAccount();
