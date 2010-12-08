@@ -961,8 +961,9 @@ CString CMimeMessage::ConvertToString()
 	int nSize = this->GetLength();
 	char* pBuff = new char[nSize];
 	nSize = this->Store(pBuff, nSize);
-
-	return pBuff;
+	CString temp(pBuff);
+	int length = temp.GetLength(); 
+	return temp;
 	//textBody = pBuff;
 }
 bool CMimeMessage::DownloadFile(CString* fileName, CString* filePath)
@@ -1049,6 +1050,7 @@ CArray<CString,CString>* CMimeMessage::GetFileNameAttachmentList()
 	CMimeBody::CBodyList bodies;
 	int nCount = this->GetBodyPartList(bodies);
 	CMimeBody::CBodyList::const_iterator i;
+	i = bodies.begin();
 	for(i = bodies.begin(); i != bodies.end(); i++)
 	{
 		CMimeBody* pBP = *i;
