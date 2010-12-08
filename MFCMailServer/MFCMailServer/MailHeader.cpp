@@ -175,6 +175,7 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString userna
 						 mailheader.ReplyTo=ReplyTo;
 						 mailheader.TextBody=TextBody;
 						 mailheader.To=To;
+						 
 
 						listMailHeader->Add(mailheader);
 
@@ -197,6 +198,7 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString userna
 		 }
 	
 	//Loi cau lenh Sql: he thong dung luon
+	 //DANG: Da sua xong 6
 }
 CArray<MailHeader,MailHeader&>* MailHeader::getAllSentMailByUser(CString  username)
 {
@@ -284,7 +286,7 @@ MailHeader* MailHeader::getMail(UINT mailID)
 	MailHeader *mailh=new MailHeader();
 	sql.Format(_T("Select * from MailHeader where MailID=%d"),mailID);
 	CString from, to, date, subject, cc, replyto, textbody, realattach;
-
+	
 	try
 		{
 			dataset = dal->GetRecordSet(sql);

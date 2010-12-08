@@ -459,6 +459,8 @@ void CMFCMailServerDlg::OnBnClickedButton6()
 	this->OnDestroy();
 	CString username = "abc";
 	MailHeader* test = new MailHeader();
+
+	//test GETALLMAIL()
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 	listMailHeader = test->getAllMail();
 	CString result,temp;
@@ -471,15 +473,31 @@ void CMFCMailServerDlg::OnBnClickedButton6()
 	}
 	
 	m_listBoxCtrl.AddString(result);
+
 	//test GetMailSentByUSername
+	CString result2,temp2;
+	result2.Format("Cac CC  cua tat ca mail cua user dang la :");
+	m_listBoxCtrl.AddString(result2);
+	
 	CArray<MailHeader,MailHeader&>* listMailHeader2=new CArray<MailHeader,MailHeader&>();
 	 listMailHeader2=test->getAllSentMailByUser("dang");
 	 for(int i=0;i<listMailHeader2->GetSize();i++)
 	 {
 		 m_listBoxCtrl.AddString(listMailHeader2->GetAt(i).Cc);
 	 }
-	   
-	int result2 = listMailHeader->GetCount();
+	 
+	 CString result3,temp3;
+	 result2.Format("Cac CC  cua mailinbox cua user dang@dang.com la :");
+	 m_listBoxCtrl.AddString(result2);
+
+	 CArray<MailHeader,MailHeader&>* listMailHeader3=new CArray<MailHeader,MailHeader&>();
+	 listMailHeader3=test->getAllInboxMailByUser("dang@dang.com");
+	 for(int i=0;i<listMailHeader3->GetSize();i++)
+	 {
+		 m_listBoxCtrl.AddString(listMailHeader3->GetAt(i).Cc);
+	 }
+	
+	 //int resul2 = listMailHeader->GetCount();
 	//bool isDeleted = test->deleteMail(3);
 		
 
