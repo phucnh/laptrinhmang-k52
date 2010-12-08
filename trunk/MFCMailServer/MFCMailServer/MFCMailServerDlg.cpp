@@ -456,7 +456,7 @@ void CMFCMailServerDlg::OnBnClickedButton3()
 
 void CMFCMailServerDlg::OnBnClickedButton6()
 {
-	this->OnDestroy();
+	//this->OnDestroy();
 	CString username = "abc";
 	MailHeader* test = new MailHeader();
 

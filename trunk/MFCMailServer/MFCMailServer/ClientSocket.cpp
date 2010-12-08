@@ -73,16 +73,12 @@ void CClientSocket::Initialize()
 
 void CClientSocket::OnClose(int nErrorCode)
 {
-	//phuc add 20101123
 	CString message;
 	message.Format(_T("%s - POP3 connection (ID=%d) closed"), GetCurrentTimeStr(), pop3ProcessId);
 	this->m_parrent->WriteLog(message);
-	//end phuc add 20101123
 	CAsyncSocket::OnClose(nErrorCode);
 
-	//phuc add 20101123
 	delete this;
-	//end phuc add 20101123
 }
 
 void CClientSocket::ProcessCommand( INT _cmdCode )
@@ -122,6 +118,11 @@ INT CClientSocket::GetPop3Command( CString* requestMessage )
 	return CMDERROR;
 }
 
+void CClientSocket::ProcessERROR()
+{
+	Reply("Unknown command.");
+}
+
 void CClientSocket::ProcessUSERCommand()
 {
 	/*if ((m_user == NULL) &&
@@ -145,8 +146,8 @@ void CClientSocket::ProcessUSERCommand()
 		return;
 	}
 
-	//m_user = GetUserByUsername(sUserInfo);
-	m_user = new MailUser("PHUC","12345");
+	m_user = GetUserByUsername(sUserInfo);
+	//m_user = new MailUser("PHUC","12345");
 
 	if (m_user != NULL)
 	{
@@ -161,14 +162,14 @@ void CClientSocket::ProcessUSERCommand()
 	Reply(returnMsg);
 }
 
-void CClientSocket::ProcessERROR()
-{
-	Reply("Unknown command.");
-}
-
 void CClientSocket::ProcessPASSCommand()
 {
 	CString currentStatus;
+	MailHeader* currentMailHeader = new MailHeader();
+	CArray<MailHeader,MailHeader&>* testArray = new CArray<MailHeader,MailHeader&>();
+	testArray = currentMailHeader->getAllInboxMailByUser(m_user->_username);
+	m_totalMail = testArray->GetCount();
+
 	if ((m_user == NULL) &&
 		(m_user->_username.IsEmpty())
 		)
@@ -193,7 +194,7 @@ void CClientSocket::ProcessPASSCommand()
 	}
 
 	CString returnMsg;
-	returnMsg.Format("+OK %s's mailbox has %d messages (%d octets)", m_user->_username, m_totalMail, m_totalSize);
+	returnMsg.Format("+OK %s's mailbox has %d messages", m_user->_username, m_totalMail);
 	this->m_parrent->WriteLog(returnMsg);
 	returnMsg.ReleaseBuffer();
 	returnMsg+="\r\n";
@@ -204,7 +205,7 @@ void CClientSocket::ProcessLISTCommand()
 {
 	INT32 i = 0;
 	CString currentStatus;
-	MailHeader* test1 = new MailHeader();
+	/*MailHeader* test1 = new MailHeader();
 	test1->Subject = "test1";
 	test1->From = "Phuc";
 	test1->TextBody = "test test test";
@@ -213,8 +214,12 @@ void CClientSocket::ProcessLISTCommand()
 	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
 	testArray->Add(*test1);
 	testArray->Add(*test2);
+	m_totalMail = testArray->GetCount();*/
+	MailHeader* currentMailHeader = new MailHeader();
+	CArray<MailHeader,MailHeader&>* testArray = new CArray<MailHeader,MailHeader&>();
+	testArray = currentMailHeader->getAllInboxMailByUser(m_user->_username);
 	m_totalMail = testArray->GetCount();
-
+	
 	m_ClientRequest.Delete(0,4);
 	m_ClientRequest.TrimLeft();
 	m_ClientRequest.TrimRight();
@@ -250,11 +255,10 @@ void CClientSocket::ProcessLISTCommand()
 		return;
 	}
 	// Hien thong tin tat ca cac mail trong box
-	currentStatus.Format("+OK %d messages (%d octets)", m_totalMail, m_totalSize);
+	currentStatus.Format("+OK %d messages", m_totalMail);
 	m_parrent->WriteLog(currentStatus);
 	Reply(currentStatus);
 
-	//phuc mod 20100612
 	if (m_totalMail > 0)
 		for (i=0; i<m_totalMail; i++)
 			if (&testArray->ElementAt(i) != NULL)
@@ -264,7 +268,6 @@ void CClientSocket::ProcessLISTCommand()
 				m_totalSize = currentMailHeader->getSizeOfMail(currentMailHeader);
 				Reply("\n %d %d", i+1, m_totalSize);
 			}
-	//end phuc mod 20100612
 
 	Reply(".");
 }
@@ -272,7 +275,7 @@ void CClientSocket::ProcessLISTCommand()
 void CClientSocket::ProcessRETRCommand()
 {
 	MailHeader* requestedMail = new MailHeader();
-	MailHeader* test1 = new MailHeader();
+	/*MailHeader* test1 = new MailHeader();
 	test1->Subject = "test1";
 	test1->From = "Phuc";
 	test1->Subject = "Test Mail";
@@ -283,6 +286,10 @@ void CClientSocket::ProcessRETRCommand()
 	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
 	testArray->Add(*test1);
 	testArray->Add(*test2);
+	m_totalMail = testArray->GetCount();*/
+	MailHeader* currentMailHeader = new MailHeader();
+	CArray<MailHeader,MailHeader&>* testArray = new CArray<MailHeader,MailHeader&>();
+	testArray = currentMailHeader->getAllInboxMailByUser(m_user->_username);
 	m_totalMail = testArray->GetCount();
 
 	CString currentStatus;
@@ -355,7 +362,7 @@ void CClientSocket::ProcessRETRCommand()
 
 void CClientSocket::ProcessSTATCommand()
 {
-	MailHeader* test1 = new MailHeader();
+	/*MailHeader* test1 = new MailHeader();
 	test1->Subject = "test1";
 	test1->From = "Phuc";
 	test1->Subject = "Test Mail";
@@ -365,6 +372,10 @@ void CClientSocket::ProcessSTATCommand()
 	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
 	testArray->Add(*test1);
 	testArray->Add(*test2);
+	m_totalMail = testArray->GetCount();*/
+	MailHeader* currentMailHeader = new MailHeader();
+	CArray<MailHeader,MailHeader&>* testArray = new CArray<MailHeader,MailHeader&>();
+	testArray = currentMailHeader->getAllInboxMailByUser(m_user->_username);
 	m_totalMail = testArray->GetCount();
 
 	CString currentStatus;
@@ -395,7 +406,7 @@ void CClientSocket::ProcessSTATCommand()
 void CClientSocket::ProcessDELECommand()
 {
 	MailHeader* requestedMail = new MailHeader();
-	MailHeader* test1 = new MailHeader();
+	/*MailHeader* test1 = new MailHeader();
 	test1->Subject = "test1";
 	test1->From = "Phuc";
 	test1->Subject = "Test Mail";
@@ -405,6 +416,10 @@ void CClientSocket::ProcessDELECommand()
 	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
 	testArray->Add(*test1);
 	testArray->Add(*test2);
+	m_totalMail = testArray->GetCount();*/
+	MailHeader* currentMailHeader = new MailHeader();
+	CArray<MailHeader,MailHeader&>* testArray = new CArray<MailHeader,MailHeader&>();
+	testArray = currentMailHeader->getAllInboxMailByUser(m_user->_username);
 	m_totalMail = testArray->GetCount();
 
 	CString currentStatus;
@@ -463,7 +478,6 @@ void CClientSocket::ProcessDELECommand()
 void CClientSocket::ProcessQUITCommand()
 {
 	Reply("+OK");
-	//	Close();
 	CloseSocket();
 }
 
@@ -478,7 +492,7 @@ void CClientSocket::ProcessNOOPCommand()
 void CClientSocket::ProcessRSETCommand()
 {
 	MailHeader* requestedMail = new MailHeader();
-	MailHeader* test1 = new MailHeader();
+	/*MailHeader* test1 = new MailHeader();
 	test1->Subject = "test1";
 	test1->From = "Phuc";
 	test1->Subject = "Test Mail";
@@ -488,6 +502,10 @@ void CClientSocket::ProcessRSETCommand()
 	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
 	testArray->Add(*test1);
 	testArray->Add(*test2);
+	m_totalMail = testArray->GetCount();*/
+	MailHeader* currentMailHeader = new MailHeader();
+	CArray<MailHeader,MailHeader&>* testArray = new CArray<MailHeader,MailHeader&>();
+	testArray = currentMailHeader->getAllInboxMailByUser(m_user->_username);
 	m_totalMail = testArray->GetCount();
 
 	INT32 i = 0;
@@ -513,7 +531,7 @@ void CClientSocket::ProcessRSETCommand()
 void CClientSocket::ProcessTOPCommand()
 {
 	MailHeader* requestedMail = new MailHeader();
-	MailHeader* test1 = new MailHeader();
+	/*MailHeader* test1 = new MailHeader();
 	test1->Subject = "test1";
 	test1->From = "Phuc";
 	test1->Subject = "Test Mail";
@@ -523,12 +541,15 @@ void CClientSocket::ProcessTOPCommand()
 	CArray<MailHeader,MailHeader>* testArray = new CArray<MailHeader,MailHeader>();
 	testArray->Add(*test1);
 	testArray->Add(*test2);
+	m_totalMail = testArray->GetCount();*/
+	MailHeader* currentMailHeader = new MailHeader();
+	CArray<MailHeader,MailHeader&>* testArray = new CArray<MailHeader,MailHeader&>();
+	testArray = currentMailHeader->getAllInboxMailByUser(m_user->_username);
 	m_totalMail = testArray->GetCount();
 
 	CString tempClientRequest = m_ClientRequest;
 	CString currentStatus;
 
-	//Lay tham so cua lenh:
 	m_ClientRequest.Delete(0,3);
 	m_ClientRequest.TrimLeft();
 	m_ClientRequest.TrimRight();
@@ -576,7 +597,7 @@ void CClientSocket::ProcessTOPCommand()
 		return;
 	}
 
-	MailHeader* currentMailHeader = new MailHeader();
+	//MailHeader* currentMailHeader = new MailHeader();
 	currentMailHeader = &testArray->ElementAt(currentMailIndex-1);
 	INT16 totalLinesOfTextBody = currentMailHeader->getLinesOfTextBody(currentMailHeader);
 
