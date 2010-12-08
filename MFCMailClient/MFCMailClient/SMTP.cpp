@@ -37,17 +37,20 @@ BOOL CSMTP::Connect()
 	if( !m_Server.Create() )
 	{
 		m_Error = _T( "Unable to create the socket." );
+		AfxMessageBox(_T(m_Error));
 		return FALSE;
 	}
 	if( !m_Server.Connect((LPCTSTR)m_IpAddress,m_Port) )
 	{
 		m_Error = _T( "Unable to connect to server" );
+		AfxMessageBox(_T(m_Error));
 		m_Server.Close();
 		return FALSE;
 	}
 	if( !get_response( SERVER_AVAILABLE ) )
 	{
 		m_Error = _T( "Server didn't respond." );
+		AfxMessageBox(_T(m_Error));
 		m_Server.Close();
 		return FALSE;
 	}
@@ -103,6 +106,7 @@ BOOL CSMTP::get_response( UINT response_expected )
 	if( m_Server.Receive( response_buf, RESPONSE_BUFFER_SIZE ) == SOCKET_ERROR )
 	{
 		m_Error = _T( "Socket Error" );
+		AfxMessageBox(_T(m_Error));
 		return FALSE;
 	}
 	response_buf[3] = '\0';
@@ -140,6 +144,7 @@ BOOL CSMTP::SendMessage(MailHeader * msg)
 	if( !m_Connected )
 	{
 		m_Error = _T( "Must be connect" );
+		AfxMessageBox(_T(m_Error));
 		return FALSE;
 	}
 	/*if( FormatMailMessage( msg ) == FALSE )
@@ -163,6 +168,7 @@ BOOL CSMTP::SendMessage( MailHeader* msg, CMimeMessage* mime )
 	if (!m_Connected)
 	{
 		m_Error = _T("Must be connect");
+		AfxMessageBox(_T(m_Error));
 		return FALSE;
 	}
 	if( transmit_message( msg, mime ) == FALSE )
@@ -257,6 +263,7 @@ BOOL CSMTP::transmit_message(MailHeader* msg)
 	if( !m_Connected )
 	{
 		m_Error = _T( "Must be connected" );
+		AfxMessageBox(_T(m_Error));
 		return FALSE;
 	}
 
@@ -332,6 +339,7 @@ BOOL CSMTP::transmit_message( MailHeader* msg, CMimeMessage* mime )
 	if( !m_Connected )
 	{
 		m_Error = _T( "Must be connected" );
+		AfxMessageBox(_T(m_Error));
 		return FALSE;
 	}
 
@@ -375,7 +383,7 @@ BOOL CSMTP::transmit_message( MailHeader* msg, CMimeMessage* mime )
 	CMailHeaderServices* mailHeadrService = new CMailHeaderServices();
 	msg->UserId = globalUser.UserId();
 	msg->GroupId = 3;
-	msg->TextBody = mime->GetTextBody();
+	msg->TextBody = _mailMessage;
 	mailHeadrService->InsertNewMail(msg);
 	if (mailHeadrService != NULL) delete mailHeadrService;
 
