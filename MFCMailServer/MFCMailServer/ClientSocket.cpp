@@ -199,6 +199,7 @@ void CClientSocket::ProcessPASSCommand()
 	returnMsg.ReleaseBuffer();
 	returnMsg+="\r\n";
 	Reply(returnMsg);
+
 }
 
 void CClientSocket::ProcessLISTCommand()
