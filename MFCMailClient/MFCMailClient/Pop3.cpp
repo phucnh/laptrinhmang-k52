@@ -376,7 +376,8 @@ MailHeader CPop3::ReadMail( INT _mailNumber )
 	mailHeader.Date = GetHeaderItem(_messageHeader,"Date");
 	mailHeader.Cc = GetHeaderItem(_messageHeader,"CC");
 	mailHeader.ReplyTo = GetHeaderItem(_messageHeader,"Reply-To");
-	mailHeader.TextBody = ReadMessageBody(_messageHeader);
+	//mailHeader.TextBody = ReadMessageBody(_messageHeader);
+	mailHeader.TextBody = _messageHeader;
 
 	mailHeader.UserId = globalUser.UserId();
 

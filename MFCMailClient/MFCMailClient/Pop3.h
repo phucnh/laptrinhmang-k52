@@ -4,7 +4,7 @@
 #pragma once
 
 #define DEFAULT_POP3_PORT 110
-#define DEFAULT_LENGTH_RECEIVE_MESSAGE 10000
+#define DEFAULT_LENGTH_RECEIVE_MESSAGE 30000
 
 // CPop3 command target
 
