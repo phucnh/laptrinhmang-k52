@@ -456,29 +456,37 @@ void CMFCMailServerDlg::OnBnClickedButton3()
 
 void CMFCMailServerDlg::OnBnClickedButton6()
 {
-	//this->OnDestroy();
-	/*CString username = "abc";
+	this->OnDestroy();
+	CString username = "abc";
 	MailHeader* test = new MailHeader();
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 	listMailHeader = test->getAllMail();
+	CString result,temp;
+	result.Format("Cac CC  cua tat ca mail la :");
+
 	for(int i=0;i<listMailHeader->GetSize();i++)
 	{
-		m_listBoxCtrl.AddString(listMailHeader->GetAt(i).Cc);
+		temp.Format("%s",listMailHeader->GetAt(i).Cc);
+		result+=temp;
 	}
-
+	
+	m_listBoxCtrl.AddString(result);
+	//test GetMailSentByUSername
 	CArray<MailHeader,MailHeader&>* listMailHeader2=new CArray<MailHeader,MailHeader&>();
-	 listMailHeader=test->getAllSentMailByUser("dang");
-	 for(int i=0;i<listMailHeader->GetSize();i++)
+	 listMailHeader2=test->getAllSentMailByUser("dang");
+	 for(int i=0;i<listMailHeader2->GetSize();i++)
 	 {
 		 m_listBoxCtrl.AddString(listMailHeader2->GetAt(i).Cc);
 	 }
 	   
-	int result = listMailHeader->GetCount();*/
+	int result2 = listMailHeader->GetCount();
 	//bool isDeleted = test->deleteMail(3);
+		
 
-MailHeader* mailH =new MailHeader();
-if(mailH->deleteMail(2))
- AfxMessageBox("OK");
-else
- AfxMessageBox("False");
+	//test delete Mail
+		//MailHeader* mailH =new MailHeader();
+		//if(mailH->deleteMail(2))
+		// AfxMessageBox("OK");
+		//else
+		// AfxMessageBox("False");
 }

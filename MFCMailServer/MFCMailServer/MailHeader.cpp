@@ -202,9 +202,10 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllSentMailByUser(CString  userna
 {
 	
 	 MailUser* mailU=new MailUser();
-	UINT UserId2=mailU->getIdFromUsername(username);
+	 INT UserId2=mailU->getIdFromUsername(username);
+
 	if(UserId2==NULL) return NULL;
-	sql.Format(_T("Select *  FROM MailHeader  where UserId= '%d'"),UserId2);
+	sql.Format(_T("Select *  FROM MailHeader  where UserId= %d ;"),UserId2);
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 	CRecordset *dataMail;
 	
@@ -275,6 +276,7 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllSentMailByUser(CString  userna
 		 }
 
 	 //Loi lay du lieu tu db voi cau lenh sql: dataMail ko co du lieu nao
+	  // DANG: Da sua xong , Trung Kiem tra ho to cai
 }
 
 MailHeader* MailHeader::getMail(UINT mailID)
