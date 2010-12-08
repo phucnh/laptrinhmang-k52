@@ -462,7 +462,9 @@ void CMFCMailServerDlg::OnBnClickedButton6()
 
 	//test GETALLMAIL()
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
-	listMailHeader = test->getAllMail();
+	listMailHeader = test->getAllInboxMailByUser(username);
+	INT resultTest = listMailHeader->GetCount();
+	
 	CString result,temp;
 	result.Format("Cac CC  cua tat ca mail la :");
 
