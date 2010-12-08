@@ -69,6 +69,7 @@ void CClientSocket::Initialize()
 	m_totalMail = 0;
 	m_totalSize = 0;
 	m_user = NULL;
+	m_sStatus = 11;
 }
 
 void CClientSocket::OnClose(int nErrorCode)
@@ -132,6 +133,8 @@ void CClientSocket::ProcessUSERCommand()
 		Reply("-ERR Username already specified.");
 		return;
 	}*/
+	m_sStatus = USER_CMD;
+
 	CString currentStatus;
 	CString sUserInfo = m_ClientRequest;
 	sUserInfo.Delete(0,4);
@@ -143,6 +146,7 @@ void CClientSocket::ProcessUSERCommand()
 		currentStatus = "-ERR No username specified.";
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 
@@ -160,10 +164,12 @@ void CClientSocket::ProcessUSERCommand()
 	returnMsg.ReleaseBuffer();
 	returnMsg+="\r\n";
 	Reply(returnMsg);
+	m_sStatus = WAIT_CMD;
 }
 
 void CClientSocket::ProcessPASSCommand()
 {
+	m_sStatus = PASS_CMD;
 	CString currentStatus;
 	MailHeader* currentMailHeader = new MailHeader();
 	CArray<MailHeader,MailHeader&>* testArray = new CArray<MailHeader,MailHeader&>();
@@ -177,6 +183,7 @@ void CClientSocket::ProcessPASSCommand()
 		currentStatus = "-ERR No user specified. Uses \"USER\" command first.";
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 
@@ -190,6 +197,7 @@ void CClientSocket::ProcessPASSCommand()
 		currentStatus = "-ERR No password specified.";
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 
@@ -199,11 +207,13 @@ void CClientSocket::ProcessPASSCommand()
 	returnMsg.ReleaseBuffer();
 	returnMsg+="\r\n";
 	Reply(returnMsg);
+	m_sStatus = WAIT_CMD;
 
 }
 
 void CClientSocket::ProcessLISTCommand()
 {
+	m_sStatus = LIST_CMD;
 	INT32 i = 0;
 	CString currentStatus;
 	/*MailHeader* test1 = new MailHeader();
@@ -236,6 +246,7 @@ void CClientSocket::ProcessLISTCommand()
 				currentStatus = "-ERR No such message.";
 				m_parrent->WriteLog(currentStatus);
 				Reply(currentStatus);
+				m_sStatus = WAIT_CMD;
 				return;
 			}
 			if (nIndex > m_totalMail)
@@ -243,16 +254,19 @@ void CClientSocket::ProcessLISTCommand()
 				currentStatus.Format("-ERR No such message, only %d messages in mailbox.",m_totalMail);
 				m_parrent->WriteLog(currentStatus);
 				Reply(currentStatus);
+				m_sStatus = WAIT_CMD;
 				return;
 			}
 			currentStatus.Format("+OK %d %s",nIndex, GetMessageInfo(nIndex, 2));
 			m_parrent->WriteLog(currentStatus);
 			Reply(currentStatus);
+			m_sStatus = WAIT_CMD;
 			return;
 		}
 		currentStatus.Format("-ERR Please enter only digits (0..9).");
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 	// Hien thong tin tat ca cac mail trong box
@@ -271,10 +285,12 @@ void CClientSocket::ProcessLISTCommand()
 			}
 
 	Reply(".");
+	m_sStatus = WAIT_CMD;
 }
 
 void CClientSocket::ProcessRETRCommand()
 {
+	m_sStatus = RETR_CMD;
 	MailHeader* requestedMail = new MailHeader();
 	/*MailHeader* test1 = new MailHeader();
 	test1->Subject = "test1";
@@ -304,6 +320,7 @@ void CClientSocket::ProcessRETRCommand()
 		currentStatus = "-ERR Please enter parameter.";
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 
@@ -312,6 +329,7 @@ void CClientSocket::ProcessRETRCommand()
 		currentStatus = "-ERR Please enter only digits (0..9).";
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 
@@ -323,6 +341,7 @@ void CClientSocket::ProcessRETRCommand()
 		currentStatus = "-ERR No such message.";
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 
@@ -335,6 +354,7 @@ void CClientSocket::ProcessRETRCommand()
 			currentStatus.Format("-ERR Sorry, message %d already deleted.", nMailIndex);
 			m_parrent->WriteLog(currentStatus);
 			Reply(currentStatus);
+			m_sStatus = WAIT_CMD;
 			return;
 		}
 	}
@@ -359,10 +379,12 @@ void CClientSocket::ProcessRETRCommand()
 		Reply(currentStatus);
 	}
 	Reply(".");
+	m_sStatus = WAIT_CMD;
 }
 
 void CClientSocket::ProcessSTATCommand()
 {
+	m_sStatus = STAT_CMD;
 	/*MailHeader* test1 = new MailHeader();
 	test1->Subject = "test1";
 	test1->From = "Phuc";
@@ -386,6 +408,7 @@ void CClientSocket::ProcessSTATCommand()
 		currentStatus.Format("-ERR No such messages.");
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 	
@@ -402,10 +425,12 @@ void CClientSocket::ProcessSTATCommand()
 	currentStatus.Format("+OK %d %d", m_totalMail, m_totalSize);
 	m_parrent->WriteLog(currentStatus);
 	Reply(currentStatus);
+	m_sStatus = WAIT_CMD;
 }
 
 void CClientSocket::ProcessDELECommand()
 {
+	m_sStatus = DELE_CMD;
 	MailHeader* requestedMail = new MailHeader();
 	/*MailHeader* test1 = new MailHeader();
 	test1->Subject = "test1";
@@ -437,6 +462,7 @@ void CClientSocket::ProcessDELECommand()
 		currentStatus = "-ERR Please enter parameter.";
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 	if (strspn(m_ClientRequest, "0123456789") != (UINT)m_ClientRequest.GetLength())
@@ -444,6 +470,7 @@ void CClientSocket::ProcessDELECommand()
 		currentStatus = "-ERR Invalid parameter.";
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 	UINT nIndex = atoi(m_ClientRequest);
@@ -452,6 +479,7 @@ void CClientSocket::ProcessDELECommand()
 		currentStatus = "-ERR No such message.";
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 	// Kiem tra xem mail thu nIndex da duoc xoa hay chua
@@ -460,6 +488,7 @@ void CClientSocket::ProcessDELECommand()
 		currentStatus.Format("-ERR Message %d already deleted.",currentMailIndex);
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 	// Danh dau mail nay se duoc xoa
@@ -474,24 +503,30 @@ void CClientSocket::ProcessDELECommand()
 	currentStatus.Format("+OK Message %d deleted.", currentMailIndex);
 	m_parrent->WriteLog(currentStatus);
 	Reply(currentStatus);
+	m_sStatus = WAIT_CMD;
 }
 
 void CClientSocket::ProcessQUITCommand()
 {
+	m_sStatus = QUIT_CMD;
 	Reply("+OK");
+	m_sStatus = WAIT_CMD;
 	CloseSocket();
 }
 
 void CClientSocket::ProcessNOOPCommand()
 {
+	m_sStatus = NOOP_CMD;
 	CString currentStatus;
 	currentStatus.Format("+OK");
 	m_parrent->WriteLog(currentStatus);
 	Reply(currentStatus);
+	m_sStatus = WAIT_CMD;
 }
 
 void CClientSocket::ProcessRSETCommand()
 {
+	m_sStatus = RSET_CMD;
 	MailHeader* requestedMail = new MailHeader();
 	/*MailHeader* test1 = new MailHeader();
 	test1->Subject = "test1";
@@ -527,10 +562,12 @@ void CClientSocket::ProcessRSETCommand()
 	currentStatus.Format("+OK Maildrop has %d messages (%d octets)",m_totalMail,m_totalSize);
 	m_parrent->WriteLog(currentStatus);
 	Reply(currentStatus);
+	m_sStatus = WAIT_CMD;
 }
 
 void CClientSocket::ProcessTOPCommand()
 {
+	m_sStatus = TOP_CMD;
 	MailHeader* requestedMail = new MailHeader();
 	/*MailHeader* test1 = new MailHeader();
 	test1->Subject = "test1";
@@ -560,6 +597,7 @@ void CClientSocket::ProcessTOPCommand()
 		currentStatus.Format("-ERR Not enough parameter.");
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 
@@ -568,6 +606,7 @@ void CClientSocket::ProcessTOPCommand()
 		currentStatus.Format("-ERR Please enter only digits (0..9).");
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 
@@ -595,6 +634,7 @@ void CClientSocket::ProcessTOPCommand()
 		currentStatus.Format("-ERR No such messages.");
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 
@@ -607,6 +647,7 @@ void CClientSocket::ProcessTOPCommand()
 		currentStatus.Format("-ERR Message %d already deleted.",currentMailIndex);
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 	currentStatus.Format("+OK Top %d of this message: \n",lineCount);
@@ -619,6 +660,7 @@ void CClientSocket::ProcessTOPCommand()
 		currentStatus.Format("%s",currentMailHeader->TextBody);
 		m_parrent->WriteLog(currentStatus);
 		Reply(currentStatus);
+		m_sStatus = WAIT_CMD;
 		return;
 	}
 
@@ -637,6 +679,7 @@ void CClientSocket::ProcessTOPCommand()
 	
 	m_parrent->WriteLog(currentStatus);
 	Reply(currentStatus);
+	m_sStatus = WAIT_CMD;
 }
 
 void CClientSocket::GetMailboxInfo(CString sMailbox)

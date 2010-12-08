@@ -15,6 +15,7 @@
 #define NOOP_CMD 8
 #define RSET_CMD 9
 #define TOP_CMD 10
+#define WAIT_CMD 11
 
 static CMailServerCommand POP3_CMD[11] = 
 {
@@ -49,6 +50,7 @@ private:
 	INT pop3ProcessId;
 	BOOL isLocked;
 	CStringList	m_MailboxInfo;
+	INT m_sStatus;
 
 public:
 	INT Pop3ProcessId() const { return pop3ProcessId; }
