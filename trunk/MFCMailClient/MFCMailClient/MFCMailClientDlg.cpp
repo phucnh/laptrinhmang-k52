@@ -432,6 +432,7 @@ void CMFCMailClientDlg::OnLvnItemchangedList3(NMHDR *pNMHDR, LRESULT *pResult)
 
 			CMimeMessage _mime;
 			_mime.ReadMIMEMail(_mailHeader.TextBody);
+			int _testlenght = _mailHeader.TextBody.GetLength(); 
 
 			CArray<CString,CString>* attachList = _mime.GetFileNameAttachmentList();
 
@@ -446,7 +447,7 @@ void CMFCMailClientDlg::OnLvnItemchangedList3(NMHDR *pNMHDR, LRESULT *pResult)
 				_mailHeader.Cc,
 				_mailHeader.Date,
 				_mailHeader.Subject,
-				_mailHeader.TextBody);
+				_mime.GetTextBody());
 
 			m_MailMessage = _view.GetString();
 		}
