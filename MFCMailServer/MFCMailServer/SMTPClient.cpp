@@ -236,10 +236,22 @@ void CSMTPClient::ProcessRCPTCommand()
 	m_nStatus = SMTP_RCPT_CMD;
 	CString _returnMsg;
 	GetRCPTTo();
-	_returnMsg.Format("250 Recipient %s OK...\r\n", m_mailHdr->To);
+	MailUser* user = new MailUser();
+	user = user->GetUserByUsername(m_mailHdr->To);
+
+	if (user == NULL)
+	{
+		_returnMsg.Format("544 User %s unknown\r\n", m_mailHdr->To);
+	}
+	else
+	{
+		_returnMsg.Format("250 Recipient %s OK...\r\n", m_mailHdr->To);
+	}
 	m_parrent->WriteLog(_returnMsg);
 	Reply(_returnMsg);
 	m_nStatus = SMTP_WAITING_CMD;
+
+	if (user != NULL) delete user;
 }
 void CSMTPClient::ProcessDATACommand()
 {
