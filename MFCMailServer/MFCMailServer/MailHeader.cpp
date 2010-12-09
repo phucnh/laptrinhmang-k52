@@ -62,7 +62,7 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllMail()
 	{
 		dataMail=dal->GetRecordSet(sql);
 		if(dataMail==NULL) return NULL;
-		if (dataMail->GetRecordCount() == 0) return NULL;
+		//if (dataMail->GetRecordCount() == 0) return NULL;
 
 	
 			else
@@ -125,7 +125,7 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllMail()
 CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString username)
 {
 //	sql.Format(_T("Select * FROM MailHeader  where [To] like '%'%s'%' ;"),username);
-	sql.Format(_T("Select * FROM MailHeader  where [To] like '*%s*' ;"),username);
+	sql.Format(_T("Select * from [MailHeader]  where [MailHeader].[To]  like '%s*'"),username);
 	
 	CArray<MailHeader,MailHeader&>* listMailHeader=new CArray<MailHeader,MailHeader&>();
 	CRecordset *dataMail;
@@ -138,11 +138,11 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString userna
 		
 	try
 	{
-		dataMail=dal->GetRecordSet(sql);
+		dataMail=dal->GetRecordSet(sql.GetString());
 
 		if(dataMail==NULL) return NULL;
 
-		if (dataMail->GetRecordCount() == 0)	return NULL;
+		//if (dataMail->GetRecordCount() == 0)	return NULL;
 	
 			else
 				{
@@ -225,7 +225,7 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllSentMailByUser(CString  userna
 		dataMail=dal->GetRecordSet(sql);
 		if(dataMail==NULL) return NULL;
 
-		if (dataMail->GetRecordCount() == 0)	return NULL;
+		//if (dataMail->GetRecordCount() == 0)	return NULL;
 	
 			else
 				{
@@ -297,7 +297,7 @@ MailHeader* MailHeader::getMail(UINT mailID)
 			dataset = dal->GetRecordSet(sql);
 			if(dataset==NULL) return NULL;
 
-			if (dataset->GetRecordCount() == 0)	return NULL;
+			//if (dataset->GetRecordCount() == 0)	return NULL;
 
 			else
 			{

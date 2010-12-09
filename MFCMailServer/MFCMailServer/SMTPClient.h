@@ -38,6 +38,7 @@ static CMailServerCommand SMTP_CMD[10] =
 class CSMTPClient : public CAsyncSocket
 {
 private:
+	//CWinThread* smtpThread;
 	CMFCMailServerDlg* m_parrent;
 	MailHeader* m_mailHdr; //Mail dinh gui di luu tru vao day
 	CString m_ClientAddress;
@@ -58,6 +59,13 @@ public:
 	CSMTPClient(CMFCMailServerDlg*);
 	virtual ~CSMTPClient();
 
+	//************************************
+	// Method:    Initialize
+	// FullName:  CSMTPClient::Initialize
+	// Access:    public 
+	// Returns:   void
+	// Qualifier:
+	//************************************
 	void Initialize();
 	void Reply(CString msg);
 	void CloseSocket();
