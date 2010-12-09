@@ -61,7 +61,24 @@ public:
 
 	virtual ~CClientSocket();
 
+	//************************************
+	// Method:    Initialize
+	// FullName:  CClientSocket::Initialize
+	// Access:    public 
+	// Returns:   void
+	// Qualifier:
+	//************************************
 	void Initialize();
+	//************************************
+	// Method:    SendString
+	// FullName:  CClientSocket::SendString
+	// Access:    public 
+	// Returns:   void
+	// Qualifier:
+	// Parameter: const void * lpBuf
+	// Parameter: int nBufLen
+	// Parameter: int nFlags
+	//************************************
 	void SendString(const void *lpBuf, int nBufLen, int nFlags);
 	void GetMailboxInfo(CString sMailbox);
 	CString GetMessageInfo(UINT nID, int nField);

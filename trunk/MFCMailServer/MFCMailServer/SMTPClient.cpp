@@ -39,6 +39,7 @@ CSMTPClient::~CSMTPClient()
 
 	nSmtpConnectionsCount--;
 	this->m_parrent->UpdateStatusbar();
+	
 }
 
 
@@ -318,6 +319,16 @@ void CSMTPClient::Initialize()
 	m_mailHdr = new MailHeader();
 	//end phuc add 20101203
 	m_nStatus = SMTP_WAITING_CMD;
+
+	/*try
+	{
+		smtpThread = AfxBeginThread(RUNTIME_CLASS(CWinThread),THREAD_PRIORITY_NORMAL);
+	}
+	catch (CException* e)
+	{
+		AfxMessageBox(_T("Can not create thread"));
+		throw;
+	}*/
 
 }
 //long add

@@ -70,6 +70,7 @@ void CClientSocket::Initialize()
 	m_totalSize = 0;
 	m_user = NULL;
 	m_sStatus = 11;
+	m_user = new MailUser();
 }
 
 void CClientSocket::OnClose(int nErrorCode)
@@ -121,7 +122,7 @@ INT CClientSocket::GetPop3Command( CString* requestMessage )
 
 void CClientSocket::ProcessERROR()
 {
-	Reply("Unknown command.");
+	Reply("-ERR Unknown command.");
 }
 
 void CClientSocket::ProcessUSERCommand()
@@ -173,10 +174,14 @@ void CClientSocket::ProcessPASSCommand()
 	CString currentStatus;
 	MailHeader* currentMailHeader = new MailHeader();
 	CArray<MailHeader,MailHeader&>* testArray = new CArray<MailHeader,MailHeader&>();
-	testArray = currentMailHeader->getAllInboxMailByUser(m_user->_username);
-	m_totalMail = testArray->GetCount();
 
-	if ((m_user == NULL) &&
+	if (m_user != NULL)
+		testArray = currentMailHeader->getAllInboxMailByUser(m_user->_username);
+
+	if (testArray != NULL)
+		m_totalMail = testArray->GetCount();
+
+	if ((m_user == NULL) ||
 		(m_user->_username.IsEmpty())
 		)
 	{
@@ -201,14 +206,20 @@ void CClientSocket::ProcessPASSCommand()
 		return;
 	}
 
+
+	
 	CString returnMsg;
-	returnMsg.Format("+OK %s's mailbox has %d messages", m_user->_username, m_totalMail);
+
+	if ((m_user != NULL) && 
+		(sPassInfo.Compare(m_user->_password) == 0))
+		returnMsg.Format("+OK %s's mailbox has %d messages", m_user->_username, m_totalMail);
+	else
+		returnMsg.Format("-ERR No password specified.");
 	this->m_parrent->WriteLog(returnMsg);
 	returnMsg.ReleaseBuffer();
 	returnMsg+="\r\n";
 	Reply(returnMsg);
 	m_sStatus = WAIT_CMD;
-
 }
 
 void CClientSocket::ProcessLISTCommand()
@@ -228,8 +239,12 @@ void CClientSocket::ProcessLISTCommand()
 	m_totalMail = testArray->GetCount();*/
 	MailHeader* currentMailHeader = new MailHeader();
 	CArray<MailHeader,MailHeader&>* testArray = new CArray<MailHeader,MailHeader&>();
-	testArray = currentMailHeader->getAllInboxMailByUser(m_user->_username);
-	m_totalMail = testArray->GetCount();
+
+	if (m_user != NULL)
+		testArray = currentMailHeader->getAllInboxMailByUser(m_user->_username);
+
+	if (testArray != NULL)
+		m_totalMail = testArray->GetCount();
 	
 	m_ClientRequest.Delete(0,4);
 	m_ClientRequest.TrimLeft();
