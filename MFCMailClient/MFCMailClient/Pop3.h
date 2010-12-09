@@ -65,19 +65,61 @@ public:
 	INT64 GetMailTotalSize();
 
 	//************************************
-	// Method:    Analysis Mail Header
-	// FullName:  CPop3::AnalysisHeader
+	// Method:    ReadMail
+	// FullName:  CPop3::ReadMail
 	// Access:    public 
-	// Returns:   MailHeader*
-	// Qualifier: Analysis Mail Header, return null if error
+	// Returns:   MailHeader
+	// Qualifier:
 	// Parameter: INT _mailNumber
 	//************************************
 	MailHeader ReadMail(INT _mailNumber);
+	//************************************
+	// Method:    ReadMessageBody
+	// FullName:  CPop3::ReadMessageBody
+	// Access:    public 
+	// Returns:   CString
+	// Qualifier:
+	// Parameter: CString _header
+	//************************************
 	CString ReadMessageBody(CString _header);
+	//************************************
+	// Method:    GetAllMail
+	// FullName:  CPop3::GetAllMail
+	// Access:    public 
+	// Returns:   void
+	// Qualifier:
+	// Parameter: CArray<MailHeader
+	// Parameter: MailHeader> & _mailArray
+	//************************************
 	void GetAllMail(CArray<MailHeader,MailHeader> &_mailArray);
+	//************************************
+	// Method:    GetHeaderItem
+	// FullName:  CPop3::GetHeaderItem
+	// Access:    public 
+	// Returns:   CString
+	// Qualifier: const
+	// Parameter: CString Hdr
+	// Parameter: const CString & sName
+	//************************************
 	CString GetHeaderItem(CString Hdr,const CString& sName) const;
+	//************************************
+	// Method:    AnalysisHeader
+	// FullName:  CPop3::AnalysisHeader
+	// Access:    public 
+	// Returns:   MailHeader
+	// Qualifier:
+	// Parameter: CString Hdr
+	//************************************
 	MailHeader AnalysisHeader(CString Hdr);
 
+	//************************************
+	// Method:    DeleteMail
+	// FullName:  CPop3::DeleteMail
+	// Access:    public 
+	// Returns:   BOOL
+	// Qualifier:
+	// Parameter: INT _mailNumber
+	//************************************
 	BOOL DeleteMail(INT _mailNumber);
 
 	virtual ~CPop3(void);

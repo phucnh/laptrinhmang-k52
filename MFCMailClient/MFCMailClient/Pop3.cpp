@@ -429,6 +429,10 @@ CString CPop3::ReadMessageBody( CString _header )
 	CString _body = CString(_header);
 	_body.Delete(0,count);
 
+	//Xoa dau .
+	if (_body.GetLength() > 3)
+		_body.Delete(_body.GetLength()-3,3);
+
 	return _body;
 }
 
