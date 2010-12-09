@@ -52,8 +52,18 @@ void CSMTPClient::OnReceive(int nErrorCode)
 	m_Buffer[nBytesRead] = '\0';
 	m_sQueue += m_Buffer;
 
-	while (m_nStatus != SMTP_DATA_CMD)
+	while ((m_nStatus == SMTP_WAITING_CMD) ||
+		(m_nStatus == SMTP_AFTER_CLIENT_SEND_DATA))
 	{
+		if (m_nStatus == SMTP_AFTER_CLIENT_SEND_DATA)
+		{
+			m_sQueue.Format("");
+			m_ClientRequest.Format("");
+			m_Buffer[0] = '\0';
+			m_nStatus = SMTP_WAITING_CMD;
+			break;
+		}
+
 		int	iPos = m_sQueue.Find('\n');
 		if (iPos == -1) break;
 		m_ClientRequest = m_sQueue.Left(iPos+1);
@@ -240,14 +250,14 @@ void CSMTPClient::ProcessDATACommand()
 	m_sQueue.Format("");
 	m_nStatus = SMTP_DATA_CMD;
 	GetDATA();
-	m_nStatus = SMTP_ERROR_CMD;
+	m_nStatus = SMTP_AFTER_CLIENT_SEND_DATA;
 	if (!m_mailHdr->TextBody.IsEmpty())
 	{
 		CString _returnMsg("250 Message accepted for delivery.\r\n");
 		m_parrent->WriteLog(_returnMsg);
 		Reply(_returnMsg);		
 	}
-	m_nStatus = SMTP_WAITING_CMD;
+	//m_nStatus = SMTP_WAITING_CMD;
 
 }
 void CSMTPClient::ProcessNOOPCommand()
@@ -326,23 +336,37 @@ void CSMTPClient::GetDATA()
 	int nBytesRead;
 	while (1)
 	{		
-		//Sleep(30);
+		Sleep(5000);
 		nBytesRead = Receive(m_Buffer, MAX_SMTP_BUFFER_SIZE-1);
-		m_Buffer[nBytesRead] = 0;
+
+		if (nBytesRead <1 ) continue;
+
+		m_Buffer[nBytesRead] = '\0';
 		m_sQueue.Append(m_Buffer);
 
 		if(nBytesRead < 3) continue;
 
-		if ((m_Buffer[nBytesRead-3]=='.') &&
-			(m_Buffer[nBytesRead-2]=='\r')&&
-			(m_Buffer[nBytesRead-1]=='\n'))
-		{
-			m_sQueue.Delete(nBytesRead-3,3);
-			break;
-		}
+		if (nBytesRead > 3)
+			if ((m_Buffer[nBytesRead-4]=='\n')&&
+				(m_Buffer[nBytesRead-3]=='.') &&
+				(m_Buffer[nBytesRead-2]=='\r')&&
+				(m_Buffer[nBytesRead-1]=='\n'))
+			{
+				//m_sQueue.Delete(nBytesRead-3,3);
+				break;
+			}
+		if (nBytesRead == 3)
+			if ((m_Buffer[nBytesRead-3]=='.') &&
+				(m_Buffer[nBytesRead-2]=='\r')&&
+				(m_Buffer[nBytesRead-1]=='\n'))
+			{
+				//m_sQueue.Delete(nBytesRead-3,3);
+				break;
+			}
 		
 	}
 	m_ClientRequest = m_sQueue;
 	m_mailHdr->TextBody = m_ClientRequest;
+	//m_ClientRequest.Delete(0,m_ClientRequest.GetLength());
 	return;
 }

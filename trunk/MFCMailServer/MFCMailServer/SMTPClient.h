@@ -17,6 +17,7 @@
 #define SMTP_QUIT_CMD	8
 #define SMTP_HELP_CMD	9
 #define SMTP_WAITING_CMD 10
+#define SMTP_AFTER_CLIENT_SEND_DATA 11
 
 static CMailServerCommand SMTP_CMD[10] = 
 {
