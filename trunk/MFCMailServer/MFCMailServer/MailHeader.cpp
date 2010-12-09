@@ -53,15 +53,16 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllMail()
 	CRecordset *dataMail;
 	
 
-	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString,MessageId;
+	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContentType,RealAttachString,MessageId;
 	BYTE RealAttach;
-	INT UserId,GroupId,MailId;
+	CString UserId,GroupId,MailId;
 	MailHeader mailheader;
 		
 	try
 	{
 		dataMail=dal->GetRecordSet(sql);
 		if(dataMail==NULL) return NULL;
+		if (dataMail->GetRecordCount() == 0) return NULL;
 
 	
 			else
@@ -78,13 +79,13 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllMail()
 						dataMail->GetFieldValue(_T("Date"),Date);
 						dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
 						dataMail->GetFieldValue(_T("TextBody"),TextBody);
-					/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
-						dataMail->GetFieldValue(_T("ContentType",ContendType);*/
+						dataMail->GetFieldValue(_T("MimeVersion"),MimeVersion);
+						dataMail->GetFieldValue(_T("ContentType"),ContentType);
 
 						dataMail->GetFieldValue(_T("RealAttach"),RealAttachString);
-					/*	dataMail->GetFieldValue(_T("GroupId",GroupId);
-						dataMail->GetFieldValue(_T("UserId",UserId);
-						dataMail->GetFieldValue(_T("MailId",MailId);*/
+						dataMail->GetFieldValue(_T("GroupId"),GroupId);
+						dataMail->GetFieldValue(_T("UserId"),UserId);
+						dataMail->GetFieldValue(_T("MailId"),MailId);
 
 						//convert String to BYTE
 						RealAttach=(BYTE)(LPSTR)(LPCTSTR)RealAttachString;
@@ -132,7 +133,7 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString userna
 
 	CString  From,To, Subject,Cc, Date,ReplyTo,TextBody,MimeVersion,ContendType,RealAttachString,MessageId;
 	BYTE RealAttach;
-	INT UserId,GroupId,MailId;
+	CString UserId,GroupId,MailId;
 	MailHeader mailheader;
 		
 	try
@@ -140,6 +141,8 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString userna
 		dataMail=dal->GetRecordSet(sql);
 
 		if(dataMail==NULL) return NULL;
+
+		if (dataMail->GetRecordCount() == 0)	return NULL;
 	
 			else
 				{
@@ -155,13 +158,13 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllInboxMailByUser(CString userna
 						dataMail->GetFieldValue(_T("Date"),Date);
 						dataMail->GetFieldValue(_T("ReplyTo"),ReplyTo);
 						dataMail->GetFieldValue(_T("TextBody"),TextBody);
-					/*	dataMail->GetFieldValue(_T("MimeVersion",MimeVersion);
-						dataMail->GetFieldValue(_T("ContentType",ContendType);*/
+						dataMail->GetFieldValue(_T("MimeVersion"),MimeVersion);
+						dataMail->GetFieldValue(_T("ContentType"),ContendType);
 
 						dataMail->GetFieldValue(_T("RealAttach"),RealAttachString);
-					/*	dataMail->GetFieldValue(_T("GroupId",GroupId);
-						dataMail->GetFieldValue(_T("UserId",UserId);
-						dataMail->GetFieldValue(_T("MailId",MailId);*/
+						dataMail->GetFieldValue(_T("GroupId"),GroupId);
+						dataMail->GetFieldValue(_T("UserId"),UserId);
+						dataMail->GetFieldValue(_T("MailId"),MailId);
 
 						//convert String to BYTE
 						RealAttach=(BYTE)(LPSTR)(LPCTSTR)RealAttachString;
@@ -221,6 +224,8 @@ CArray<MailHeader,MailHeader&>* MailHeader::getAllSentMailByUser(CString  userna
 	{
 		dataMail=dal->GetRecordSet(sql);
 		if(dataMail==NULL) return NULL;
+
+		if (dataMail->GetRecordCount() == 0)	return NULL;
 	
 			else
 				{
@@ -291,6 +296,9 @@ MailHeader* MailHeader::getMail(UINT mailID)
 		{
 			dataset = dal->GetRecordSet(sql);
 			if(dataset==NULL) return NULL;
+
+			if (dataset->GetRecordCount() == 0)	return NULL;
+
 			else
 			{
 

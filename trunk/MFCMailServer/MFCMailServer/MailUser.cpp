@@ -65,6 +65,10 @@ MailUser* MailUser::GetUserByID(UINT userID )
 			datasetMailUser = dal->GetRecordSet(sqlMailUser);
 		CString name,pass;
 		if(datasetMailUser==NULL) return NULL;
+
+		if (datasetMailUser->GetRecordCount() == 0)	return NULL;
+
+		if (datasetMailUser->GetRecordCount() == 0) return NULL;
 		else
 		{
 			datasetMailUser->GetFieldValue(_T("Username"),name);
@@ -91,7 +95,9 @@ MailUser* MailUser::GetUserByUsername(CString username)
 	try
 	{
 		datasetMailUser  = dal->GetRecordSet(sqlMailUser);
-	
+		
+		if (datasetMailUser->GetRecordCount() == 0)	return NULL;
+
 		if(datasetMailUser==NULL) return NULL;
 		else
 		{
@@ -174,7 +180,7 @@ CArray<MailUser,MailUser&>* MailUser::GetAllUsers()
 						
 					datasetMailUser=dal->GetRecordSet(sqlMailUser);
 
-					if(datasetMailUser==NULL) return NULL;
+					if ((datasetMailUser==NULL) || (datasetMailUser->GetRecordCount()==0) ) return NULL;
 
 					else
 					{
